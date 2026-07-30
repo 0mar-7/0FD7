@@ -15,6 +15,7 @@
             --text-color: #ffffff;
             --text-gray: #a0a0a0;
             --border-color: #262630;
+            --star-gold: #ffc107;
         }
 
         * {
@@ -55,16 +56,15 @@
             font-weight: 900;
             color: var(--primary-red);
             text-shadow: 0 0 30px rgba(229, 9, 20, 0.9), 0 0 60px rgba(229, 9, 20, 0.5);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             letter-spacing: 3px;
             animation: pulse 1s infinite alternate;
         }
 
-        /* شريط تحميل عريض وفخم */
         .loader-bar-container {
-            width: 80%;
-            max-width: 550px;
-            height: 22px;
+            width: 85%;
+            max-width: 600px;
+            height: 26px;
             background: #121216;
             border-radius: 50px;
             overflow: hidden;
@@ -81,8 +81,16 @@
             background-size: 200% 100%;
             box-shadow: 0 0 20px var(--primary-red);
             border-radius: 50px;
-            transition: width 0.8s cubic-bezier(0.1, 0.7, 0.1, 1);
+            transition: width 0.1s linear;
             animation: glowMove 1.5s linear infinite;
+        }
+
+        .splash-percentage {
+            margin-top: 15px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
         }
 
         @keyframes glowMove {
@@ -109,22 +117,14 @@
             backdrop-filter: blur(10px);
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-
         .brand h1 {
             font-size: 1.8rem;
             font-weight: 900;
             color: #fff;
+            cursor: pointer;
         }
 
-        .brand span {
-            color: var(--primary-red);
-        }
+        .brand span { color: var(--primary-red); }
 
         .dev-badge {
             background: var(--primary-red);
@@ -136,10 +136,7 @@
             margin-right: 5px;
         }
 
-        /* البروفايل والقائمة */
-        .user-section {
-            position: relative;
-        }
+        .user-section { position: relative; }
 
         .profile-btn {
             display: flex;
@@ -153,9 +150,7 @@
             transition: 0.3s;
         }
 
-        .profile-btn:hover {
-            border-color: var(--primary-red);
-        }
+        .profile-btn:hover { border-color: var(--primary-red); }
 
         .profile-img {
             width: 38px;
@@ -180,25 +175,17 @@
             z-index: 101;
         }
 
-        .dropdown-menu.active {
-            display: flex;
-        }
+        .dropdown-menu.active { display: flex; }
 
         .dropdown-item {
             padding: 12px 15px;
             color: #fff;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
             cursor: pointer;
             font-size: 0.9rem;
             transition: 0.2s;
         }
 
-        .dropdown-item:hover {
-            background: var(--primary-red);
-        }
+        .dropdown-item:hover { background: var(--primary-red); }
 
         /* --- المحتوى الرئيسي والتطبيقات --- */
         main {
@@ -241,31 +228,34 @@
             box-shadow: 0 10px 25px rgba(229, 9, 20, 0.25);
         }
 
-        /* زر حذف التطبيق للمطور */
-        .delete-btn {
+        .action-btns-dev {
             position: absolute;
-            top: 22px;
-            left: 22px;
-            background: rgba(229, 9, 20, 0.85);
-            color: white;
-            border: none;
-            border-radius: 50%;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            gap: 6px;
+            z-index: 5;
+        }
+
+        .dev-action-btn {
             width: 32px;
             height: 32px;
-            font-size: 1.2rem;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 0.9rem;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
             transition: 0.2s;
-            z-index: 5;
             box-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
 
-        .delete-btn:hover {
-            background: #ff0000;
-            transform: scale(1.15);
-        }
+        .btn-edit-dev { background: #ff9800; }
+        .btn-edit-dev:hover { background: #e68a00; transform: scale(1.1); }
+        .btn-delete-dev { background: rgba(229, 9, 20, 0.9); }
+        .btn-delete-dev:hover { background: #ff0000; transform: scale(1.1); }
 
         .app-icon {
             width: 100%;
@@ -275,9 +265,14 @@
             background: #000;
         }
 
-        .app-title {
-            font-size: 1.25rem;
-            font-weight: 700;
+        .app-title { font-size: 1.2rem; font-weight: 700; }
+
+        .rating-stars-display {
+            color: var(--star-gold);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .app-desc {
@@ -304,33 +299,28 @@
             width: 100%;
         }
 
-        .btn:hover {
-            background: var(--hover-red);
-        }
+        .btn:hover { background: var(--hover-red); }
 
-        /* زر إضافة تطبيق (للمطور فقط) */
         .add-app-fab {
             position: fixed;
             bottom: 30px;
             left: 30px;
-            width: 65px;
-            height: 65px;
+            width: 60px;
+            height: 60px;
             background: var(--primary-red);
             color: #fff;
             border-radius: 50%;
             display: none;
             justify-content: center;
             align-items: center;
-            font-size: 2.2rem;
+            font-size: 2rem;
             box-shadow: 0 4px 25px rgba(229, 9, 20, 0.7);
             cursor: pointer;
             z-index: 90;
             transition: 0.3s;
         }
 
-        .add-app-fab:hover {
-            transform: scale(1.1) rotate(90deg);
-        }
+        .add-app-fab:hover { transform: scale(1.1) rotate(90deg); }
 
         /* --- النوافذ المنبثقة (Modals) --- */
         .modal {
@@ -353,34 +343,32 @@
             border: 1px solid var(--primary-red);
             border-radius: 14px;
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
             padding: 25px;
             position: relative;
             box-shadow: 0 0 35px rgba(229, 9, 20, 0.35);
         }
 
         .modal-title {
-            font-size: 1.4rem;
-            margin-bottom: 18px;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
             color: var(--primary-red);
             text-align: center;
             font-weight: 700;
         }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+        .form-group { margin-bottom: 12px; }
 
         .form-group label {
             display: block;
-            margin-bottom: 6px;
-            font-size: 0.9rem;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
             color: var(--text-gray);
         }
 
         .form-group input, .form-group textarea {
             width: 100%;
-            padding: 10px 12px;
+            padding: 10px;
             background: #0a0a0c;
             border: 1px solid var(--border-color);
             color: #fff;
@@ -388,14 +376,7 @@
             outline: none;
         }
 
-        .form-group input[type="file"] {
-            padding: 8px;
-            cursor: pointer;
-        }
-
-        .form-group input:focus, .form-group textarea:focus {
-            border-color: var(--primary-red);
-        }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--primary-red); }
 
         .close-btn {
             position: absolute;
@@ -406,24 +387,21 @@
             cursor: pointer;
         }
 
-        /* صفحة تفاصيل التطبيق والتعليقات */
-        .app-detail-container {
+        /* نظام التقييم بالنجوم */
+        .star-rating-input {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
+            gap: 8px;
+            font-size: 1.5rem;
+            color: #444;
+            cursor: pointer;
+            margin-bottom: 10px;
+            justify-content: center;
         }
 
-        .app-detail-header {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .app-detail-img {
-            width: 85px;
-            height: 85px;
-            border-radius: 12px;
-            object-fit: cover;
+        .star-rating-input span.active,
+        .star-rating-input span:hover,
+        .star-rating-input span:hover ~ span {
+            color: var(--star-gold);
         }
 
         .comments-section {
@@ -433,7 +411,7 @@
         }
 
         .comments-list {
-            max-height: 130px;
+            max-height: 120px;
             overflow-y: auto;
             margin-bottom: 10px;
             display: flex;
@@ -448,16 +426,9 @@
             font-size: 0.85rem;
         }
 
-        .comment-user {
-            color: var(--primary-red);
-            font-weight: bold;
-        }
+        .comment-user { color: var(--primary-red); font-weight: bold; }
 
-        /* صفحة التحميل والأبعاد الزمنية */
-        .download-timer-container {
-            text-align: center;
-            padding: 20px 0;
-        }
+        .download-timer-container { text-align: center; padding: 20px 0; }
 
         .timer-circle {
             font-size: 3.5rem;
@@ -467,14 +438,13 @@
             text-shadow: 0 0 20px rgba(229, 9, 20, 0.6);
         }
 
-        /* الفوتر */
         footer {
             background: #040406;
             text-align: center;
             padding: 20px;
             border-top: 1px solid var(--border-color);
             color: var(--text-gray);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             margin-top: auto;
         }
     </style>
@@ -487,6 +457,7 @@
         <div class="loader-bar-container">
             <div class="loader-bar" id="loader-bar"></div>
         </div>
+        <div class="splash-percentage" id="splash-percentage">0%</div>
     </div>
 
     <!-- الهيدر -->
@@ -510,9 +481,7 @@
     <!-- المحتوى الرئيسي -->
     <main>
         <h2 class="section-title">التطبيقات والألعاب المتاحة</h2>
-        <div class="apps-grid" id="apps-container">
-            <!-- التطبيقات تظهر هنا تلقائياً -->
-        </div>
+        <div class="apps-grid" id="apps-container"></div>
     </main>
 
     <!-- زر إضافة تطبيق (للمطور فقط) -->
@@ -551,11 +520,12 @@
         </div>
     </div>
 
-    <!-- 3. نافذة إضافة تطبيق (للمطور) -->
+    <!-- 3. نافذة إضافة / تعديل تطبيق (للمطور) -->
     <div class="modal" id="add-app-modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('add-app-modal')">&times;</span>
-            <div class="modal-title">إضافة تطبيق / لعبة جديدة</div>
+            <div class="modal-title" id="modal-app-title">إضافة تطبيق / لعبة جديدة</div>
+            <input type="hidden" id="edit-app-id">
             <div class="form-group">
                 <label>اسم التطبيق أو اللعبة</label>
                 <input type="text" id="app-name">
@@ -576,44 +546,51 @@
         </div>
     </div>
 
-    <!-- 4. نافذة تفاصيل التطبيق -->
+    <!-- 4. نافذة تفاصيل التطبيق والتقييم -->
     <div class="modal" id="app-detail-modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('app-detail-modal')">&times;</span>
-            <div class="app-detail-container">
-                <div class="app-detail-header">
-                    <img id="detail-img" class="app-detail-img" src="" alt="">
-                    <div>
-                        <h3 id="detail-title"></h3>
-                    </div>
+            <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 10px;">
+                <img id="detail-img" style="width: 75px; height: 75px; border-radius: 10px; object-fit: cover;" src="" alt="">
+                <div>
+                    <h3 id="detail-title" style="font-size: 1.1rem;"></h3>
+                    <div id="detail-rating-display" class="rating-stars-display" style="margin-top: 4px;"></div>
                 </div>
-                <p id="detail-desc" style="color: var(--text-gray); font-size: 0.9rem;"></p>
-                
-                <button class="btn" onclick="startDownloadProcess()">تحميل الآن</button>
+            </div>
+            <p id="detail-desc" style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;"></p>
+            
+            <button class="btn" onclick="startDownloadProcess()">تحميل الآن</button>
 
-                <!-- قسم التعليقات -->
-                <div class="comments-section">
-                    <h4 style="font-size: 0.9rem; margin-bottom: 8px;">التعليقات:</h4>
-                    <div class="comments-list" id="comments-list">
-                        <!-- التعليقات تظهر هنا -->
-                    </div>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="text" id="comment-input" style="flex:1; padding:6px 10px; background:#0a0a0c; border:1px solid #333; color:#fff; border-radius:6px;" placeholder="أضف تعليقاً...">
-                        <button class="btn" style="width: auto; padding: 6px 15px;" onclick="addComment()">نشر</button>
-                    </div>
+            <!-- قسم التقييم والتعليقات -->
+            <div class="comments-section">
+                <h4 style="font-size: 0.85rem; margin-bottom: 5px;">قيم التطبيق وأضف تعليقاً:</h4>
+                
+                <!-- التقييم بالنجوم -->
+                <div class="star-rating-input" id="star-input">
+                    <span onclick="setRating(1)">★</span>
+                    <span onclick="setRating(2)">★</span>
+                    <span onclick="setRating(3)">★</span>
+                    <span onclick="setRating(4)">★</span>
+                    <span onclick="setRating(5)">★</span>
+                </div>
+
+                <div class="comments-list" id="comments-list"></div>
+                <div style="display: flex; gap: 5px;">
+                    <input type="text" id="comment-input" style="flex:1; padding:6px 10px; background:#0a0a0c; border:1px solid #333; color:#fff; border-radius:6px; font-size:0.85rem;" placeholder="أكتب تعليقك هنا...">
+                    <button class="btn" style="width: auto; padding: 6px 15px; font-size: 0.85rem;" onclick="addComment()">نشر</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 5. نافذة صفحة التحميل (العداد 17 ثانية) -->
+    <!-- 5. نافذة صفحة التحميل (العداد) -->
     <div class="modal" id="download-page-modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('download-page-modal')">&times;</span>
             <div class="download-timer-container">
                 <h3>جاري تحضير رابط التحميل...</h3>
                 <div class="timer-circle" id="timer">17</div>
-                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">يرجى الانتظار قليلاً، سيظهر زر التحميل عند انتهاء الوقت.</p>
+                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">يرجى الانتظار، سيظهر زر التحميل عند انتهاء الوقت.</p>
                 <button class="btn" id="final-download-btn" style="display: none;" onclick="redirectToFinalLink()">توجيه للتحميل الآن</button>
             </div>
         </div>
@@ -625,8 +602,8 @@
     </footer>
 
     <script>
-        // --- البيانات المخزنة والتأثيرات ---
         let currentUser = null;
+        let selectedRating = 5;
         let apps = JSON.parse(localStorage.getItem('fd7_apps')) || [
             {
                 id: 1,
@@ -634,32 +611,42 @@
                 img: "https://via.placeholder.com/300x150/111111/e50914?text=Free+Fire",
                 link: "https://google.com",
                 desc: "لعبة الباتل رويال الشهيرة بأعلى جودة جرافيك.",
-                comments: [{user: "أحمد", text: "لعبة ممتازة جداً!"}]
+                ratings: [5, 5, 4],
+                comments: [{user: "أحمد", text: "لعبة ممتازة جداً!"}],
+                timestamp: Date.now()
             }
         ];
         let currentAppId = null;
 
-        // --- شريط التحميل الأسطوري العريض عند البداية ---
+        // --- شريط التحميل العريض وحساب المئوية عند الانطلاق ---
         window.addEventListener('DOMContentLoaded', () => {
             const loaderBar = document.getElementById('loader-bar');
+            const percentageEl = document.getElementById('splash-percentage');
             const splashScreen = document.getElementById('splash-screen');
             
-            // حركة شريط التحميل العريض السريعة (تكتمل في ثانية)
-            setTimeout(() => { loaderBar.style.width = '100%'; }, 50);
-
-            setTimeout(() => {
-                splashScreen.style.opacity = '0';
-                splashScreen.style.visibility = 'hidden';
-                
-                // التثبت من وجود تسجيل دخول سابق
-                const savedUser = JSON.parse(localStorage.getItem('fd7_logged_user'));
-                if (savedUser) {
-                    currentUser = savedUser;
-                    updateUI();
-                } else {
-                    document.getElementById('login-modal').style.display = 'flex';
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 12) + 5;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    setTimeout(() => {
+                        splashScreen.style.opacity = '0';
+                        splashScreen.style.visibility = 'hidden';
+                        
+                        const savedUser = JSON.parse(localStorage.getItem('fd7_logged_user'));
+                        if (savedUser) {
+                            currentUser = savedUser;
+                            updateUI();
+                        } else {
+                            document.getElementById('login-modal').style.display = 'flex';
+                        }
+                    }, 300);
                 }
-            }, 1000);
+                loaderBar.style.width = progress + '%';
+                percentageEl.textContent = progress + '%';
+            }, 80);
 
             renderApps();
         });
@@ -674,7 +661,6 @@
                 return;
             }
 
-            // فحص حساب المطور الخاص
             let isDev = false;
             if (nameInput === "0mar_S7" && passInput === "14581000omar30305036") {
                 isDev = true;
@@ -710,24 +696,207 @@
                 document.getElementById('dev-tag').style.display = 'none';
                 document.getElementById('add-app-btn').style.display = 'none';
             }
-            renderApps(); // إعادة رسم البطاقات لعرض أزرار الحذف إذا كان مطوراً
+            renderApps();
         }
 
-        // --- القائمة المنسدلة ---
         function toggleDropdown() {
-            const menu = document.getElementById('dropdown-menu');
-            menu.classList.toggle('active');
+            document.getElementById('dropdown-menu').classList.toggle('active');
         }
 
-        document.addEventListener('click', (e) => {
-            const profileBtn = document.querySelector('.profile-btn');
-            const menu = document.getElementById('dropdown-menu');
-            if (!profileBtn.contains(e.target) && !menu.contains(e.target)) {
-                menu.classList.remove('active');
-            }
-        });
+        // --- حساب متوسط التقييمات ---
+        function getAverageRating(ratings) {
+            if (!ratings || ratings.length === 0) return "5.0";
+            const sum = ratings.reduce((a, b) => a + b, 0);
+            return (sum / ratings.length).toFixed(1);
+        }
 
-        // --- تعديل البروفايل ورَفْع صورة من الجهاز ---
+        // --- عرض التطبيقات (الأحدث في الأول) ---
+        function renderApps() {
+            const container = document.getElementById('apps-container');
+            container.innerHTML = '';
+
+            // فرز التطبيقات بحيث تظهر الحديثة أولاً
+            const sortedApps = [...apps].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+            sortedApps.forEach(app => {
+                const card = document.createElement('div');
+                card.className = 'app-card';
+                
+                let devButtonsHTML = '';
+                if (currentUser && currentUser.isDev) {
+                    devButtonsHTML = `
+                        <div class="action-btns-dev">
+                            <button class="dev-action-btn btn-edit-dev" onclick="openEditAppModal(event, ${app.id})" title="تعديل التطبيق">✏️</button>
+                            <button class="dev-action-btn btn-delete-dev" onclick="deleteApp(event, ${app.id})" title="حذف التطبيق">&times;</button>
+                        </div>
+                    `;
+                }
+
+                const avgRating = getAverageRating(app.ratings);
+
+                card.innerHTML = `
+                    ${devButtonsHTML}
+                    <img src="${app.img}" class="app-icon" alt="${app.name}" onerror="this.src='https://via.placeholder.com/300x150/111111/e50914?text=FD7'">
+                    <div class="app-title">${app.name}</div>
+                    <div class="rating-stars-display">★ ${avgRating} <span style="color:var(--text-gray); font-size:0.75rem;">(${app.ratings ? app.ratings.length : 0})</span></div>
+                    <div class="app-desc">${app.desc}</div>
+                    <button class="btn" onclick="openAppDetail(${app.id})">تحميل</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- إدارة التطبيقات بواسطة المطور ---
+        function openAddAppModal() {
+            document.getElementById('modal-app-title').textContent = "إضافة تطبيق / لعبة جديدة";
+            document.getElementById('edit-app-id').value = "";
+            document.getElementById('app-name').value = "";
+            document.getElementById('app-link').value = "";
+            document.getElementById('app-desc').value = "";
+            document.getElementById('app-img-file').value = "";
+            document.getElementById('add-app-modal').style.display = 'flex';
+        }
+
+        function openEditAppModal(event, id) {
+            event.stopPropagation();
+            const app = apps.find(a => a.id === id);
+            if (!app) return;
+
+            document.getElementById('modal-app-title').textContent = "تعديل التطبيق المنشور";
+            document.getElementById('edit-app-id').value = app.id;
+            document.getElementById('app-name').value = app.name;
+            document.getElementById('app-link').value = app.link;
+            document.getElementById('app-desc').value = app.desc;
+            document.getElementById('app-img-file').value = "";
+            
+            document.getElementById('add-app-modal').style.display = 'flex';
+        }
+
+        function saveApp() {
+            const editId = document.getElementById('edit-app-id').value;
+            const name = document.getElementById('app-name').value.trim();
+            const link = document.getElementById('app-link').value.trim();
+            const desc = document.getElementById('app-desc').value.trim();
+            const imgFile = document.getElementById('app-img-file').files[0];
+
+            if (!name || !link) {
+                alert('الرجاء كتابة اسم التطبيق ورابط التحميل!');
+                return;
+            }
+
+            const processSave = (imgUrl) => {
+                if (editId) {
+                    // تعديل تطبيق حالي
+                    const appIndex = apps.findIndex(a => a.id == editId);
+                    if (appIndex !== -1) {
+                        apps[appIndex].name = name;
+                        apps[appIndex].link = link;
+                        apps[appIndex].desc = desc || "لا يوجد وصف متاح.";
+                        if (imgUrl) apps[appIndex].img = imgUrl;
+                    }
+                } else {
+                    // إضافة تطبيق جديد
+                    const newApp = {
+                        id: Date.now(),
+                        name: name,
+                        img: imgUrl || "https://via.placeholder.com/300x150/111111/e50914?text=FD7",
+                        link: link,
+                        desc: desc || "لا يوجد وصف متاح.",
+                        ratings: [5],
+                        comments: [],
+                        timestamp: Date.now()
+                    };
+                    apps.push(newApp);
+                }
+
+                localStorage.setItem('fd7_apps', JSON.stringify(apps));
+                renderApps();
+                closeModal('add-app-modal');
+            };
+
+            if (imgFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) { processSave(e.target.result); };
+                reader.readAsDataURL(imgFile);
+            } else {
+                processSave(null);
+            }
+        }
+
+        function deleteApp(event, id) {
+            event.stopPropagation();
+            if (confirm("هل أنت تأكد من رغبتك في مسح هذا التطبيق نهائياً؟")) {
+                apps = apps.filter(a => a.id !== id);
+                localStorage.setItem('fd7_apps', JSON.stringify(apps));
+                renderApps();
+            }
+        }
+
+        // --- تفاصيل والتقييم ---
+        function openAppDetail(id) {
+            currentAppId = id;
+            const app = apps.find(a => a.id === id);
+            if (!app) return;
+
+            document.getElementById('detail-title').textContent = app.name;
+            document.getElementById('detail-img').src = app.img;
+            document.getElementById('detail-desc').textContent = app.desc;
+            document.getElementById('detail-rating-display').innerHTML = `★ ${getAverageRating(app.ratings)} <span style="color:var(--text-gray); font-size:0.75rem;">(${app.ratings ? app.ratings.length : 0} تقييم)</span>`;
+
+            setRating(5); // افتراضي 5 نجوم
+            renderComments(app);
+            document.getElementById('app-detail-modal').style.display = 'flex';
+        }
+
+        function setRating(rating) {
+            selectedRating = rating;
+            const stars = document.querySelectorAll('#star-input span');
+            stars.forEach((star, idx) => {
+                if (idx < rating) {
+                    star.style.color = 'var(--star-gold)';
+                } else {
+                    star.style.color = '#444';
+                }
+            });
+        }
+
+        function renderComments(app) {
+            const list = document.getElementById('comments-list');
+            list.innerHTML = '';
+            if (!app.comments || app.comments.length === 0) {
+                list.innerHTML = '<div style="color:#666; font-size:0.8rem;">لا يوجد تعليقات بعد.</div>';
+                return;
+            }
+            app.comments.forEach(c => {
+                const item = document.createElement('div');
+                item.className = 'comment-item';
+                item.innerHTML = `<span class="comment-user">${c.user}:</span> ${c.text}`;
+                list.appendChild(item);
+            });
+        }
+
+        function addComment() {
+            const input = document.getElementById('comment-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const app = apps.find(a => a.id === currentAppId);
+            if (app) {
+                if (!app.comments) app.comments = [];
+                if (!app.ratings) app.ratings = [];
+
+                app.comments.push({ user: currentUser ? currentUser.name : "زائر", text: text });
+                app.ratings.push(selectedRating);
+
+                localStorage.setItem('fd7_apps', JSON.stringify(apps));
+                renderComments(app);
+                document.getElementById('detail-rating-display').innerHTML = `★ ${getAverageRating(app.ratings)} <span style="color:var(--text-gray); font-size:0.75rem;">(${app.ratings.length} تقييم)</span>`;
+                input.value = '';
+                renderApps();
+            }
+        }
+
+        // --- تعديل البروفايل ---
         function openEditProfileModal() {
             document.getElementById('dropdown-menu').classList.remove('active');
             document.getElementById('edit-username').value = currentUser.name;
@@ -756,137 +925,7 @@
             }
         }
 
-        // --- إدارة التطبيقات (إضافة، رفع صورة من الجهاز، ومسح التطبيقات) ---
-        function renderApps() {
-            const container = document.getElementById('apps-container');
-            container.innerHTML = '';
-
-            apps.forEach(app => {
-                const card = document.createElement('div');
-                card.className = 'app-card';
-                
-                // إضافة زر الحذف إذا كان المستخدم هو المطور
-                let deleteButtonHTML = '';
-                if (currentUser && currentUser.isDev) {
-                    deleteButtonHTML = `<button class="delete-btn" onclick="deleteApp(event, ${app.id})" title="مسح التطبيق">&times;</button>`;
-                }
-
-                card.innerHTML = `
-                    ${deleteButtonHTML}
-                    <img src="${app.img}" class="app-icon" alt="${app.name}" onerror="this.src='https://via.placeholder.com/300x150/111111/e50914?text=FD7'">
-                    <div class="app-title">${app.name}</div>
-                    <div class="app-desc">${app.desc}</div>
-                    <button class="btn" onclick="openAppDetail(${app.id})">تحميل</button>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function deleteApp(event, id) {
-            event.stopPropagation(); // منع فتح نافذة التفاصيل عند النقر على الحذف
-            if (confirm("هل أنت تأكد من رغبتك في مسح هذا التطبيق نهائياً من الموقع؟")) {
-                apps = apps.filter(a => a.id !== id);
-                localStorage.setItem('fd7_apps', JSON.stringify(apps));
-                renderApps();
-            }
-        }
-
-        function openAddAppModal() {
-            document.getElementById('add-app-modal').style.display = 'flex';
-        }
-
-        function saveApp() {
-            const name = document.getElementById('app-name').value.trim();
-            const link = document.getElementById('app-link').value.trim();
-            const desc = document.getElementById('app-desc').value.trim();
-            const imgFile = document.getElementById('app-img-file').files[0];
-
-            if (!name || !link) {
-                alert('الرجاء كتابة اسم التطبيق ورابط التحميل!');
-                return;
-            }
-
-            const processAppSave = (imgUrl) => {
-                const newApp = {
-                    id: Date.now(),
-                    name: name,
-                    img: imgUrl || "https://via.placeholder.com/300x150/111111/e50914?text=FD7",
-                    link: link,
-                    desc: desc || "لا يوجد وصف متاح.",
-                    comments: []
-                };
-
-                apps.push(newApp);
-                localStorage.setItem('fd7_apps', JSON.stringify(apps));
-                renderApps();
-                closeModal('add-app-modal');
-
-                // تفريغ الحقول
-                document.getElementById('app-name').value = '';
-                document.getElementById('app-img-file').value = '';
-                document.getElementById('app-link').value = '';
-                document.getElementById('app-desc').value = '';
-            };
-
-            if (imgFile) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    processAppSave(e.target.result);
-                };
-                reader.readAsDataURL(imgFile);
-            } else {
-                processAppSave(null);
-            }
-        }
-
-        // --- تفاصيل التطبيق والتعليقات ---
-        function openAppDetail(id) {
-            currentAppId = id;
-            const app = apps.find(a => a.id === id);
-            if (!app) return;
-
-            document.getElementById('detail-title').textContent = app.name;
-            document.getElementById('detail-img').src = app.img;
-            document.getElementById('detail-desc').textContent = app.desc;
-
-            renderComments(app);
-            document.getElementById('app-detail-modal').style.display = 'flex';
-        }
-
-        function renderComments(app) {
-            const list = document.getElementById('comments-list');
-            list.innerHTML = '';
-            if (!app.comments || app.comments.length === 0) {
-                list.innerHTML = '<div style="color:#666; font-size:0.8rem;">لا يوجد تعليقات بعد.</div>';
-                return;
-            }
-            app.comments.forEach(c => {
-                const item = document.createElement('div');
-                item.className = 'comment-item';
-                item.innerHTML = `<span class="comment-user">${c.user}:</span> ${c.text}`;
-                list.appendChild(item);
-            });
-        }
-
-        function addComment() {
-            const input = document.getElementById('comment-input');
-            const text = input.value.trim();
-            if (!text) return;
-
-            const app = apps.find(a => a.id === currentAppId);
-            if (app) {
-                if (!app.comments) app.comments = [];
-                app.comments.push({
-                    user: currentUser ? currentUser.name : "زائر",
-                    text: text
-                });
-                localStorage.setItem('fd7_apps', JSON.stringify(apps));
-                renderComments(app);
-                input.value = '';
-            }
-        }
-
-        // --- صفحة التحميل مع العداد 17 ثانية ---
+        // --- التحميل ---
         function startDownloadProcess() {
             closeModal('app-detail-modal');
             const downloadModal = document.getElementById('download-page-modal');
@@ -918,15 +957,8 @@
             }
         }
 
-        // --- وظائف عامة ---
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        function showHome() {
-            closeModal('app-detail-modal');
-            closeModal('download-page-modal');
-        }
+        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+        function showHome() { closeModal('app-detail-modal'); closeModal('download-page-modal'); }
     </script>
 </body>
 </html>
