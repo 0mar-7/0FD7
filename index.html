@@ -36,7 +36,7 @@
             flex-direction: column;
         }
 
-        /* --- شريط التحميل الأسطوري (Splash Screen) --- */
+        /* --- شريط التحميل الأسطوري --- */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -202,6 +202,31 @@
 
         .dropdown-item:hover { background: var(--primary-red); }
 
+        /* --- شريط البحث --- */
+        .search-container {
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 600px;
+            padding: 12px 20px;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 30px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 15px var(--glow-red);
+        }
+
         /* --- المحتوى الرئيسي والتطبيقات --- */
         main {
             flex: 1;
@@ -211,12 +236,28 @@
             width: 100%;
         }
 
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
         .section-title {
             font-size: 1.5rem;
-            margin-bottom: 20px;
             border-right: 4px solid var(--primary-red);
             padding-right: 12px;
             text-shadow: 0 0 10px rgba(229, 9, 20, 0.3);
+        }
+
+        .apps-count-badge {
+            background: rgba(229, 9, 20, 0.2);
+            color: var(--primary-red);
+            border: 1px solid var(--primary-red);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
         }
 
         .apps-grid {
@@ -338,7 +379,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             margin-top: 30px;
             flex-wrap: wrap;
         }
@@ -351,6 +392,7 @@
             border-radius: 6px;
             cursor: pointer;
             transition: 0.2s;
+            font-weight: bold;
         }
 
         .page-btn.active, .page-btn:hover {
@@ -406,8 +448,6 @@
             position: relative;
             box-shadow: 0 0 35px rgba(229, 9, 20, 0.35);
             animation: modalPop 0.3s ease;
-            max-height: 90vh;
-            overflow-y: auto;
         }
 
         @keyframes modalPop {
@@ -432,7 +472,7 @@
             color: var(--text-gray);
         }
 
-        .form-group input, .form-group textarea {
+        .form-group input, .form-group textarea, .form-group select {
             width: 100%;
             padding: 10px;
             background: #0a0a0c;
@@ -443,7 +483,7 @@
             transition: 0.2s;
         }
 
-        .form-group input:focus, .form-group textarea:focus {
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             border-color: var(--primary-red);
             box-shadow: 0 0 8px var(--glow-red);
         }
@@ -459,21 +499,6 @@
         }
 
         .close-btn:hover { color: var(--primary-red); }
-
-        /* نظام تقييم النجوم التفاعلي للمستخدمين */
-        .star-rating-input {
-            display: flex;
-            gap: 8px;
-            font-size: 1.8rem;
-            color: #444;
-            cursor: pointer;
-            margin: 10px 0;
-            justify-content: center;
-        }
-
-        .star-rating-input span {
-            transition: color 0.2s;
-        }
 
         .comments-section {
             margin-top: 15px;
@@ -552,7 +577,15 @@
 
     <!-- المحتوى الرئيسي -->
     <main>
-        <h2 class="section-title">التطبيقات والألعاب المتاحة</h2>
+        <div class="search-container">
+            <input type="text" id="search-input" class="search-input" placeholder="ابحث عن أي لعبة بين 1,000 لعبة مجهزة بملف APK..." oninput="handleSearch()">
+        </div>
+
+        <div class="section-header">
+            <h2 class="section-title">الألعاب المتاحة وتحميل APK</h2>
+            <div class="apps-count-badge" id="apps-count">1000 لعبة متوفرة</div>
+        </div>
+
         <div class="apps-grid" id="apps-container"></div>
         <div class="pagination-container" id="pagination-container"></div>
     </main>
@@ -604,22 +637,36 @@
                 <input type="text" id="app-name">
             </div>
             <div class="form-group">
+                <label>تقييم التطبيق (من قبل المطور)</label>
+                <select id="app-rating-value">
+                    <option value="5.0">5.0 ★★★★★ (ممتاز جداً)</option>
+                    <option value="4.8">4.8 ★★★★☆ (ممتاز)</option>
+                    <option value="4.5">4.5 ★★★★☆ (جيد جداً)</option>
+                    <option value="4.0">4.0 ★★★★☆ (جيد)</option>
+                    <option value="3.5">3.5 ★★★☆☆ (متوسط)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>عدد التقييمات الظاهري (مثال: 1200 أو 1k)</label>
+                <input type="text" id="app-rating-count" placeholder="1.2k">
+            </div>
+            <div class="form-group">
                 <label>اختر صورة التطبيق من الجهاز</label>
                 <input type="file" id="app-img-file" accept="image/*">
             </div>
             <div class="form-group">
-                <label>رابط التحميل</label>
+                <label>رابط التحميل APK</label>
                 <input type="text" id="app-link" placeholder="https://...">
             </div>
             <div class="form-group">
                 <label>الوصف</label>
                 <textarea id="app-desc" rows="3"></textarea>
             </div>
-            <button class="btn" id="save-app-btn" onclick="saveApp()">حفظ ونشر</button>
+            <button class="btn" onclick="saveApp()">حفظ ونشر</button>
         </div>
     </div>
 
-    <!-- 4. نافذة تفاصيل التطبيق والتقييم للمستخدمين -->
+    <!-- 4. نافذة تفاصيل التطبيق والتعليقات -->
     <div class="modal" id="app-detail-modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('app-detail-modal')">&times;</span>
@@ -632,20 +679,11 @@
             </div>
             <p id="detail-desc" style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;"></p>
             
-            <button class="btn" onclick="startDownloadProcess()">تحميل الآن</button>
+            <button class="btn" onclick="startDownloadProcess()">تحميل APK الآن</button>
 
-            <!-- قسم تقييم المستخدم والتعليقات -->
+            <!-- قسم التعليقات -->
             <div class="comments-section">
-                <h4 style="font-size: 0.85rem; margin-bottom: 5px; text-align: center;">قيم التطبيق وأضف تعليقاً:</h4>
-                
-                <div class="star-rating-input" id="star-input">
-                    <span onclick="setRating(1)">★</span>
-                    <span onclick="setRating(2)">★</span>
-                    <span onclick="setRating(3)">★</span>
-                    <span onclick="setRating(4)">★</span>
-                    <span onclick="setRating(5)">★</span>
-                </div>
-
+                <h4 style="font-size: 0.85rem; margin-bottom: 5px;">تعليقات المستخدمين:</h4>
                 <div class="comments-list" id="comments-list"></div>
                 <div style="display: flex; gap: 5px;">
                     <input type="text" id="comment-input" style="flex:1; padding:6px 10px; background:#0a0a0c; border:1px solid #333; color:#fff; border-radius:6px; font-size:0.85rem;" placeholder="أكتب تعليقك هنا...">
@@ -660,10 +698,10 @@
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('download-page-modal')">&times;</span>
             <div class="download-timer-container">
-                <h3>جاري تحضير رابط التحميل...</h3>
+                <h3>جاري تحضير رابط ملف APK...</h3>
                 <div class="timer-circle" id="timer">17</div>
-                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">يرجى الانتظار، سيظهر زر التحميل عند انتهاء الوقت.</p>
-                <button class="btn" id="final-download-btn" style="display: none;" onclick="redirectToFinalLink()">توجيه للتحميل الآن</button>
+                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">يرجى الانتظار، سيظهر زر التحميل المباشر فور انتهاء العداد.</p>
+                <button class="btn" id="final-download-btn" style="display: none;" onclick="redirectToFinalLink()">توجيه لتحميل APK</button>
             </div>
         </div>
     </div>
@@ -674,7 +712,7 @@
     </footer>
 
     <script>
-        // --- محرك الصوت التفاعلي عبر Web Audio API ---
+        // --- محرك الصوت عبر Web Audio API ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playClickSound() {
             if (audioCtx.state === 'suspended') {
@@ -694,28 +732,75 @@
         }
 
         document.addEventListener('click', (e) => {
-            if (e.target.closest('button') || e.target.closest('.btn') || e.target.closest('.app-card') || e.target.closest('.profile-btn') || e.target.closest('.close-btn') || e.target.closest('.dropdown-item') || e.target.closest('.page-btn') || e.target.closest('.star-rating-input span')) {
+            if (e.target.closest('button') || e.target.closest('.btn') || e.target.closest('.app-card') || e.target.closest('.profile-btn') || e.target.closest('.close-btn') || e.target.closest('.dropdown-item') || e.target.closest('.page-btn')) {
                 playClickSound();
             }
         });
 
         let currentUser = null;
         let currentPage = 1;
-        const appsPerPage = 12; // لضمان سرعة واستقرار الموقع مع 1k+ تطبيق
-        let selectedRating = 5;
+        const appsPerPage = 12;
+        let filteredApps = [];
 
-        let apps = JSON.parse(localStorage.getItem('fd7_apps')) || [
-            {
-                id: 1,
-                name: "Free Fire Max",
-                img: "https://via.placeholder.com/300x150/111111/e50914?text=Free+Fire",
-                link: "https://google.com",
-                desc: "لعبة الباتل رويال الشهيرة بأعلى جودة جرافيك.",
-                ratings: [5, 5, 4],
-                comments: [{user: "أحمد", text: "لعبة ممتازة جداً!"}],
-                timestamp: Date.now()
+        // --- مولد الـ 1,000 لعبة التلقائي لتطوير المتجر ---
+        function generate1000Games() {
+            const baseGames = [
+                { name: "Free Fire Max", pkg: "com.dts.freefireth" },
+                { name: "PUBG Mobile", pkg: "com.tencent.ig" },
+                { name: "Subway Surfers", pkg: "com.kiloo.subwaysurf" },
+                { name: "Candy Crush Saga", pkg: "com.king.candycrushsaga" },
+                { name: "Roblox", pkg: "com.roblox.client" },
+                { name: "eFootball 2026", pkg: "jp.konami.pesam" },
+                { name: "Dream League Soccer 2026", pkg: "com.firsttouchgames.dls3" },
+                { name: "Asphalt 9 Legends", pkg: "com.gameloft.android.ANMP.GloftA9HM" },
+                { name: "Clash of Clans", pkg: "com.supercell.clashofclans" },
+                { name: "Minecraft Pocket Edition", pkg: "com.mojang.minecraftpe" },
+                { name: "Call of Duty Mobile", pkg: "com.activision.callofduty.shooter" },
+                { name: "CarX Drift Racing 2", pkg: "com.carxtech.carxdr2" },
+                { name: "Need for Speed No Limits", pkg: "com.ea.game.nfs14_row" },
+                { name: "Real Racing 3", pkg: "com.ea.games.r3_row" },
+                { name: "FIFA Soccer", pkg: "com.ea.gp.fifamobile" }
+            ];
+
+            const prefixes = ["Speed", "Shadow", "Extreme", "Pro", "Cyber", "Ultimate", "Hero", "Legend", "Epic", "Grand", "Super", "Master", "Nitro", "Apex", "Clash", "Royal"];
+            const types = ["Racing", "Strike", "Combat", "Racer", "Simulator", "War", "Runner", "Quest", "Adventure", "Tactics", "Arena", "League", "Rush", "Zone", "Showdown"];
+
+            const generated = [];
+
+            for (let i = 1; i <= 1000; i++) {
+                let name, pkg;
+                if (i <= baseGames.length) {
+                    name = baseGames[i - 1].name;
+                    pkg = baseGames[i - 1].pkg;
+                } else {
+                    const p = prefixes[(i + 3) % prefixes.length];
+                    const t = types[(i + 7) % types.length];
+                    name = `${p} ${t} 3D ${i}`;
+                    pkg = `com.fd7.game.${p.toLowerCase()}.${t.toLowerCase()}${i}`;
+                }
+
+                generated.push({
+                    id: i,
+                    name: name,
+                    img: `https://picsum.photos/seed/${i + 150}/300/160`,
+                    link: `https://play.google.com/store/apps/details?id=${pkg}`,
+                    desc: `تحميل لعبة ${name} أحدث إصدار برابط مباشر APK جاهز للثبيت على أندرويد.`,
+                    ratingValue: (4.0 + (i % 10) * 0.1).toFixed(1),
+                    ratingCount: `${(i * 15 % 900) + 100}k`,
+                    comments: [{ user: "عمر", text: "لعبة خرافية وشغالة 100%!" }],
+                    timestamp: Date.now() - (i * 360000)
+                });
             }
-        ];
+            return generated;
+        }
+
+        let apps = JSON.parse(localStorage.getItem('fd7_apps'));
+        if (!apps || apps.length < 1000) {
+            apps = generate1000Games();
+            localStorage.setItem('fd7_apps', JSON.stringify(apps));
+        }
+        filteredApps = [...apps];
+
         let currentAppId = null;
 
         // --- شريط التحميل وحساب المئوية عند الانطلاق ---
@@ -746,10 +831,22 @@
                 }
                 loaderBar.style.width = progress + '%';
                 percentageEl.textContent = progress + '%';
-            }, 80);
+            }, 50);
 
             renderApps();
         });
+
+        // --- نظام البحث المباشر ---
+        function handleSearch() {
+            const query = document.getElementById('search-input').value.trim().toLowerCase();
+            if (!query) {
+                filteredApps = [...apps];
+            } else {
+                filteredApps = apps.filter(app => app.name.toLowerCase().includes(query) || app.desc.toLowerCase().includes(query));
+            }
+            currentPage = 1;
+            renderApps();
+        }
 
         // --- نظام تسجيل الدخول ---
         function login() {
@@ -803,24 +900,18 @@
             document.getElementById('dropdown-menu').classList.toggle('active');
         }
 
-        function getAverageRating(ratings) {
-            if (!ratings || ratings.length === 0) return "5.0";
-            const sum = ratings.reduce((a, b) => a + b, 0);
-            return (sum / ratings.length).toFixed(1);
-        }
-
-        // --- عرض التطبيقات (دعم حتى 1k+ تطبيق بدون تهنيج) ---
+        // --- عرض التطبيقات والألعاب بنظام صفحي خفيف لـ 1,000 لعبة ---
         function renderApps() {
             const container = document.getElementById('apps-container');
             container.innerHTML = '';
 
-            const sortedApps = [...apps].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-            
-            const totalPages = Math.ceil(sortedApps.length / appsPerPage) || 1;
+            document.getElementById('apps-count').textContent = `${filteredApps.length} لعبة متوفرة`;
+
+            const totalPages = Math.ceil(filteredApps.length / appsPerPage) || 1;
             if (currentPage > totalPages) currentPage = totalPages;
 
             const startIndex = (currentPage - 1) * appsPerPage;
-            const paginatedApps = sortedApps.slice(startIndex, startIndex + appsPerPage);
+            const paginatedApps = filteredApps.slice(startIndex, startIndex + appsPerPage);
 
             paginatedApps.forEach(app => {
                 const card = document.createElement('div');
@@ -836,15 +927,13 @@
                     `;
                 }
 
-                const avgRating = getAverageRating(app.ratings);
-
                 card.innerHTML = `
                     ${devButtonsHTML}
-                    <img src="${app.img}" class="app-icon" alt="${app.name}" onerror="this.src='https://via.placeholder.com/300x150/111111/e50914?text=FD7'">
+                    <img src="${app.img}" class="app-icon" alt="${app.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x160/111111/e50914?text=FD7'">
                     <div class="app-title">${app.name}</div>
-                    <div class="rating-stars-display">★ ${avgRating} <span style="color:var(--text-gray); font-size:0.75rem;">(${app.ratings ? app.ratings.length : 0})</span></div>
+                    <div class="rating-stars-display">★ ${app.ratingValue || "5.0"} <span style="color:var(--text-gray); font-size:0.75rem;">(${app.ratingCount || "100"})</span></div>
                     <div class="app-desc">${app.desc}</div>
-                    <button class="btn" onclick="openAppDetail(${app.id})">تحميل</button>
+                    <button class="btn" onclick="openAppDetail(${app.id})">تحميل APK</button>
                 `;
                 container.appendChild(card);
             });
@@ -857,7 +946,18 @@
             paginationContainer.innerHTML = '';
             if (totalPages <= 1) return;
 
-            for (let i = 1; i <= totalPages; i++) {
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, currentPage + 2);
+
+            if (currentPage > 1) {
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'page-btn';
+                prevBtn.textContent = '«';
+                prevBtn.onclick = () => { currentPage--; renderApps(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+                paginationContainer.appendChild(prevBtn);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
                 const btn = document.createElement('button');
                 btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
                 btn.textContent = i;
@@ -868,33 +968,23 @@
                 };
                 paginationContainer.appendChild(btn);
             }
+
+            if (currentPage < totalPages) {
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'page-btn';
+                nextBtn.textContent = '»';
+                nextBtn.onclick = () => { currentPage++; renderApps(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+                paginationContainer.appendChild(nextBtn);
+            }
         }
 
-        // --- أداة تصغير وضغط الصور لضمان عدم توقف الحفظ ---
-        function compressImage(file, callback) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    const maxWidth = 500;
-                    const scaleSize = maxWidth / img.width;
-                    canvas.width = maxWidth;
-                    canvas.height = img.height * scaleSize;
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    callback(canvas.toDataURL('image/jpeg', 0.7));
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // --- إدارة التطبيقات بواسطة المطور ---
+        // --- إدارة الألعاب بواسطة المطور ---
         function openAddAppModal() {
-            document.getElementById('modal-app-title').textContent = "إضافة تطبيق / لعبة جديدة";
+            document.getElementById('modal-app-title').textContent = "إضافة لعبة / تطبيق جديد";
             document.getElementById('edit-app-id').value = "";
             document.getElementById('app-name').value = "";
+            document.getElementById('app-rating-value').value = "5.0";
+            document.getElementById('app-rating-count').value = "1k";
             document.getElementById('app-link').value = "";
             document.getElementById('app-desc').value = "";
             document.getElementById('app-img-file').value = "";
@@ -906,9 +996,11 @@
             const app = apps.find(a => a.id === id);
             if (!app) return;
 
-            document.getElementById('modal-app-title').textContent = "تعديل التطبيق المنشور";
+            document.getElementById('modal-app-title').textContent = "تعديل اللعبة المنشورة";
             document.getElementById('edit-app-id').value = app.id;
             document.getElementById('app-name').value = app.name;
+            document.getElementById('app-rating-value').value = app.ratingValue || "5.0";
+            document.getElementById('app-rating-count').value = app.ratingCount || "1k";
             document.getElementById('app-link').value = app.link;
             document.getElementById('app-desc').value = app.desc;
             document.getElementById('app-img-file').value = "";
@@ -919,12 +1011,14 @@
         function saveApp() {
             const editId = document.getElementById('edit-app-id').value;
             const name = document.getElementById('app-name').value.trim();
+            const ratingValue = document.getElementById('app-rating-value').value;
+            const ratingCount = document.getElementById('app-rating-count').value.trim() || "1k";
             const link = document.getElementById('app-link').value.trim();
             const desc = document.getElementById('app-desc').value.trim();
             const imgFile = document.getElementById('app-img-file').files[0];
 
             if (!name || !link) {
-                alert('الرجاء كتابة اسم التطبيق ورابط التحميل!');
+                alert('الرجاء كتابة اسم اللعبة ورابط تحميل الـ APK!');
                 return;
             }
 
@@ -933,6 +1027,8 @@
                     const appIndex = apps.findIndex(a => a.id == editId);
                     if (appIndex !== -1) {
                         apps[appIndex].name = name;
+                        apps[appIndex].ratingValue = ratingValue;
+                        apps[appIndex].ratingCount = ratingCount;
                         apps[appIndex].link = link;
                         apps[appIndex].desc = desc || "لا يوجد وصف متاح.";
                         if (imgUrl) apps[appIndex].img = imgUrl;
@@ -941,30 +1037,27 @@
                     const newApp = {
                         id: Date.now(),
                         name: name,
-                        img: imgUrl || "https://via.placeholder.com/300x150/111111/e50914?text=FD7",
+                        img: imgUrl || "https://via.placeholder.com/300x160/111111/e50914?text=FD7",
                         link: link,
                         desc: desc || "لا يوجد وصف متاح.",
-                        ratings: [5],
+                        ratingValue: ratingValue,
+                        ratingCount: ratingCount,
                         comments: [],
                         timestamp: Date.now()
                     };
-                    apps.push(newApp);
+                    apps.unshift(newApp);
                 }
 
-                try {
-                    localStorage.setItem('fd7_apps', JSON.stringify(apps));
-                    renderApps();
-                    closeModal('add-app-modal');
-                    alert('تم الحفظ والنشر بنجاح!');
-                } catch (e) {
-                    alert('المساحة المتاحة في المتصفح امتلات، حاول تقليل حجم الصور المستخدمة.');
-                }
+                localStorage.setItem('fd7_apps', JSON.stringify(apps));
+                filteredApps = [...apps];
+                renderApps();
+                closeModal('add-app-modal');
             };
 
             if (imgFile) {
-                compressImage(imgFile, (compressedBase64) => {
-                    processSave(compressedBase64);
-                });
+                const reader = new FileReader();
+                reader.onload = function(e) { processSave(e.target.result); };
+                reader.readAsDataURL(imgFile);
             } else {
                 processSave(null);
             }
@@ -972,14 +1065,15 @@
 
         function deleteApp(event, id) {
             event.stopPropagation();
-            if (confirm("هل أنت تأكد من رغبتك في مسح هذا التطبيق نهائياً؟")) {
+            if (confirm("هل أنت تأكد من رغبتك في حذف هذه اللعبة نهائياً؟")) {
                 apps = apps.filter(a => a.id !== id);
                 localStorage.setItem('fd7_apps', JSON.stringify(apps));
+                filteredApps = [...apps];
                 renderApps();
             }
         }
 
-        // --- تفاصيل وتقييم المستخدم ---
+        // --- تفاصيل والتعليقات ---
         function openAppDetail(id) {
             currentAppId = id;
             const app = apps.find(a => a.id === id);
@@ -988,23 +1082,10 @@
             document.getElementById('detail-title').textContent = app.name;
             document.getElementById('detail-img').src = app.img;
             document.getElementById('detail-desc').textContent = app.desc;
-            document.getElementById('detail-rating-display').innerHTML = `★ ${getAverageRating(app.ratings)} <span style="color:var(--text-gray); font-size:0.75rem;">(${app.ratings ? app.ratings.length : 0} تقييم)</span>`;
+            document.getElementById('detail-rating-display').innerHTML = `★ ${app.ratingValue || "5.0"} <span style="color:var(--text-gray); font-size:0.75rem;">(${app.ratingCount || "100"} تقييم)</span>`;
 
-            setRating(5);
             renderComments(app);
             document.getElementById('app-detail-modal').style.display = 'flex';
-        }
-
-        function setRating(rating) {
-            selectedRating = rating;
-            const stars = document.querySelectorAll('#star-input span');
-            stars.forEach((star, idx) => {
-                if (idx < rating) {
-                    star.style.color = 'var(--star-gold)';
-                } else {
-                    star.style.color = '#444';
-                }
-            });
         }
 
         function renderComments(app) {
@@ -1030,16 +1111,11 @@
             const app = apps.find(a => a.id === currentAppId);
             if (app) {
                 if (!app.comments) app.comments = [];
-                if (!app.ratings) app.ratings = [];
-
                 app.comments.push({ user: currentUser ? currentUser.name : "زائر", text: text });
-                app.ratings.push(selectedRating);
 
                 localStorage.setItem('fd7_apps', JSON.stringify(apps));
                 renderComments(app);
-                document.getElementById('detail-rating-display').innerHTML = `★ ${getAverageRating(app.ratings)} <span style="color:var(--text-gray); font-size:0.75rem;">(${app.ratings.length} تقييم)</span>`;
                 input.value = '';
-                renderApps();
             }
         }
 
@@ -1057,12 +1133,14 @@
             if (newName) currentUser.name = newName;
 
             if (avatarFile) {
-                compressImage(avatarFile, (compressedAvatar) => {
-                    currentUser.avatar = compressedAvatar;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentUser.avatar = e.target.result;
                     localStorage.setItem('fd7_logged_user', JSON.stringify(currentUser));
                     updateUI();
                     closeModal('edit-profile-modal');
-                });
+                };
+                reader.readAsDataURL(avatarFile);
             } else {
                 localStorage.setItem('fd7_logged_user', JSON.stringify(currentUser));
                 updateUI();
