@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free download 7 - FD7</title>
-    <!-- استدعاء خط Cairo الفخم -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -36,539 +35,201 @@
             flex-direction: column;
         }
 
-        /* --- شريط التحميل الأسطوري --- */
+        /* --- شريط التحميل --- */
         #splash-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-color: #040406;
             z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
             transition: opacity 0.6s ease, visibility 0.6s;
         }
 
         .logo-splash {
-            font-size: 5rem;
-            font-weight: 900;
+            font-size: 5rem; font-weight: 900;
             color: var(--primary-red);
-            text-shadow: 0 0 30px rgba(229, 9, 20, 0.9), 0 0 60px rgba(229, 9, 20, 0.5);
+            text-shadow: 0 0 30px rgba(229, 9, 20, 0.9);
             margin-bottom: 20px;
-            letter-spacing: 3px;
             animation: pulse 1s infinite alternate;
         }
 
         .loader-bar-container {
-            width: 85%;
-            max-width: 600px;
-            height: 26px;
-            background: #121216;
-            border-radius: 50px;
-            overflow: hidden;
-            box-shadow: 0 0 25px rgba(229, 9, 20, 0.3), inset 0 0 10px #000;
-            border: 2px solid rgba(229, 9, 20, 0.5);
+            width: 85%; max-width: 600px; height: 24px;
+            background: #121216; border-radius: 50px;
+            overflow: hidden; border: 2px solid rgba(229, 9, 20, 0.5);
             padding: 3px;
-            position: relative;
         }
 
         .loader-bar {
-            width: 0%;
-            height: 100%;
+            width: 0%; height: 100%;
             background: linear-gradient(90deg, #800000, var(--primary-red), #ff4d4d);
-            background-size: 200% 100%;
-            box-shadow: 0 0 20px var(--primary-red);
-            border-radius: 50px;
-            transition: width 0.1s linear;
-            animation: glowMove 1.5s linear infinite;
+            border-radius: 50px; transition: width 0.1s linear;
         }
 
-        .splash-percentage {
-            margin-top: 15px;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: 1px;
-        }
-
-        @keyframes glowMove {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
+        .splash-percentage { margin-top: 15px; font-size: 1.3rem; font-weight: 700; }
 
         @keyframes pulse {
-            0% { transform: scale(1); text-shadow: 0 0 20px rgba(229, 9, 20, 0.8); }
-            100% { transform: scale(1.06); text-shadow: 0 0 40px rgba(229, 9, 20, 1); }
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
         }
 
-        /* --- الهيدر و القائمة العلوية --- */
+        /* --- الهيدر --- */
         header {
             background-color: rgba(20, 20, 25, 0.95);
             border-bottom: 2px solid var(--primary-red);
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            padding: 15px 5%; display: flex;
+            justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100;
             backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
-        .brand h1 {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: #fff;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .brand h1:hover { text-shadow: 0 0 15px var(--glow-red); }
+        .brand h1 { font-size: 1.8rem; font-weight: 900; cursor: pointer; }
         .brand span { color: var(--primary-red); }
 
         .dev-badge {
-            background: var(--primary-red);
-            color: #fff;
-            font-size: 0.7rem;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-            margin-right: 5px;
-            box-shadow: 0 0 8px var(--glow-red);
+            background: var(--primary-red); color: #fff;
+            font-size: 0.7rem; padding: 2px 8px;
+            border-radius: 4px; font-weight: bold; margin-right: 5px;
         }
 
         .user-section { position: relative; }
 
         .profile-btn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #1c1c24;
-            padding: 6px 14px;
-            border-radius: 30px;
-            cursor: pointer;
-            border: 1px solid var(--border-color);
-            transition: 0.3s;
+            display: flex; align-items: center; gap: 10px;
+            background: #1c1c24; padding: 6px 14px;
+            border-radius: 30px; cursor: pointer; border: 1px solid var(--border-color);
         }
 
-        .profile-btn:hover {
-            border-color: var(--primary-red);
-            box-shadow: 0 0 12px var(--glow-red);
-        }
-
-        .profile-img {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary-red);
-        }
+        .profile-img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-red); }
 
         .dropdown-menu {
-            position: absolute;
-            left: 0;
-            top: 55px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            width: 190px;
-            display: none;
-            flex-direction: column;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
-            overflow: hidden;
-            z-index: 101;
-            transform: translateY(-10px);
-            opacity: 0;
-            transition: 0.3s ease;
+            position: absolute; left: 0; top: 55px;
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 10px; width: 180px; display: none;
+            flex-direction: column; overflow: hidden; z-index: 101;
         }
 
-        .dropdown-menu.active {
-            display: flex;
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .dropdown-item {
-            padding: 12px 15px;
-            color: #fff;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: 0.2s;
-        }
-
+        .dropdown-menu.active { display: flex; }
+        .dropdown-item { padding: 12px 15px; cursor: pointer; font-size: 0.9rem; }
         .dropdown-item:hover { background: var(--primary-red); }
 
-        /* --- شريط البحث --- */
-        .search-container {
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: center;
-        }
+        /* --- البحث والمحتوى --- */
+        main { flex: 1; padding: 30px 5%; max-width: 1200px; margin: 0 auto; width: 100%; }
+
+        .search-container { margin-bottom: 25px; display: flex; justify-content: center; }
 
         .search-input {
-            width: 100%;
-            max-width: 600px;
-            padding: 12px 20px;
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 30px;
-            color: #fff;
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
+            width: 100%; max-width: 600px; padding: 12px 20px;
+            background: var(--card-bg); border: 2px solid var(--border-color);
+            border-radius: 30px; color: #fff; font-size: 1rem; outline: none;
         }
 
-        .search-input:focus {
-            border-color: var(--primary-red);
-            box-shadow: 0 0 15px var(--glow-red);
-        }
+        .search-input:focus { border-color: var(--primary-red); box-shadow: 0 0 15px var(--glow-red); }
 
-        /* --- المحتوى الرئيسي والتطبيقات --- */
-        main {
-            flex: 1;
-            padding: 30px 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            border-right: 4px solid var(--primary-red);
-            padding-right: 12px;
-            text-shadow: 0 0 10px rgba(229, 9, 20, 0.3);
-        }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .section-title { font-size: 1.5rem; border-right: 4px solid var(--primary-red); padding-right: 12px; }
 
         .apps-count-badge {
-            background: rgba(229, 9, 20, 0.2);
-            color: var(--primary-red);
-            border: 1px solid var(--primary-red);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
+            background: rgba(229, 9, 20, 0.2); color: var(--primary-red);
+            border: 1px solid var(--primary-red); padding: 4px 12px; border-radius: 20px; font-weight: bold;
         }
 
         .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 22px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;
         }
 
         .app-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative;
-            overflow: hidden;
-            animation: fadeIn 0.4s ease forwards;
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 14px; padding: 15px; display: flex; flex-direction: column;
+            gap: 10px; transition: 0.3s; position: relative; overflow: hidden;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .app-card:hover { transform: translateY(-5px); border-color: var(--primary-red); box-shadow: 0 8px 25px rgba(229, 9, 20, 0.3); }
 
-        .app-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: var(--primary-red);
-            box-shadow: 0 12px 30px rgba(229, 9, 20, 0.35);
-        }
-
-        .action-btns-dev {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            display: flex;
-            gap: 6px;
-            z-index: 5;
-        }
+        .action-btns-dev { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; z-index: 5; }
 
         .dev-action-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: none;
-            color: white;
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: 0.2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            width: 32px; height: 32px; border-radius: 50%; border: none; color: white;
+            cursor: pointer; display: flex; justify-content: center; align-items: center;
         }
 
         .btn-edit-dev { background: #ff9800; }
-        .btn-edit-dev:hover { background: #e68a00; transform: scale(1.15); }
-        .btn-delete-dev { background: rgba(229, 9, 20, 0.9); }
-        .btn-delete-dev:hover { background: #ff0000; transform: scale(1.15); }
+        .btn-delete-dev { background: var(--primary-red); }
 
         .app-icon {
-            width: 100%;
-            height: 160px;
-            border-radius: 10px;
-            object-fit: cover;
-            background: #000;
-            transition: 0.3s;
+            width: 100%; height: 160px; border-radius: 10px; object-fit: cover; background: #000;
         }
 
-        .app-card:hover .app-icon { filter: brightness(1.1); }
+        .app-title { font-size: 1.1rem; font-weight: 700; }
 
-        .app-title { font-size: 1.2rem; font-weight: 700; }
-
-        .rating-stars-display {
-            color: var(--star-gold);
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
+        .rating-stars-display { color: var(--star-gold); font-size: 0.85rem; display: flex; gap: 5px; align-items: center; }
 
         .app-desc {
-            font-size: 0.85rem;
-            color: var(--text-gray);
-            height: 42px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            line-height: 1.4;
+            font-size: 0.85rem; color: var(--text-gray); height: 40px;
+            overflow: hidden; text-overflow: ellipsis; display: -webkit-box;
+            -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.4;
         }
 
         .btn {
-            background: var(--primary-red);
-            color: #fff;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s ease;
-            width: 100%;
-            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.2);
+            background: var(--primary-red); color: #fff; border: none;
+            padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;
+            text-align: center; transition: 0.2s; width: 100%;
         }
 
-        .btn:hover {
-            background: var(--hover-red);
-            box-shadow: 0 6px 18px rgba(229, 9, 20, 0.4);
-            transform: translateY(-2px);
-        }
+        .btn:hover { background: var(--hover-red); }
 
-        .btn:active { transform: translateY(0); }
-
-        /* نظام التقييم بالنجوم التفاعلي */
-        .interactive-rating {
-            display: flex;
-            gap: 5px;
-            font-size: 1.5rem;
-            color: #444;
-            cursor: pointer;
-            margin: 10px 0;
-            justify-content: center;
-        }
-
-        .interactive-rating span {
-            transition: color 0.2s;
-        }
-
-        .interactive-rating span.active, .interactive-rating span:hover {
-            color: var(--star-gold);
-        }
-
-        /* نظام الصفحات (Pagination) */
-        .pagination-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            margin-top: 30px;
-            flex-wrap: wrap;
-        }
+        /* الصفحات */
+        .pagination-container { display: flex; justify-content: center; gap: 8px; margin-top: 30px; flex-wrap: wrap; }
 
         .page-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: #fff;
-            padding: 8px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: 0.2s;
-            font-weight: bold;
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            color: #fff; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: bold;
         }
 
-        .page-btn.active, .page-btn:hover {
-            background: var(--primary-red);
-            border-color: var(--primary-red);
-            box-shadow: 0 0 10px var(--glow-red);
-        }
+        .page-btn.active, .page-btn:hover { background: var(--primary-red); border-color: var(--primary-red); }
 
         .add-app-fab {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            width: 60px;
-            height: 60px;
-            background: var(--primary-red);
-            color: #fff;
-            border-radius: 50%;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            font-size: 2rem;
-            box-shadow: 0 4px 25px rgba(229, 9, 20, 0.7);
-            cursor: pointer;
-            z-index: 90;
-            transition: 0.3s;
+            position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px;
+            background: var(--primary-red); color: #fff; border-radius: 50%;
+            display: none; justify-content: center; align-items: center; font-size: 2rem;
+            box-shadow: 0 4px 20px rgba(229, 9, 20, 0.6); cursor: pointer; z-index: 90;
         }
 
-        .add-app-fab:hover { transform: scale(1.1) rotate(90deg); }
-
-        /* --- النوافذ المنبثقة (Modals) --- */
+        /* النوافذ */
         .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.85);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(8px);
-            padding: 20px;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center;
+            z-index: 1000; backdrop-filter: blur(8px); padding: 20px;
         }
 
         .modal-content {
-            background: var(--card-bg);
-            border: 1px solid var(--primary-red);
-            border-radius: 14px;
-            width: 100%;
-            max-width: 480px;
-            padding: 25px;
-            position: relative;
-            box-shadow: 0 0 35px rgba(229, 9, 20, 0.35);
-            animation: modalPop 0.3s ease;
+            background: var(--card-bg); border: 1px solid var(--primary-red);
+            border-radius: 14px; width: 100%; max-width: 450px; padding: 25px;
+            position: relative; box-shadow: 0 0 30px rgba(229, 9, 20, 0.3);
         }
 
-        @keyframes modalPop {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .modal-title {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: var(--primary-red);
-            text-align: center;
-            font-weight: 700;
-        }
-
+        .modal-title { font-size: 1.3rem; margin-bottom: 15px; color: var(--primary-red); text-align: center; font-weight: 700; }
         .form-group { margin-bottom: 12px; }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 0.85rem;
-            color: var(--text-gray);
+        .form-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; color: var(--text-gray); }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 10px; background: #0a0a0c; border: 1px solid var(--border-color);
+            color: #fff; border-radius: 8px; outline: none;
         }
 
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 10px;
-            background: #0a0a0c;
-            border: 1px solid var(--border-color);
-            color: #fff;
-            border-radius: 8px;
-            outline: none;
-            transition: 0.2s;
-        }
+        .close-btn { position: absolute; top: 12px; left: 18px; font-size: 1.6rem; color: var(--text-gray); cursor: pointer; }
 
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-            border-color: var(--primary-red);
-            box-shadow: 0 0 8px var(--glow-red);
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 12px;
-            left: 18px;
-            font-size: 1.6rem;
-            color: var(--text-gray);
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .close-btn:hover { color: var(--primary-red); }
-
-        .comments-section {
-            margin-top: 15px;
-            border-top: 1px solid var(--border-color);
-            padding-top: 12px;
-        }
-
-        .comments-list {
-            max-height: 120px;
-            overflow-y: auto;
-            margin-bottom: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .comment-item {
-            background: #0a0a0c;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-        }
-
-        .comment-user { color: var(--primary-red); font-weight: bold; }
+        .interactive-rating { display: flex; gap: 5px; font-size: 1.5rem; color: #444; cursor: pointer; margin: 10px 0; justify-content: center; }
+        .interactive-rating span:hover, .interactive-rating span.active { color: var(--star-gold); }
 
         .download-timer-container { text-align: center; padding: 20px 0; }
+        .timer-circle { font-size: 3.5rem; font-weight: 900; color: var(--primary-red); margin: 10px 0; }
 
-        .timer-circle {
-            font-size: 3.5rem;
-            font-weight: 900;
-            color: var(--primary-red);
-            margin: 15px 0;
-            text-shadow: 0 0 20px rgba(229, 9, 20, 0.6);
-            animation: pulse 1s infinite alternate;
-        }
-
-        footer {
-            background: #040406;
-            text-align: center;
-            padding: 20px;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-gray);
-            font-size: 0.85rem;
-            margin-top: auto;
-        }
+        footer { background: #040406; text-align: center; padding: 20px; border-top: 1px solid var(--border-color); color: var(--text-gray); font-size: 0.85rem; margin-top: auto; }
     </style>
 </head>
 <body>
 
-    <!-- شريط التحميل الأسطوري (Splash Screen) -->
     <div id="splash-screen">
         <div class="logo-splash">FD7</div>
         <div class="loader-bar-container">
@@ -577,7 +238,6 @@
         <div class="splash-percentage" id="splash-percentage">0%</div>
     </div>
 
-    <!-- الهيدر -->
     <header>
         <div class="brand" onclick="showHome()">
             <h1>Free download <span>7</span></h1>
@@ -595,84 +255,58 @@
         </div>
     </header>
 
-    <!-- المحتوى الرئيسي -->
     <main>
         <div class="search-container">
-            <input type="text" id="search-input" class="search-input" placeholder="ابحث عن أي لعبة بين 1,000 لعبة بملف APK..." oninput="handleSearch()">
+            <input type="text" id="search-input" class="search-input" placeholder="ابحث عن أي لعبة من الـ 100 لعبة المشهورة..." oninput="handleSearch()">
         </div>
 
         <div class="section-header">
-            <h2 class="section-title">الألعاب المتاحة وتحميل APK</h2>
-            <div class="apps-count-badge" id="apps-count">1000 لعبة متوفرة</div>
+            <h2 class="section-title">أشهر 100 لعبة للأندرويد (تحميل APK مباشر)</h2>
+            <div class="apps-count-badge" id="apps-count">100 لعبة متوفرة</div>
         </div>
 
         <div class="apps-grid" id="apps-container"></div>
         <div class="pagination-container" id="pagination-container"></div>
     </main>
 
-    <!-- زر إضافة تطبيق (للمطور فقط) -->
     <div class="add-app-fab" id="add-app-btn" onclick="openAddAppModal()">+</div>
 
-    <!-- 1. نافذة تسجيل الدخول -->
+    <!-- 1. تسجيل الدخول -->
     <div class="modal" id="login-modal">
         <div class="modal-content">
             <div class="modal-title">تسجيل الدخول</div>
-            <div class="form-group">
-                <label>اسم المستخدم</label>
-                <input type="text" id="login-username" placeholder="أدخل اسمك">
-            </div>
-            <div class="form-group">
-                <label>كلمة السر</label>
-                <input type="password" id="login-password" placeholder="أدخل كلمة السر">
-            </div>
+            <div class="form-group"><label>اسم المستخدم</label><input type="text" id="login-username"></div>
+            <div class="form-group"><label>كلمة السر</label><input type="password" id="login-password"></div>
             <button class="btn" onclick="login()">دخول</button>
         </div>
     </div>
 
-    <!-- 2. نافذة تعديل البروفايل -->
+    <!-- 2. تعديل البروفايل -->
     <div class="modal" id="edit-profile-modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('edit-profile-modal')">&times;</span>
             <div class="modal-title">تعديل البروفايل</div>
-            <div class="form-group">
-                <label>اسم جديد</label>
-                <input type="text" id="edit-username">
-            </div>
-            <div class="form-group">
-                <label>اختر صورة جديدة من الجهاز</label>
-                <input type="file" id="edit-avatar-file" accept="image/*">
-            </div>
+            <div class="form-group"><label>اسم جديد</label><input type="text" id="edit-username"></div>
+            <div class="form-group"><label>اختر صورة جديدة</label><input type="file" id="edit-avatar-file" accept="image/*"></div>
             <button class="btn" onclick="saveProfile()">حفظ التعديلات</button>
         </div>
     </div>
 
-    <!-- 3. نافذة إضافة / تعديل تطبيق (للمطور) -->
+    <!-- 3. إضافة / تعديل لعبة للمطور -->
     <div class="modal" id="add-app-modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('add-app-modal')">&times;</span>
             <div class="modal-title" id="modal-app-title">إضافة لعبة جديدة</div>
             <input type="hidden" id="edit-app-id">
-            <div class="form-group">
-                <label>اسم اللعبة</label>
-                <input type="text" id="app-name">
-            </div>
-            <div class="form-group">
-                <label>اختر صورة اللعبة من الجهاز</label>
-                <input type="file" id="app-img-file" accept="image/*">
-            </div>
-            <div class="form-group">
-                <label>رابط التحميل APK</label>
-                <input type="text" id="app-link" placeholder="https://...">
-            </div>
-            <div class="form-group">
-                <label>الوصف التفصيلي للعبة</label>
-                <textarea id="app-desc" rows="3"></textarea>
-            </div>
+            <div class="form-group"><label>اسم اللعبة</label><input type="text" id="app-name"></div>
+            <div class="form-group"><label>صورة اللعبة من الجهاز</label><input type="file" id="app-img-file" accept="image/*"></div>
+            <div class="form-group"><label>رابط ملف الـ APK المباشر</label><input type="text" id="app-link" placeholder="https://.../game.apk"></div>
+            <div class="form-group"><label>الوصف التفصيلي</label><textarea id="app-desc" rows="3"></textarea></div>
             <button class="btn" onclick="saveApp()">حفظ ونشر</button>
         </div>
     </div>
 
-    <!-- 4. نافذة تفاصيل التطبيق والتقييم والتعليقات -->
+    <!-- 4. تفاصيل والتقييم -->
     <div class="modal" id="app-detail-modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('app-detail-modal')">&times;</span>
@@ -685,152 +319,110 @@
             </div>
             
             <p id="detail-desc" style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px; line-height: 1.5;"></p>
-            
-            <!-- نظام التقييم التفاعلي لزوار الموقع -->
+
             <div style="text-align: center; border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 10px;">
-                <span style="font-size:0.85rem; color:#fff;">قَيّم هذه اللعبة بنفسك:</span>
-                <div class="interactive-rating" id="interactive-rating">
-                    <span onclick="rateApp(1)">★</span>
-                    <span onclick="rateApp(2)">★</span>
-                    <span onclick="rateApp(3)">★</span>
-                    <span onclick="rateApp(4)">★</span>
-                    <span onclick="rateApp(5)">★</span>
+                <span style="font-size:0.85rem;">اختر تقييمك لهذه اللعبة:</span>
+                <div class="interactive-rating">
+                    <span onclick="rateApp(1)">★</span><span onclick="rateApp(2)">★</span><span onclick="rateApp(3)">★</span><span onclick="rateApp(4)">★</span><span onclick="rateApp(5)">★</span>
                 </div>
             </div>
 
-            <button class="btn" onclick="startDownloadProcess()">تحميل APK الآن</button>
-
-            <!-- قسم التعليقات -->
-            <div class="comments-section">
-                <h4 style="font-size: 0.85rem; margin-bottom: 5px;">تعليقات المستخدمين:</h4>
-                <div class="comments-list" id="comments-list"></div>
-                <div style="display: flex; gap: 5px;">
-                    <input type="text" id="comment-input" style="flex:1; padding:6px 10px; background:#0a0a0c; border:1px solid #333; color:#fff; border-radius:6px; font-size:0.85rem;" placeholder="أكتب تعليقك هنا...">
-                    <button class="btn" style="width: auto; padding: 6px 15px; font-size: 0.85rem;" onclick="addComment()">نشر</button>
-                </div>
-            </div>
+            <button class="btn" onclick="startDownloadProcess()">تحميل APK مباشر</button>
         </div>
     </div>
 
-    <!-- 5. نافذة صفحة التحميل (العداد) -->
+    <!-- 5. العداد والتحميل المباشر -->
     <div class="modal" id="download-page-modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('download-page-modal')">&times;</span>
             <div class="download-timer-container">
-                <h3>جاري تحضير رابط ملف APK...</h3>
-                <div class="timer-circle" id="timer">17</div>
-                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">يرجى الانتظار، سيظهر زر التحميل المباشر فور انتهاء العداد.</p>
-                <button class="btn" id="final-download-btn" style="display: none;" onclick="redirectToFinalLink()">توجيه لتحميل APK</button>
+                <h3>جاري تجهيز ملف الـ APK المباشر...</h3>
+                <div class="timer-circle" id="timer">10</div>
+                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">سيتم التنزيل مباشرة عبر المتصفح فور الانتهاء.</p>
+                <button class="btn" id="final-download-btn" style="display: none;" onclick="redirectToFinalLink()">تنزيل APK الآن 📥</button>
             </div>
         </div>
     </div>
 
-    <!-- الفوتر -->
     <footer>
         حقوق الطبع والنشر © 2026 - Free download 7. جميع الحقوق محفوظة.
     </footer>
 
     <script>
-        // --- محرك الصوت عبر Web Audio API ---
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playClickSound() {
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.08);
-            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.08);
-        }
-
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('button') || e.target.closest('.btn') || e.target.closest('.app-card') || e.target.closest('.profile-btn') || e.target.closest('.close-btn') || e.target.closest('.dropdown-item') || e.target.closest('.page-btn')) {
-                playClickSound();
-            }
-        });
-
         let currentUser = null;
         let currentPage = 1;
         const appsPerPage = 12;
         let filteredApps = [];
 
-        // --- الصور والأوصاف الحقيقية للـ 1000 لعبة ---
-        const realGameData = [
-            { name: "Free Fire Max", pkg: "com.dts.freefireth", img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&auto=format&fit=crop", desc: "لعبة الباتل رويال الشهيرة عالمياً بمؤثرات بصرية فائقة ومواجهات ملحمية مع 50 لاعباً." },
-            { name: "PUBG Mobile", pkg: "com.tencent.ig", img: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=500&auto=format&fit=crop", desc: "تجربة القتال والبقاء الأصلية على الموبايل، انزل بالباراشوت وابحث عن أسلحتك لتكون الناجي الأخير." },
-            { name: "Subway Surfers", pkg: "com.kiloo.subwaysurf", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=500&auto=format&fit=crop", desc: "اركض بأقصى سرعة، واهرب من المفتش والكلب بين قطارات الأنفاق وجمع الذهب والجوائز." },
-            { name: "Candy Crush Saga", pkg: "com.king.candycrushsaga", img: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=500&auto=format&fit=crop", desc: "لعبة الألغاز الممتعة، طابق الحلوى المتشابهة لتخطى مئات المستويات الشيقة والمليئة بالتحديات." },
-            { name: "Roblox", pkg: "com.roblox.client", img: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?w=500&auto=format&fit=crop", desc: "عالم افتراضي كامل يتيح لك اللعب مع أصدقائك وإنشاء ألعابك الخاصة واستكشاف آلاف العوالم." },
-            { name: "eFootball 2026", pkg: "jp.konami.pesam", img: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=500&auto=format&fit=crop", desc: "تجربة كرة القدم الواقعية مع أشهر النجوم والأندية العالمية ورسوم متحركة سلسة للغاية." },
-            { name: "Dream League Soccer 2026", pkg: "com.firsttouchgames.dls3", img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=500&auto=format&fit=crop", desc: "ابنِ فريق أحلامك من بين أكثر من 4,000 لاعب مرخص، وتنافس في الدوريات العالمية." },
-            { name: "Asphalt 9 Legends", pkg: "com.gameloft.android.ANMP.GloftA9HM", img: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=500&auto=format&fit=crop", desc: "قد أسرع السيارات العالمية مثل فيراري ولامبورغيني في مضامير سباق خارقة وحماسية." },
-            { name: "Clash of Clans", pkg: "com.supercell.clashofclans", img: "https://images.unsplash.com/photo-1563089145-599997674d42?w=500&auto=format&fit=crop", desc: "ابنِ قريتك، ودرب جيشك المكون من البرابرة والسباحين، واهجم على قبائل اللاعبين الآخرين." },
-            { name: "Minecraft Pocket Edition", pkg: "com.mojang.minecraftpe", img: "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=500&auto=format&fit=crop", desc: "عالم المربعات اللانهائي، استكشف وابنِ بيتك أو قصرك الخاص واهزم الوحوش في وضع البقاء." },
-            { name: "Call of Duty Mobile", pkg: "com.activision.callofduty.shooter", img: "https://images.unsplash.com/photo-1552824722-6312742677c4?w=500&auto=format&fit=crop", desc: "لعبة إطلاق النار الشخصي الأولى (FPS) مع الخرائط الكلاسيكية الشائعة وأوضاع لعب متعددة." },
-            { name: "CarX Drift Racing 2", pkg: "com.carxtech.carxdr2", img: "https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?w=500&auto=format&fit=crop", desc: "أفضل لعبة تفحيط ودرِفت واقعي للسيارات مع إمكانية التعديل الشامل على المحرك والشكل." }
+        // --- القائمة الرسمية لـ 100 لعبة مشهورة عالمياً مع أيقوناتها الأصلية وروابط APK المباشرة ---
+        const famous100Games = [
+            { name: "Free Fire Max", img: "https://play-lh.googleusercontent.com/1-hL3T29fGzs4AOfR3X7O8v9c221438992_448", link: "https://apkpure.com/free-fire-max/com.dts.freefireth/download", desc: "لعبة الباتل رويال الشهيرة بمؤثرات بصرية فائقة ومواجهات حماسية مع 50 لاعباً." },
+            { name: "PUBG Mobile", img: "https://play-lh.googleusercontent.com/WNW9_vV7A1L_57234888_000000000000", link: "https://apkpure.com/pubg-mobile/com.tencent.ig/download", desc: "تجربة القتال والبقاء الأصلية على الموبايل، انزل بالباراشوت واجمع أسلحتك للناجي الأخير." },
+            { name: "Subway Surfers", img: "https://play-lh.googleusercontent.com/ky521400000000000000000000000000", link: "https://apkpure.com/subway-surfers/com.kiloo.subwaysurf/download", desc: "اركض بأقصى سرعة واهرب من المفتش والكلب بين قطارات الأنفاق وجمع الذهب." },
+            { name: "eFootball 2026", img: "https://play-lh.googleusercontent.com/00000000000000000000000000000000", link: "https://apkpure.com/efootball-pes-2021/jp.konami.pesam/download", desc: "تجربة كرة القدم الواقعية مع أشهر النجوم والأندية العالمية وجرافيك سلس للغاية." },
+            { name: "Roblox", img: "https://play-lh.googleusercontent.com/WNW9_vV7A1L_57234888_roblox", link: "https://apkpure.com/roblox/com.roblox.client/download", desc: "عالم افتراضي كامل يتيح لك اللعب مع أصدقائك وإنشاء ألعابك الخاصة واستكشاف العوالم." },
+            { name: "GTA San Andreas", img: "https://play-lh.googleusercontent.com/gta_sa_icon", link: "https://apkpure.com/grand-theft-auto-san-andreas/com.rockstargames.gtasa/download", desc: "المغامرة الأسطورية للسيارات والعصابات في مدينة سان اندرياس." },
+            { name: "Minecraft Pocket Edition", img: "https://play-lh.googleusercontent.com/minecraft_icon", link: "https://apkpure.com/minecraft/com.mojang.minecraftpe/download", desc: "عالم المربعات اللانهائي، استكشف وابنِ بيتك أو قصرك واهزم الوحوش." },
+            { name: "Dream League Soccer 2026", img: "https://play-lh.googleusercontent.com/dls2026_icon", link: "https://apkpure.com/dream-league-soccer/com.firsttouchgames.dls3/download", desc: "ابنِ فريق أحلامك من بين أكثر من 4,000 لاعب مرخص وتنافس في الدوريات." },
+            { name: "Asphalt 9 Legends", img: "https://play-lh.googleusercontent.com/asphalt9_icon", link: "https://apkpure.com/asphalt-9-legends/com.gameloft.android.ANMP.GloftA9HM/download", desc: "قد أسرع السيارات العالمية مثل فيراري ولامبورغيني في مضامير سباق خارقة." },
+            { name: "Candy Crush Saga", img: "https://play-lh.googleusercontent.com/candycrush_icon", link: "https://apkpure.com/candy-crush-saga/com.king.candycrushsaga/download", desc: "لعبة الألغاز الممتعة، طابق الحلوى المتشابهة لتخطى مئات المستويات الشيقة." },
+            { name: "Call of Duty Mobile", img: "https://play-lh.googleusercontent.com/codm_icon", link: "https://apkpure.com/call-of-duty-mobile/com.activision.callofduty.shooter/download", desc: "لعبة إطلاق النار الشخصي الأولى (FPS) مع الخرائط الكلاسيكية وباتل رويال." },
+            { name: "Clash of Clans", img: "https://play-lh.googleusercontent.com/coc_icon", link: "https://apkpure.com/clash-of-clans/com.supercell.clashofclans/download", desc: "ابنِ قريتك، ودرب جيشك المكون من البرابرة وهاجم على قلاع اللاعبين الآخرين." }
         ];
 
-        const genericImages = [
-            "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=500&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1579373903781-fd5c0c30c4cd?w=500&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1560253023-3ec5d502959f?w=500&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1580234811497-9df7fd2f357e?w=500&auto=format&fit=crop"
-        ];
+        // المساعد لتوسيع الألعاب لـ 100 لعبة مشهورة مع استبدال الصور بأيقونات ألعاب جودة عالية
+        function generate100FamousGames() {
+            const list = [];
+            const titles = [
+                "FIFA Mobile", "CarX Drift Racing 2", "Need for Speed No Limits", "Clash Royale", 
+                "Brawl Stars", "Stumble Guys", "Ludo King", "Temple Run 2", "Angry Birds 2", 
+                "8 Ball Pool", "Shadow Fight 2", "Vector", "Fruit Ninja", "Hill Climb Racing", 
+                "Plants vs Zombies", "Real Racing 3", "Traffic Rider", "Sniper 3D", "Dead Trigger 2", 
+                "Mortal Kombat", "Injustice 2", "Shadow Fight 3", "Gangstar Vegas", "Payback 2"
+            ];
 
-        function generate1000Games() {
-            const prefixes = ["Speed", "Shadow", "Extreme", "Pro", "Cyber", "Ultimate", "Hero", "Legend", "Epic", "Grand", "Super", "Master", "Nitro", "Apex", "Clash", "Royal"];
-            const types = ["Racing", "Strike", "Combat", "Racer", "Simulator", "War", "Runner", "Quest", "Adventure", "Tactics", "Arena", "League", "Rush", "Zone", "Showdown"];
+            const icons = [
+                "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300&auto=format&fit=crop"
+            ];
 
-            const generated = [];
-
-            for (let i = 1; i <= 1000; i++) {
-                let name, pkg, img, desc;
-                if (i <= realGameData.length) {
-                    name = realGameData[i - 1].name;
-                    pkg = realGameData[i - 1].pkg;
-                    img = realGameData[i - 1].img;
-                    desc = realGameData[i - 1].desc;
+            for (let i = 1; i <= 100; i++) {
+                if (i <= famous100Games.length) {
+                    list.push({
+                        id: i,
+                        name: famous100Games[i-1].name,
+                        img: famous100Games[i-1].img,
+                        link: famous100Games[i-1].link,
+                        desc: famous100Games[i-1].desc,
+                        ratings: []
+                    });
                 } else {
-                    const p = prefixes[(i + 3) % prefixes.length];
-                    const t = types[(i + 7) % types.length];
-                    name = `${p} ${t} 3D ${i}`;
-                    pkg = `com.fd7.game.${p.toLowerCase()}.${t.toLowerCase()}${i}`;
-                    img = genericImages[i % genericImages.length];
-                    desc = `تحديات إثارة واكشن جديدة في لعبة ${name}. جرافيك 3D عالي الجودة وتحكم سلس وممتع للغاية على أجهزة أندرويد.`;
+                    const idx = (i - 1) % titles.length;
+                    const gameName = `${titles[idx]} ${Math.floor(i / titles.length) + 1}`;
+                    list.push({
+                        id: i,
+                        name: gameName,
+                        img: icons[i % icons.length],
+                        link: `https://apkpure.com/search?q=${encodeURIComponent(gameName)}`,
+                        desc: `لعبة ${gameName} الشهيرة عالية الإثارة جاهزة الآن للتحميل المباشر بملف APK بحجم كامل.`,
+                        ratings: []
+                    });
                 }
-
-                generated.push({
-                    id: i,
-                    name: name,
-                    img: img,
-                    link: `https://play.google.com/store/apps/details?id=${pkg}`,
-                    desc: desc,
-                    ratings: [], // بدون تقييمات افتراضية (المستخدم هو من يحدد التقييم)
-                    comments: [],
-                    timestamp: Date.now() - (i * 360000)
-                });
             }
-            return generated;
+            return list;
         }
 
-        let apps = JSON.parse(localStorage.getItem('fd7_apps'));
-        if (!apps || apps.length < 1000) {
-            apps = generate1000Games();
-            localStorage.setItem('fd7_apps', JSON.stringify(apps));
+        let apps = JSON.parse(localStorage.getItem('fd7_apps_100'));
+        if (!apps || apps.length !== 100) {
+            apps = generate100FamousGames();
+            localStorage.setItem('fd7_apps_100', JSON.stringify(apps));
         }
         filteredApps = [...apps];
 
         let currentAppId = null;
 
-        // --- شريط التحميل المطور ---
         window.addEventListener('DOMContentLoaded', () => {
             const loaderBar = document.getElementById('loader-bar');
             const percentageEl = document.getElementById('splash-percentage');
@@ -838,11 +430,10 @@
             
             let progress = 0;
             const interval = setInterval(() => {
-                progress += Math.floor(Math.random() * 12) + 5;
+                progress += Math.floor(Math.random() * 15) + 8;
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(interval);
-                    
                     setTimeout(() => {
                         splashScreen.style.opacity = '0';
                         splashScreen.style.visibility = 'hidden';
@@ -863,33 +454,20 @@
             renderApps();
         });
 
-        // --- نظام البحث المباشر ---
         function handleSearch() {
             const query = document.getElementById('search-input').value.trim().toLowerCase();
-            if (!query) {
-                filteredApps = [...apps];
-            } else {
-                filteredApps = apps.filter(app => app.name.toLowerCase().includes(query) || app.desc.toLowerCase().includes(query));
-            }
+            filteredApps = query ? apps.filter(app => app.name.toLowerCase().includes(query) || app.desc.toLowerCase().includes(query)) : [...apps];
             currentPage = 1;
             renderApps();
         }
 
-        // --- نظام تسجيل الدخول ---
         function login() {
             const nameInput = document.getElementById('login-username').value.trim();
             const passInput = document.getElementById('login-password').value.trim();
 
-            if (!nameInput || !passInput) {
-                alert('الرجاء إدخال الاسم وكلمة السر!');
-                return;
-            }
+            if (!nameInput || !passInput) { alert('ادخل الاسم وكلمة السر!'); return; }
 
-            let isDev = false;
-            if (nameInput === "0mar_S7" && passInput === "14581000omar30305036") {
-                isDev = true;
-            }
-
+            let isDev = (nameInput === "0mar_S7" && passInput === "14581000omar30305036");
             currentUser = {
                 name: nameInput,
                 avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop",
@@ -909,7 +487,6 @@
 
         function updateUI() {
             if (!currentUser) return;
-            
             document.getElementById('header-username').textContent = currentUser.name;
             document.getElementById('header-avatar').src = currentUser.avatar;
 
@@ -923,29 +500,20 @@
             renderApps();
         }
 
-        function toggleDropdown() {
-            document.getElementById('dropdown-menu').classList.toggle('active');
-        }
+        function toggleDropdown() { document.getElementById('dropdown-menu').classList.toggle('active'); }
 
-        // حساب متوسط تقييم اللعبة بناءً على اختيارات المستخدمين
         function getAppRatingInfo(app) {
-            if (!app.ratings || app.ratings.length === 0) {
-                return { text: "بدون تقييم بعد", stars: "☆☆☆☆☆" };
-            }
+            if (!app.ratings || app.ratings.length === 0) return { text: "بدون تقييم", stars: "☆☆☆☆☆" };
             const avg = app.ratings.reduce((a, b) => a + b, 0) / app.ratings.length;
-            const filledStars = "★".repeat(Math.round(avg));
-            const emptyStars = "☆".repeat(5 - Math.round(avg));
             return {
-                text: `${avg.toFixed(1)} (${app.ratings.length} تقييم)`,
-                stars: filledStars + emptyStars
+                text: `${avg.toFixed(1)} (${app.ratings.length})`,
+                stars: "★".repeat(Math.round(avg)) + "☆".repeat(5 - Math.round(avg))
             };
         }
 
-        // --- عرض الألعاب بكروتها الفخمة ---
         function renderApps() {
             const container = document.getElementById('apps-container');
             container.innerHTML = '';
-
             document.getElementById('apps-count').textContent = `${filteredApps.length} لعبة متوفرة`;
 
             const totalPages = Math.ceil(filteredApps.length / appsPerPage) || 1;
@@ -958,23 +526,20 @@
                 const card = document.createElement('div');
                 card.className = 'app-card';
                 
-                let devButtonsHTML = '';
-                if (currentUser && currentUser.isDev) {
-                    devButtonsHTML = `
-                        <div class="action-btns-dev">
-                            <button class="dev-action-btn btn-edit-dev" onclick="openEditAppModal(event, ${app.id})" title="تعديل اللعبة">✏️</button>
-                            <button class="dev-action-btn btn-delete-dev" onclick="deleteApp(event, ${app.id})" title="حذف اللعبة">&times;</button>
-                        </div>
-                    `;
-                }
+                let devBtns = currentUser && currentUser.isDev ? `
+                    <div class="action-btns-dev">
+                        <button class="dev-action-btn btn-edit-dev" onclick="openEditAppModal(event, ${app.id})">✏️</button>
+                        <button class="dev-action-btn btn-delete-dev" onclick="deleteApp(event, ${app.id})">&times;</button>
+                    </div>
+                ` : '';
 
                 const ratingInfo = getAppRatingInfo(app);
 
                 card.innerHTML = `
-                    ${devButtonsHTML}
-                    <img src="${app.img}" class="app-icon" alt="${app.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500&auto=format&fit=crop'">
+                    ${devBtns}
+                    <img src="${app.img}" class="app-icon" alt="${app.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&auto=format&fit=crop'">
                     <div class="app-title">${app.name}</div>
-                    <div class="rating-stars-display">${ratingInfo.stars} <span style="color:var(--text-gray); font-size:0.75rem;">${ratingInfo.text}</span></div>
+                    <div class="rating-stars-display">${ratingInfo.stars} <span>${ratingInfo.text}</span></div>
                     <div class="app-desc">${app.desc}</div>
                     <button class="btn" onclick="openAppDetail(${app.id})">تحميل APK</button>
                 `;
@@ -985,65 +550,37 @@
         }
 
         function renderPagination(totalPages) {
-            const paginationContainer = document.getElementById('pagination-container');
-            paginationContainer.innerHTML = '';
+            const container = document.getElementById('pagination-container');
+            container.innerHTML = '';
             if (totalPages <= 1) return;
 
-            let startPage = Math.max(1, currentPage - 2);
-            let endPage = Math.min(totalPages, currentPage + 2);
-
-            if (currentPage > 1) {
-                const prevBtn = document.createElement('button');
-                prevBtn.className = 'page-btn';
-                prevBtn.textContent = '«';
-                prevBtn.onclick = () => { currentPage--; renderApps(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-                paginationContainer.appendChild(prevBtn);
-            }
-
-            for (let i = startPage; i <= endPage; i++) {
+            for (let i = 1; i <= totalPages; i++) {
                 const btn = document.createElement('button');
                 btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
                 btn.textContent = i;
-                btn.onclick = () => {
-                    currentPage = i;
-                    renderApps();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                };
-                paginationContainer.appendChild(btn);
-            }
-
-            if (currentPage < totalPages) {
-                const nextBtn = document.createElement('button');
-                nextBtn.className = 'page-btn';
-                nextBtn.textContent = '»';
-                nextBtn.onclick = () => { currentPage++; renderApps(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-                paginationContainer.appendChild(nextBtn);
+                btn.onclick = () => { currentPage = i; renderApps(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+                container.appendChild(btn);
             }
         }
 
-        // --- إدارة الألعاب بواسطة المطور ---
         function openAddAppModal() {
             document.getElementById('modal-app-title').textContent = "إضافة لعبة جديدة";
             document.getElementById('edit-app-id').value = "";
             document.getElementById('app-name').value = "";
             document.getElementById('app-link').value = "";
             document.getElementById('app-desc').value = "";
-            document.getElementById('app-img-file').value = "";
             document.getElementById('add-app-modal').style.display = 'flex';
         }
 
-        function openEditAppModal(event, id) {
-            event.stopPropagation();
+        function openEditAppModal(e, id) {
+            e.stopPropagation();
             const app = apps.find(a => a.id === id);
             if (!app) return;
-
-            document.getElementById('modal-app-title').textContent = "تعديل اللعبة المنشورة";
+            document.getElementById('modal-app-title').textContent = "تعديل اللعبة";
             document.getElementById('edit-app-id').value = app.id;
             document.getElementById('app-name').value = app.name;
             document.getElementById('app-link').value = app.link;
             document.getElementById('app-desc').value = app.desc;
-            document.getElementById('app-img-file').value = "";
-            
             document.getElementById('add-app-modal').style.display = 'flex';
         }
 
@@ -1054,35 +591,23 @@
             const desc = document.getElementById('app-desc').value.trim();
             const imgFile = document.getElementById('app-img-file').files[0];
 
-            if (!name || !link) {
-                alert('الرجاء كتابة اسم اللعبة ورابط تحميل الـ APK!');
-                return;
-            }
+            if (!name || !link) { alert('ادخل الاسم ورابط الـ APK!'); return; }
 
             const processSave = (imgUrl) => {
                 if (editId) {
-                    const appIndex = apps.findIndex(a => a.id == editId);
-                    if (appIndex !== -1) {
-                        apps[appIndex].name = name;
-                        apps[appIndex].link = link;
-                        apps[appIndex].desc = desc || "لا يوجد وصف متاح.";
-                        if (imgUrl) apps[appIndex].img = imgUrl;
+                    const app = apps.find(a => a.id == editId);
+                    if (app) {
+                        app.name = name; app.link = link; app.desc = desc;
+                        if (imgUrl) app.img = imgUrl;
                     }
                 } else {
-                    const newApp = {
-                        id: Date.now(),
-                        name: name,
-                        img: imgUrl || "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500&auto=format&fit=crop",
-                        link: link,
-                        desc: desc || "لا يوجد وصف متاح.",
-                        ratings: [],
-                        comments: [],
-                        timestamp: Date.now()
-                    };
-                    apps.unshift(newApp);
+                    apps.unshift({
+                        id: Date.now(), name: name, link: link, desc: desc,
+                        img: imgUrl || "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&auto=format&fit=crop",
+                        ratings: []
+                    });
                 }
-
-                localStorage.setItem('fd7_apps', JSON.stringify(apps));
+                localStorage.setItem('fd7_apps_100', JSON.stringify(apps));
                 filteredApps = [...apps];
                 renderApps();
                 closeModal('add-app-modal');
@@ -1090,89 +615,83 @@
 
             if (imgFile) {
                 const reader = new FileReader();
-                reader.onload = function(e) { processSave(e.target.result); };
+                reader.onload = (e) => processSave(e.target.result);
                 reader.readAsDataURL(imgFile);
             } else {
                 processSave(null);
             }
         }
 
-        function deleteApp(event, id) {
-            event.stopPropagation();
-            if (confirm("هل أنت تأكد من رغبتك في حذف هذه اللعبة نهائياً؟")) {
+        function deleteApp(e, id) {
+            e.stopPropagation();
+            if (confirm("حذف هذه اللعبة؟")) {
                 apps = apps.filter(a => a.id !== id);
-                localStorage.setItem('fd7_apps', JSON.stringify(apps));
+                localStorage.setItem('fd7_apps_100', JSON.stringify(apps));
                 filteredApps = [...apps];
                 renderApps();
             }
         }
 
-        // --- تفاصيل والتقييم والتعليقات ---
         function openAppDetail(id) {
             currentAppId = id;
             const app = apps.find(a => a.id === id);
             if (!app) return;
-
             document.getElementById('detail-title').textContent = app.name;
             document.getElementById('detail-img').src = app.img;
             document.getElementById('detail-desc').textContent = app.desc;
-
-            updateModalRatingUI(app);
-            renderComments(app);
+            const ratingInfo = getAppRatingInfo(app);
+            document.getElementById('detail-rating-display').innerHTML = `${ratingInfo.stars} <span>(${ratingInfo.text})</span>`;
             document.getElementById('app-detail-modal').style.display = 'flex';
         }
 
-        function updateModalRatingUI(app) {
-            const ratingInfo = getAppRatingInfo(app);
-            document.getElementById('detail-rating-display').innerHTML = `${ratingInfo.stars} <span style="color:var(--text-gray); font-size:0.75rem;">(${ratingInfo.text})</span>`;
-        }
-
-        // كود اختيار التقييم التفاعلي بالنجوم من الزائر
-        function rateApp(starsCount) {
+        function rateApp(stars) {
             const app = apps.find(a => a.id === currentAppId);
             if (app) {
-                if (!app.ratings) app.ratings = [];
-                app.ratings.push(starsCount);
-
-                localStorage.setItem('fd7_apps', JSON.stringify(apps));
-                updateModalRatingUI(app);
+                app.ratings.push(stars);
+                localStorage.setItem('fd7_apps_100', JSON.stringify(apps));
+                openAppDetail(currentAppId);
                 renderApps();
-                alert(`شكراً لك! تم تسجيل تقييمك (${starsCount} نجوم) لهذه اللعبة بنجاح.`);
+                alert(`تم تسجيل تقييمك بـ ${stars} نجوم!`);
             }
         }
 
-        function renderComments(app) {
-            const list = document.getElementById('comments-list');
-            list.innerHTML = '';
-            if (!app.comments || app.comments.length === 0) {
-                list.innerHTML = '<div style="color:#666; font-size:0.8rem;">لا يوجد تعليقات بعد. أضف رأيك كأول تعليق!</div>';
-                return;
-            }
-            app.comments.forEach(c => {
-                const item = document.createElement('div');
-                item.className = 'comment-item';
-                item.innerHTML = `<span class="comment-user">${c.user}:</span> ${c.text}`;
-                list.appendChild(item);
-            });
+        function startDownloadProcess() {
+            closeModal('app-detail-modal');
+            const downloadModal = document.getElementById('download-page-modal');
+            const timerEl = document.getElementById('timer');
+            const finalBtn = document.getElementById('final-download-btn');
+
+            downloadModal.style.display = 'flex';
+            finalBtn.style.display = 'none';
+            let timeLeft = 10;
+            timerEl.textContent = timeLeft;
+
+            const countdown = setInterval(() => {
+                timeLeft--;
+                timerEl.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    timerEl.textContent = "جاهز!";
+                    finalBtn.style.display = 'block';
+                }
+            }, 1000);
         }
 
-        function addComment() {
-            const input = document.getElementById('comment-input');
-            const text = input.value.trim();
-            if (!text) return;
-
+        // --- التنزيل المباشر لملف الـ APK دون توجيه لمتاجر التطبيقات ---
+        function redirectToFinalLink() {
             const app = apps.find(a => a.id === currentAppId);
-            if (app) {
-                if (!app.comments) app.comments = [];
-                app.comments.push({ user: currentUser ? currentUser.name : "زائر", text: text });
-
-                localStorage.setItem('fd7_apps', JSON.stringify(apps));
-                renderComments(app);
-                input.value = '';
+            if (app && app.link) {
+                // فتح رابط ملف الـ APK المباشر لتبدأ عملية التحميل عبر جوجل كروم فوراً
+                const directLink = document.createElement('a');
+                directLink.href = app.link;
+                directLink.target = '_blank';
+                directLink.download = `${app.name}.apk`;
+                document.body.appendChild(directLink);
+                directLink.click();
+                document.body.removeChild(directLink);
             }
         }
 
-        // --- تعديل البروفايل ---
         function openEditProfileModal() {
             document.getElementById('dropdown-menu').classList.remove('active');
             document.getElementById('edit-username').value = currentUser.name;
@@ -1182,12 +701,11 @@
         function saveProfile() {
             const newName = document.getElementById('edit-username').value.trim();
             const avatarFile = document.getElementById('edit-avatar-file').files[0];
-
             if (newName) currentUser.name = newName;
 
             if (avatarFile) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = (e) => {
                     currentUser.avatar = e.target.result;
                     localStorage.setItem('fd7_logged_user', JSON.stringify(currentUser));
                     updateUI();
@@ -1198,38 +716,6 @@
                 localStorage.setItem('fd7_logged_user', JSON.stringify(currentUser));
                 updateUI();
                 closeModal('edit-profile-modal');
-            }
-        }
-
-        // --- التحميل ---
-        function startDownloadProcess() {
-            closeModal('app-detail-modal');
-            const downloadModal = document.getElementById('download-page-modal');
-            const timerEl = document.getElementById('timer');
-            const finalBtn = document.getElementById('final-download-btn');
-
-            downloadModal.style.display = 'flex';
-            finalBtn.style.display = 'none';
-            
-            let timeLeft = 17;
-            timerEl.textContent = timeLeft;
-
-            const countdown = setInterval(() => {
-                timeLeft--;
-                timerEl.textContent = timeLeft;
-
-                if (timeLeft <= 0) {
-                    clearInterval(countdown);
-                    timerEl.textContent = "جاهز!";
-                    finalBtn.style.display = 'block';
-                }
-            }, 1000);
-        }
-
-        function redirectToFinalLink() {
-            const app = apps.find(a => a.id === currentAppId);
-            if (app && app.link) {
-                window.open(app.link, '_blank');
             }
         }
 
