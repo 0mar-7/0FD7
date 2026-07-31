@@ -72,7 +72,7 @@
         .rating-stars-display { color: var(--star-gold); font-size: 0.9rem; }
         .app-desc { font-size: 0.85rem; color: var(--text-gray); height: 38px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
 
-        .btn { background: var(--primary-red); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: center; transition: 0.2s; width: 100%; }
+        .btn { background: var(--primary-red); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: center; transition: 0.2s; width: 100%; text-decoration: none; display: block; }
         .btn:hover { background: var(--hover-red); }
 
         .pagination-container { display: flex; justify-content: center; gap: 8px; margin-top: 30px; flex-wrap: wrap; }
@@ -134,7 +134,7 @@
         </div>
 
         <div class="section-header">
-            <h2 class="section-title">الألعاب المتاحة (تحميل من المتجر)</h2>
+            <h2 class="section-title">الألعاب المتاحة للتحميل</h2>
             <div class="apps-count-badge" id="apps-count">10 ألعاب متوفرة</div>
         </div>
 
@@ -173,7 +173,7 @@
             <input type="hidden" id="edit-app-id">
             <div class="form-group"><label>اسم اللعبة</label><input type="text" id="app-name"></div>
             <div class="form-group"><label>صورة اللعبة من الجهاز</label><input type="file" id="app-img-file" accept="image/*"></div>
-            <div class="form-group"><label>رابط اللعبة في المتجر</label><input type="text" id="app-link" placeholder="https://play.google.com/store/apps/details?id=..."></div>
+            <div class="form-group"><label>رابط تحميل اللعبة</label><input type="text" id="app-link" placeholder="https://..."></div>
             <div class="form-group"><label>الوصف التفصيلي</label><textarea id="app-desc" rows="3"></textarea></div>
             <button class="btn" onclick="saveApp()">حفظ ونشر</button>
         </div>
@@ -208,15 +208,15 @@
         </div>
     </div>
 
-    <!-- 5. العداد 5 ثانية والفتح في المتجر -->
+    <!-- 5. العداد 17 ثانية والتحميل المباشر -->
     <div class="modal" id="download-page-modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('download-page-modal')">&times;</span>
             <div class="download-timer-container">
-                <h3>جاري التوجيه إلى المتجر...</h3>
-                <div class="timer-circle" id="timer">5</div>
-                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">سيتم فتح متجر جوجل بلاي تلقائياً بعد انتهاء العداد.</p>
-                <button class="btn" id="final-download-btn" style="display: none;" onclick="redirectToFinalLink()">فتح في المتجر الآن 🛒</button>
+                <h3>جاري تجهيز رابط التحميل...</h3>
+                <div class="timer-circle" id="timer">17</div>
+                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">يرجى الانتظار حتى اكتمال العد التنازلي لبدء التحميل المباشر.</p>
+                <a href="#" id="final-download-btn" class="btn" style="display: none;" target="_blank">تحميل الملف الآن 📥</a>
             </div>
         </div>
     </div>
@@ -231,28 +231,27 @@
         const appsPerPage = 10;
         let filteredApps = [];
 
-        // قائمة الـ 10 ألعاب المختارة (تركز على فري فاير والألعاب الشهيرة)
+        // قائمة الـ 10 ألعاب المحدثة (بدون ساب واي وماين كرافت، مع إضافة بلود استرايك ودلتا فورست)
         const freeFire10GamesList = [
-            { id: 1, name: "Free Fire MAX", pkg: "com.dts.freefiremax", img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300", desc: "لعبة الباتل رويال الشهيرة بجرافيك عالي القوة ومواجهات حماسية." },
-            { id: 2, name: "Free Fire (الإصدار الأصلي)", pkg: "com.dts.freefireth", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300", desc: "اللعبة الأصلية الشهيرة للبقاء على قيد الحياة والمعارك السريعة." },
-            { id: 3, name: "PUBG MOBILE", pkg: "com.tencent.ig", img: "https://images.unsplash.com/photo-1563089145-599997674d42?w=300", desc: "لعبة القتال والناجي الأخير الرسمية الأولى عالمياً." },
-            { id: 4, name: "Subway Surfers", pkg: "com.kiloo.subwaysurf", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300", desc: "اقفز واهرب من المفتش والكلب بين قطارات الأنفاق." },
-            { id: 5, name: "eFootball 2026", pkg: "jp.konami.pesam", img: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=300", desc: "تجربة كرة القدم الواقعية من كونامي مع أشهر أندية العالم." },
-            { id: 6, name: "Roblox", pkg: "com.roblox.client", img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=300", desc: "عالم افتراضي مليء بالألعاب التي يصنعها اللاعبون." },
-            { id: 7, name: "Dream League Soccer", pkg: "com.firsttouchgames.dls3", img: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=300", desc: "ابنِ فريق أحلامك ونافس في درجات الدوري المختلفة." },
-            { id: 8, name: "Call of Duty Mobile", pkg: "com.activision.callofduty.shooter", img: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300", desc: "أقوى خرائط وأطوار القتال من منظور الشخص الأول." },
-            { id: 9, name: "Minecraft", pkg: "com.mojang.minecraftpe", img: "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=300", desc: "عالم من المكعبات للبناء والبقاء على قيد الحياة." },
-            { id: 10, name: "CarX Drift Racing 2", pkg: "com.carxtech.carxdr2", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=300", desc: "أفضل تجربة تفحيط ودريفت بالسيارات بواقعية." }
+            { id: 1, name: "Free Fire MAX", img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300", desc: "لعبة الباتل رويال الشهيرة بجرافيك عالي القوة ومواجهات حماسية.", link: "#" },
+            { id: 2, name: "Free Fire (الإصدار الأصلي)", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300", desc: "اللعبة الأصلية الشهيرة للبقاء على قيد الحياة والمعارك السريعة.", link: "#" },
+            { id: 3, name: "PUBG MOBILE", img: "https://images.unsplash.com/photo-1563089145-599997674d42?w=300", desc: "لعبة القتال والناجي الأخير الرسمية الأولى عالمياً.", link: "#" },
+            { id: 4, name: "Blood Strike", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300", desc: "لعبة باتل رويال سريعة الإيقاع وعالية الأداء لأجهزة الجوال.", link: "#" },
+            { id: 5, name: "eFootball 2026", img: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=300", desc: "تجربة كرة القدم الواقعية من كونامي مع أشهر أندية العالم.", link: "#" },
+            { id: 6, name: "Roblox", img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=300", desc: "عالم افتراضي مليء بالألعاب التي يصنعها اللاعبون.", link: "#" },
+            { id: 7, name: "Delta Force", img: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300", desc: "لعبة الاكشن والتكتيكات العسكرية الحربية الكبرى.", link: "#" },
+            { id: 8, name: "Call of Duty Mobile", img: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300", desc: "أقوى خرائط وأطوار القتال من منظور الشخص الأول.", link: "#" },
+            { id: 9, name: "Dream League Soccer", img: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=300", desc: "ابنِ فريق أحلامك ونافس في درجات الدوري المختلفة.", link: "#" },
+            { id: 10, name: "CarX Drift Racing 2", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=300", desc: "أفضل تجربة تفحيط ودريفت بالسيارات بواقعية.", link: "#" }
         ];
 
-        let apps = JSON.parse(localStorage.getItem('fd7_apps_v4'));
+        let apps = JSON.parse(localStorage.getItem('fd7_apps_v5'));
         if (!apps || apps.length === 0) {
             apps = freeFire10GamesList.map(a => ({
                 ...a,
-                link: `https://play.google.com/store/apps/details?id=${a.pkg}`,
                 ratings: [5, 4]
             }));
-            localStorage.setItem('fd7_apps_v4', JSON.stringify(apps));
+            localStorage.setItem('fd7_apps_v5', JSON.stringify(apps));
         }
         filteredApps = [...apps];
 
@@ -442,7 +441,7 @@
                         ratings: []
                     });
                 }
-                localStorage.setItem('fd7_apps_v4', JSON.stringify(apps));
+                localStorage.setItem('fd7_apps_v5', JSON.stringify(apps));
                 filteredApps = [...apps];
                 renderApps();
                 closeModal('add-app-modal');
@@ -461,7 +460,7 @@
             e.stopPropagation();
             if (confirm("حذف هذه اللعبة؟")) {
                 apps = apps.filter(a => a.id !== id);
-                localStorage.setItem('fd7_apps_v4', JSON.stringify(apps));
+                localStorage.setItem('fd7_apps_v5', JSON.stringify(apps));
                 filteredApps = [...apps];
                 renderApps();
             }
@@ -521,7 +520,7 @@
             const app = apps.find(a => a.id === currentAppId);
             if (app) {
                 app.ratings.push(starsCount);
-                localStorage.setItem('fd7_apps_v4', JSON.stringify(apps));
+                localStorage.setItem('fd7_apps_v5', JSON.stringify(apps));
                 localStorage.setItem(rateKey, starsCount);
 
                 openAppDetail(currentAppId);
@@ -538,8 +537,13 @@
 
             downloadModal.style.display = 'flex';
             finalBtn.style.display = 'none';
-            let timeLeft = 5; // تم تعديل العداد ليصبح 5 ثواني
+            let timeLeft = 17; // تم تعيين العد التنازلي إلى 17 ثانية
             timerEl.textContent = timeLeft;
+
+            const app = apps.find(a => a.id === currentAppId);
+            if (app) {
+                finalBtn.href = app.link;
+            }
 
             const countdown = setInterval(() => {
                 timeLeft--;
@@ -548,16 +552,8 @@
                     clearInterval(countdown);
                     timerEl.textContent = "جاهز!";
                     finalBtn.style.display = 'block';
-                    redirectToFinalLink();
                 }
             }, 1000);
-        }
-
-        function redirectToFinalLink() {
-            const app = apps.find(a => a.id === currentAppId);
-            if (app && app.link) {
-                window.location.href = app.link;
-            }
         }
 
         function openEditProfileModal() {
