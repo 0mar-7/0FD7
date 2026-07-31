@@ -130,12 +130,12 @@
 
     <main>
         <div class="search-container">
-            <input type="text" id="search-input" class="search-input" placeholder="ابحث عن أي لعبة..." oninput="handleSearch()">
+            <input type="text" id="search-input" class="search-input" placeholder="ابحث عن أي لعبة فري فاير أو لعبة أخرى..." oninput="handleSearch()">
         </div>
 
         <div class="section-header">
             <h2 class="section-title">الألعاب المتاحة (تحميل من المتجر)</h2>
-            <div class="apps-count-badge" id="apps-count">100 لعبة متوفرة</div>
+            <div class="apps-count-badge" id="apps-count">10 ألعاب متوفرة</div>
         </div>
 
         <div class="apps-grid" id="apps-container"></div>
@@ -208,13 +208,13 @@
         </div>
     </div>
 
-    <!-- 5. العداد 17 ثانية والفتح في المتجر -->
+    <!-- 5. العداد 5 ثانية والفتح في المتجر -->
     <div class="modal" id="download-page-modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('download-page-modal')">&times;</span>
             <div class="download-timer-container">
                 <h3>جاري التوجيه إلى المتجر...</h3>
-                <div class="timer-circle" id="timer">17</div>
+                <div class="timer-circle" id="timer">5</div>
                 <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">سيتم فتح متجر جوجل بلاي تلقائياً بعد انتهاء العداد.</p>
                 <button class="btn" id="final-download-btn" style="display: none;" onclick="redirectToFinalLink()">فتح في المتجر الآن 🛒</button>
             </div>
@@ -228,75 +228,31 @@
     <script>
         let currentUser = null;
         let currentPage = 1;
-        const appsPerPage = 12;
+        const appsPerPage = 10;
         let filteredApps = [];
 
-        // قائمة الـ 100 لعبة المشهورة والمختلفة بالكامل بروابط متجر جوجل بلاي
-        const unique100GamesList = [
+        // قائمة الـ 10 ألعاب المختارة (تركز على فري فاير والألعاب الشهيرة)
+        const freeFire10GamesList = [
             { id: 1, name: "Free Fire MAX", pkg: "com.dts.freefiremax", img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300", desc: "لعبة الباتل رويال الشهيرة بجرافيك عالي القوة ومواجهات حماسية." },
-            { id: 2, name: "PUBG MOBILE", pkg: "com.tencent.ig", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300", desc: "لعبة القتال والناجي الأخير الرسمية الأولى عالمياً." },
-            { id: 3, name: "Subway Surfers", pkg: "com.kiloo.subwaysurf", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300", desc: "اقفز واهرب من المفتش والكلب بين قطارات الأنفاق." },
-            { id: 4, name: "eFootball 2026", pkg: "jp.konami.pesam", img: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=300", desc: "تجربة كرة القدم الواقعية من كونامي مع أشهر أندية العالم." },
-            { id: 5, name: "Roblox", pkg: "com.roblox.client", img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=300", desc: "عالم افتراضي مليء بالألعاب التي يصنعها اللاعبون." },
-            { id: 6, name: "Dream League Soccer", pkg: "com.firsttouchgames.dls3", img: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=300", desc: "ابنِ فريق أحلامك وانفس في درجات الدوري المختلفة." },
-            { id: 7, name: "Call of Duty Mobile", pkg: "com.activision.callofduty.shooter", img: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300", desc: "أقوى خرائط وأطوار القتال من منظور الشخص الأول." },
-            { id: 8, name: "Asphalt 9: Legends", pkg: "com.gameloft.android.ANMP.GloftA9HM", img: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=300", desc: "قيادة الخارقات والسيارات السريعة على طرق عالمية." },
-            { id: 9, name: "Clash of Clans", pkg: "com.supercell.clashofclans", img: "https://images.unsplash.com/photo-1563089145-599997674d42?w=300", desc: "ابنِ قريتك ودرب جيشك واهجم على القرى المجاورة." },
-            { id: 10, name: "Candy Crush Saga", pkg: "com.king.candycrushsaga", img: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=300", desc: "لعبة الألغاز والمطابقة الشهيرة بأف الآلاف من المراحل." },
-            { id: 11, name: "EA SPORTS FC Mobile", pkg: "com.ea.gp.fifamobile", img: "https://images.unsplash.com/photo-1489944440615-453fc2b6a9a9?w=300", desc: "لعبة فيفا الرسمية مع دوري الأبطال وأحدث كروت اللاعبين." },
-            { id: 12, name: "Minecraft", pkg: "com.mojang.minecraftpe", img: "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=300", desc: "عالم من المكعبات للبناء والبقاء على قيد الحياة." },
-            { id: 13, name: "GTA: San Andreas", pkg: "com.rockstargames.gtasa", img: "https://images.unsplash.com/photo-1533105079780-92b9be482077?w=300", desc: "مغامرات سي جيه الحماسية في شوارع سان أندرياس." },
-            { id: 14, name: "Stumble Guys", pkg: "com.kitkagames.fallguys", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300", desc: "لعبة الجري والمنافسة الجصية الممتعة متعددة اللاعبين." },
-            { id: 15, name: "CarX Drift Racing 2", pkg: "com.carxtech.carxdr2", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=300", desc: "أفضل تجربة تفحيط ودريفت بالسيارات بواقعية." },
-            { id: 16, name: "8 Ball Pool", pkg: "com.miniclip.eightballpool", img: "https://images.unsplash.com/photo-1517649763962-0c623266010b?w=300", desc: "لعبة البلياردو الأولى للتنافس مع أصدقائك أو لاعبين حول العالم." },
-            { id: 17, name: "Clash Royale", pkg: "com.supercell.clashroyale", img: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?w=300", desc: "معارك كروت استراتيجية مباشرة في ساحات القتال." },
-            { id: 18, name: "Hill Climb Racing", pkg: "com.fingersoft.hillclimb", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300", desc: "تحدى قوانين الفيزياء بالسيارات على التلال المرتفعة." },
-            { id: 19, name: "Ludo King", pkg: "com.ludo.king", img: "https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?w=300", desc: "لعبة اللودو الأصلية الممتعة للتجمع مع الأصدقاء." },
-            { id: 20, name: "Temple Run 2", pkg: "com.imangi.templerun2", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300", desc: "اهرُب من المعبد القديم مع تجاوز العوائق والوحوش." }
+            { id: 2, name: "Free Fire (الإصدار الأصلي)", pkg: "com.dts.freefireth", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300", desc: "اللعبة الأصلية الشهيرة للبقاء على قيد الحياة والمعارك السريعة." },
+            { id: 3, name: "PUBG MOBILE", pkg: "com.tencent.ig", img: "https://images.unsplash.com/photo-1563089145-599997674d42?w=300", desc: "لعبة القتال والناجي الأخير الرسمية الأولى عالمياً." },
+            { id: 4, name: "Subway Surfers", pkg: "com.kiloo.subwaysurf", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300", desc: "اقفز واهرب من المفتش والكلب بين قطارات الأنفاق." },
+            { id: 5, name: "eFootball 2026", pkg: "jp.konami.pesam", img: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=300", desc: "تجربة كرة القدم الواقعية من كونامي مع أشهر أندية العالم." },
+            { id: 6, name: "Roblox", pkg: "com.roblox.client", img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=300", desc: "عالم افتراضي مليء بالألعاب التي يصنعها اللاعبون." },
+            { id: 7, name: "Dream League Soccer", pkg: "com.firsttouchgames.dls3", img: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=300", desc: "ابنِ فريق أحلامك ونافس في درجات الدوري المختلفة." },
+            { id: 8, name: "Call of Duty Mobile", pkg: "com.activision.callofduty.shooter", img: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300", desc: "أقوى خرائط وأطوار القتال من منظور الشخص الأول." },
+            { id: 9, name: "Minecraft", pkg: "com.mojang.minecraftpe", img: "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=300", desc: "عالم من المكعبات للبناء والبقاء على قيد الحياة." },
+            { id: 10, name: "CarX Drift Racing 2", pkg: "com.carxtech.carxdr2", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=300", desc: "أفضل تجربة تفحيط ودريفت بالسيارات بواقعية." }
         ];
 
-        // تكملة القائمة لـ 100 لعبة متنوعة الأسماء والروابط
-        const extraNames = [
-            "Brawl Stars", "Need for Speed No Limits", "Genshin Impact", "League of Legends: Wild Rift", "Among Us",
-            "Mortal Kombat", "Shadow Fight 2", "Vector", "Score! Hero", "Head Ball 2",
-            "Fruit Ninja", "Angry Birds 2", "Plants vs Zombies", "Sonic Dash", "Jetpack Joyride",
-            "Real Racing 3", "Traffic Rider", "Sniper 3D", "Gangstar Vegas", "Dead Trigger 2",
-            "DLS 2024", "Top Eleven", "Tennis Clash", "Golf Rival", "Archero",
-            "My Talking Tom", "Pou", "Dan The Man", "Crossy Road", "Badland",
-            "Limbo", "Monument Valley", "Asphalt Nitro", "Dr. Driving", "Moto Rider GO", "Traffic Racer"
-        ];
-
-        let idCounter = 21;
-        extraNames.forEach((n, idx) => {
-            unique100GamesList.push({
-                id: idCounter++,
-                name: n,
-                pkg: `com.game.app.${idx}_fd7`,
-                img: `https://picsum.photos/seed/${idCounter}/300/200`,
-                desc: `احصل على لعبة ${n} بأحدث إصدار رسمي متوفر على المتجر.`
-            });
-        });
-
-        // استكمال الأرقام لـ 100 لعبة
-        while(unique100GamesList.length < 100) {
-            let num = unique100GamesList.length + 1;
-            unique100GamesList.push({
-                id: num,
-                name: `Game Master Pro ${num}`,
-                pkg: `com.master.game${num}`,
-                img: `https://picsum.photos/seed/game${num}/300/200`,
-                desc: `لعبة التحدي والسرعة رقم ${num} متوفرة للتنزيل المباشر.`
-            });
-        }
-
-        let apps = JSON.parse(localStorage.getItem('fd7_apps_v3'));
+        let apps = JSON.parse(localStorage.getItem('fd7_apps_v4'));
         if (!apps || apps.length === 0) {
-            apps = unique100GamesList.map(a => ({
+            apps = freeFire10GamesList.map(a => ({
                 ...a,
                 link: `https://play.google.com/store/apps/details?id=${a.pkg}`,
                 ratings: [5, 4]
             }));
-            localStorage.setItem('fd7_apps_v3', JSON.stringify(apps));
+            localStorage.setItem('fd7_apps_v4', JSON.stringify(apps));
         }
         filteredApps = [...apps];
 
@@ -309,7 +265,7 @@
             
             let progress = 0;
             const interval = setInterval(() => {
-                progress += Math.floor(Math.random() * 15) + 10;
+                progress += Math.floor(Math.random() * 20) + 15;
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(interval);
@@ -328,7 +284,7 @@
                 }
                 loaderBar.style.width = progress + '%';
                 percentageEl.textContent = progress + '%';
-            }, 40);
+            }, 30);
 
             renderApps();
         });
@@ -393,7 +349,7 @@
         function renderApps() {
             const container = document.getElementById('apps-container');
             container.innerHTML = '';
-            document.getElementById('apps-count').textContent = `${filteredApps.length} لعبة متوفرة`;
+            document.getElementById('apps-count').textContent = `${filteredApps.length} ألعاب متوفرة`;
 
             const totalPages = Math.ceil(filteredApps.length / appsPerPage) || 1;
             if (currentPage > totalPages) currentPage = totalPages;
@@ -486,7 +442,7 @@
                         ratings: []
                     });
                 }
-                localStorage.setItem('fd7_apps_v3', JSON.stringify(apps));
+                localStorage.setItem('fd7_apps_v4', JSON.stringify(apps));
                 filteredApps = [...apps];
                 renderApps();
                 closeModal('add-app-modal');
@@ -505,7 +461,7 @@
             e.stopPropagation();
             if (confirm("حذف هذه اللعبة؟")) {
                 apps = apps.filter(a => a.id !== id);
-                localStorage.setItem('fd7_apps_v3', JSON.stringify(apps));
+                localStorage.setItem('fd7_apps_v4', JSON.stringify(apps));
                 filteredApps = [...apps];
                 renderApps();
             }
@@ -522,7 +478,6 @@
             const ratingInfo = getAppRatingInfo(app);
             document.getElementById('detail-rating-display').innerHTML = `${ratingInfo.stars} <span>(${ratingInfo.text})</span>`;
 
-            // التحقق مما إذا كان المستخدم قد قيم اللعبة سابقاً
             const hasRated = localStorage.getItem(`rated_app_${currentAppId}_${currentUser ? currentUser.name : 'guest'}`);
             const starsBox = document.getElementById('stars-picker-box');
             const promptText = document.getElementById('rating-prompt-text');
@@ -541,7 +496,6 @@
             document.getElementById('app-detail-modal').style.display = 'flex';
         }
 
-        // التقييم بالنجمات
         function hoverStars(count) {
             const stars = document.querySelectorAll('#stars-picker-box span');
             stars.forEach((star, index) => {
@@ -567,7 +521,7 @@
             const app = apps.find(a => a.id === currentAppId);
             if (app) {
                 app.ratings.push(starsCount);
-                localStorage.setItem('fd7_apps_v3', JSON.stringify(apps));
+                localStorage.setItem('fd7_apps_v4', JSON.stringify(apps));
                 localStorage.setItem(rateKey, starsCount);
 
                 openAppDetail(currentAppId);
@@ -584,7 +538,7 @@
 
             downloadModal.style.display = 'flex';
             finalBtn.style.display = 'none';
-            let timeLeft = 17; // 17 ثانية مظبوطة
+            let timeLeft = 5; // تم تعديل العداد ليصبح 5 ثواني
             timerEl.textContent = timeLeft;
 
             const countdown = setInterval(() => {
@@ -594,12 +548,11 @@
                     clearInterval(countdown);
                     timerEl.textContent = "جاهز!";
                     finalBtn.style.display = 'block';
-                    redirectToFinalLink(); // توجيه تلقائي بعد انتهاء الـ 17 ثانية
+                    redirectToFinalLink();
                 }
             }, 1000);
         }
 
-        // Fفتح اللعبة المباشر في المتجر
         function redirectToFinalLink() {
             const app = apps.find(a => a.id === currentAppId);
             if (app && app.link) {
