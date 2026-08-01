@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free download 7 - FD7</title>
+    <!-- استدعاء خط Cairo الفخم -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -18,91 +19,496 @@
             --glow-red: rgba(229, 9, 20, 0.4);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; user-select: none; }
-        body { background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            user-select: none;
+        }
 
-        /* شريط التحميل */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- شريط التحميل الأسطوري --- */
         #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #040406; z-index: 9999;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #040406;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             transition: opacity 0.6s ease, visibility 0.6s;
         }
 
-        .logo-splash { font-size: 5rem; font-weight: 900; color: var(--primary-red); text-shadow: 0 0 30px rgba(229, 9, 20, 0.9); margin-bottom: 20px; }
-        .loader-bar-container { width: 85%; max-width: 600px; height: 24px; background: #121216; border-radius: 50px; overflow: hidden; border: 2px solid rgba(229, 9, 20, 0.5); padding: 3px; }
-        .loader-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #800000, var(--primary-red), #ff4d4d); border-radius: 50px; transition: width 0.1s linear; }
-        .splash-percentage { margin-top: 15px; font-size: 1.3rem; font-weight: 700; }
+        .logo-splash {
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--primary-red);
+            text-shadow: 0 0 30px rgba(229, 9, 20, 0.9), 0 0 60px rgba(229, 9, 20, 0.5);
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            animation: pulse 1s infinite alternate;
+        }
 
-        /* الهيدر */
-        header { background-color: rgba(20, 20, 25, 0.95); border-bottom: 2px solid var(--primary-red); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
-        .brand h1 { font-size: 1.8rem; font-weight: 900; cursor: pointer; }
+        .loader-bar-container {
+            width: 85%;
+            max-width: 600px;
+            height: 26px;
+            background: #121216;
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(229, 9, 20, 0.3), inset 0 0 10px #000;
+            border: 2px solid rgba(229, 9, 20, 0.5);
+            padding: 3px;
+            position: relative;
+        }
+
+        .loader-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #800000, var(--primary-red), #ff4d4d);
+            background-size: 200% 100%;
+            box-shadow: 0 0 20px var(--primary-red);
+            border-radius: 50px;
+            transition: width 0.1s linear;
+            animation: glowMove 1.5s linear infinite;
+        }
+
+        .splash-percentage {
+            margin-top: 15px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        @keyframes glowMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); text-shadow: 0 0 20px rgba(229, 9, 20, 0.8); }
+            100% { transform: scale(1.06); text-shadow: 0 0 40px rgba(229, 9, 20, 1); }
+        }
+
+        /* --- الهيدر و القائمة العلوية --- */
+        header {
+            background-color: rgba(20, 20, 25, 0.95);
+            border-bottom: 2px solid var(--primary-red);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .brand h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .brand h1:hover { text-shadow: 0 0 15px var(--glow-red); }
         .brand span { color: var(--primary-red); }
-        .dev-badge { background: var(--primary-red); color: #fff; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: bold; margin-right: 5px; }
 
-        .profile-btn { display: flex; align-items: center; gap: 10px; background: #1c1c24; padding: 6px 14px; border-radius: 30px; cursor: pointer; border: 1px solid var(--border-color); }
-        .profile-img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-red); }
+        .dev-badge {
+            background: var(--primary-red);
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-right: 5px;
+            box-shadow: 0 0 8px var(--glow-red);
+        }
 
-        .dropdown-menu { position: absolute; left: 5%; top: 65px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; width: 180px; display: none; flex-direction: column; overflow: hidden; z-index: 101; }
-        .dropdown-menu.active { display: flex; }
-        .dropdown-item { padding: 12px 15px; cursor: pointer; font-size: 0.9rem; }
+        .user-section { position: relative; }
+
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #1c1c24;
+            padding: 6px 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            transition: 0.3s;
+        }
+
+        .profile-btn:hover {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 12px var(--glow-red);
+        }
+
+        .profile-img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-red);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            left: 0;
+            top: 55px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            width: 190px;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            overflow: hidden;
+            z-index: 101;
+            transform: translateY(-10px);
+            opacity: 0;
+            transition: 0.3s ease;
+        }
+
+        .dropdown-menu.active {
+            display: flex;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .dropdown-item {
+            padding: 12px 15px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
         .dropdown-item:hover { background: var(--primary-red); }
 
-        /* المحتوى */
-        main { flex: 1; padding: 30px 5%; max-width: 1200px; margin: 0 auto; width: 100%; }
-        .search-container { margin-bottom: 25px; display: flex; justify-content: center; }
-        .search-input { width: 100%; max-width: 600px; padding: 12px 20px; background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 30px; color: #fff; font-size: 1rem; outline: none; }
-        .search-input:focus { border-color: var(--primary-red); box-shadow: 0 0 15px var(--glow-red); }
+        /* --- المحتوى الرئيسي والتطبيقات --- */
+        main {
+            flex: 1;
+            padding: 30px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
 
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .section-title { font-size: 1.5rem; border-right: 4px solid var(--primary-red); padding-right: 12px; }
-        .apps-count-badge { background: rgba(229, 9, 20, 0.2); color: var(--primary-red); border: 1px solid var(--primary-red); padding: 4px 12px; border-radius: 20px; font-weight: bold; }
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            border-right: 4px solid var(--primary-red);
+            padding-right: 12px;
+            text-shadow: 0 0 10px rgba(229, 9, 20, 0.3);
+        }
 
-        .apps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
-        .app-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 15px; display: flex; flex-direction: column; gap: 10px; transition: 0.3s; position: relative; }
-        .app-card:hover { transform: translateY(-5px); border-color: var(--primary-red); box-shadow: 0 8px 25px rgba(229, 9, 20, 0.3); }
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 22px;
+        }
 
-        .action-btns-dev { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; z-index: 5; }
-        .dev-action-btn { width: 32px; height: 32px; border-radius: 50%; border: none; color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+        .app-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .app-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--primary-red);
+            box-shadow: 0 12px 30px rgba(229, 9, 20, 0.35);
+        }
+
+        .action-btns-dev {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            gap: 6px;
+            z-index: 5;
+        }
+
+        .dev-action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+
         .btn-edit-dev { background: #ff9800; }
-        .btn-delete-dev { background: var(--primary-red); }
+        .btn-edit-dev:hover { background: #e68a00; transform: scale(1.15); }
+        .btn-delete-dev { background: rgba(229, 9, 20, 0.9); }
+        .btn-delete-dev:hover { background: #ff0000; transform: scale(1.15); }
 
-        .app-icon { width: 100%; height: 150px; border-radius: 10px; object-fit: cover; background: #111; }
-        .app-title { font-size: 1.1rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .rating-stars-display { color: var(--star-gold); font-size: 0.9rem; }
-        .app-desc { font-size: 0.85rem; color: var(--text-gray); height: 38px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
+        .app-icon {
+            width: 100%;
+            height: 160px;
+            border-radius: 10px;
+            object-fit: cover;
+            background: #000;
+            transition: 0.3s;
+        }
 
-        .btn { background: var(--primary-red); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: center; transition: 0.2s; width: 100%; text-decoration: none; display: block; }
-        .btn:hover { background: var(--hover-red); }
+        .app-card:hover .app-icon { filter: brightness(1.1); }
 
-        .pagination-container { display: flex; justify-content: center; gap: 8px; margin-top: 30px; flex-wrap: wrap; }
-        .page-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: #fff; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .page-btn.active, .page-btn:hover { background: var(--primary-red); border-color: var(--primary-red); }
+        .app-title { font-size: 1.2rem; font-weight: 700; }
 
-        .add-app-fab { position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px; background: var(--primary-red); color: #fff; border-radius: 50%; display: none; justify-content: center; align-items: center; font-size: 2rem; box-shadow: 0 4px 20px rgba(229, 9, 20, 0.6); cursor: pointer; z-index: 90; }
+        .rating-stars-display {
+            color: var(--star-gold);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
 
-        /* النوافذ */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(8px); padding: 20px; }
-        .modal-content { background: var(--card-bg); border: 1px solid var(--primary-red); border-radius: 14px; width: 100%; max-width: 450px; padding: 25px; position: relative; box-shadow: 0 0 30px rgba(229, 9, 20, 0.3); }
-        .modal-title { font-size: 1.3rem; margin-bottom: 15px; color: var(--primary-red); text-align: center; font-weight: 700; }
+        .app-desc {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            height: 40px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .btn {
+            background: var(--primary-red);
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.2);
+        }
+
+        .btn:hover {
+            background: var(--hover-red);
+            box-shadow: 0 6px 18px rgba(229, 9, 20, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn:active { transform: translateY(0); }
+
+        /* نظام الصفحات (Pagination) */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .page-btn.active, .page-btn:hover {
+            background: var(--primary-red);
+            border-color: var(--primary-red);
+            box-shadow: 0 0 10px var(--glow-red);
+        }
+
+        .add-app-fab {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--primary-red);
+            color: #fff;
+            border-radius: 50%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 25px rgba(229, 9, 20, 0.7);
+            cursor: pointer;
+            z-index: 90;
+            transition: 0.3s;
+        }
+
+        .add-app-fab:hover { transform: scale(1.1) rotate(90deg); }
+
+        /* --- النوافذ المنبثقة (Modals) --- */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--primary-red);
+            border-radius: 14px;
+            width: 100%;
+            max-width: 480px;
+            padding: 25px;
+            position: relative;
+            box-shadow: 0 0 35px rgba(229, 9, 20, 0.35);
+            animation: modalPop 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--primary-red);
+            text-align: center;
+            font-weight: 700;
+        }
+
         .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; color: var(--text-gray); }
-        .form-group input, .form-group textarea { width: 100%; padding: 10px; background: #0a0a0c; border: 1px solid var(--border-color); color: #fff; border-radius: 8px; outline: none; }
-        .close-btn { position: absolute; top: 12px; left: 18px; font-size: 1.6rem; color: var(--text-gray); cursor: pointer; }
 
-        /* التقييم المظبوط */
-        .interactive-rating { display: flex; gap: 8px; font-size: 2rem; color: #444; cursor: pointer; margin: 15px 0; justify-content: center; direction: ltr; }
-        .interactive-rating span { transition: color 0.2s; }
-        .interactive-rating span.active { color: var(--star-gold); }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            color: var(--text-gray);
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            background: #0a0a0c;
+            border: 1px solid var(--border-color);
+            color: #fff;
+            border-radius: 8px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 8px var(--glow-red);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            left: 18px;
+            font-size: 1.6rem;
+            color: var(--text-gray);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .close-btn:hover { color: var(--primary-red); }
+
+        .comments-section {
+            margin-top: 15px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+        }
+
+        .comments-list {
+            max-height: 120px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .comment-item {
+            background: #0a0a0c;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .comment-user { color: var(--primary-red); font-weight: bold; }
 
         .download-timer-container { text-align: center; padding: 20px 0; }
-        .timer-circle { font-size: 3.5rem; font-weight: 900; color: var(--primary-red); margin: 10px 0; }
 
-        footer { background: #040406; text-align: center; padding: 20px; border-top: 1px solid var(--border-color); color: var(--text-gray); font-size: 0.85rem; margin-top: auto; }
+        .timer-circle {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--primary-red);
+            margin: 15px 0;
+            text-shadow: 0 0 20px rgba(229, 9, 20, 0.6);
+            animation: pulse 1s infinite alternate;
+        }
+
+        footer {
+            background: #040406;
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-gray);
+            font-size: 0.85rem;
+            margin-top: auto;
+        }
     </style>
 </head>
 <body>
 
+    <!-- شريط التحميل الأسطوري (Splash Screen) -->
     <div id="splash-screen">
         <div class="logo-splash">FD7</div>
         <div class="loader-bar-container">
@@ -111,13 +517,14 @@
         <div class="splash-percentage" id="splash-percentage">0%</div>
     </div>
 
+    <!-- الهيدر -->
     <header>
         <div class="brand" onclick="showHome()">
             <h1>Free download <span>7</span></h1>
         </div>
         <div class="user-section">
             <div class="profile-btn" onclick="toggleDropdown()">
-                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop" id="header-avatar" class="profile-img" alt="Avatar">
+                <img src="https://via.placeholder.com/38/e50914/ffffff?text=User" id="header-avatar" class="profile-img" alt="Avatar">
                 <span id="header-username">زائر</span>
                 <span id="dev-tag" class="dev-badge" style="display: none;">مطور</span>
             </div>
@@ -128,58 +535,90 @@
         </div>
     </header>
 
+    <!-- المحتوى الرئيسي -->
     <main>
-        <div class="search-container">
-            <input type="text" id="search-input" class="search-input" placeholder="ابحث عن أي لعبة فري فاير أو لعبة أخرى..." oninput="handleSearch()">
-        </div>
-
-        <div class="section-header">
-            <h2 class="section-title">الألعاب المتاحة للتحميل</h2>
-            <div class="apps-count-badge" id="apps-count">10 ألعاب متوفرة</div>
-        </div>
-
+        <h2 class="section-title">التطبيقات والألعاب المتاحة</h2>
         <div class="apps-grid" id="apps-container"></div>
         <div class="pagination-container" id="pagination-container"></div>
     </main>
 
+    <!-- زر إضافة تطبيق (للمطور فقط) -->
     <div class="add-app-fab" id="add-app-btn" onclick="openAddAppModal()">+</div>
 
-    <!-- 1. تسجيل الدخول -->
+    <!-- 1. نافذة تسجيل الدخول -->
     <div class="modal" id="login-modal">
         <div class="modal-content">
             <div class="modal-title">تسجيل الدخول</div>
-            <div class="form-group"><label>اسم المستخدم</label><input type="text" id="login-username"></div>
-            <div class="form-group"><label>كلمة السر</label><input type="password" id="login-password"></div>
+            <div class="form-group">
+                <label>اسم المستخدم</label>
+                <input type="text" id="login-username" placeholder="أدخل اسمك">
+            </div>
+            <div class="form-group">
+                <label>كلمة السر</label>
+                <input type="password" id="login-password" placeholder="أدخل كلمة السر">
+            </div>
             <button class="btn" onclick="login()">دخول</button>
         </div>
     </div>
 
-    <!-- 2. تعديل البروفايل -->
+    <!-- 2. نافذة تعديل البروفايل -->
     <div class="modal" id="edit-profile-modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('edit-profile-modal')">&times;</span>
             <div class="modal-title">تعديل البروفايل</div>
-            <div class="form-group"><label>اسم جديد</label><input type="text" id="edit-username"></div>
-            <div class="form-group"><label>اختر صورة جديدة</label><input type="file" id="edit-avatar-file" accept="image/*"></div>
+            <div class="form-group">
+                <label>اسم جديد</label>
+                <input type="text" id="edit-username">
+            </div>
+            <div class="form-group">
+                <label>اختر صورة جديدة من الجهاز</label>
+                <input type="file" id="edit-avatar-file" accept="image/*">
+            </div>
             <button class="btn" onclick="saveProfile()">حفظ التعديلات</button>
         </div>
     </div>
 
-    <!-- 3. إضافة / تعديل لعبة للمطور -->
+    <!-- 3. نافذة إضافة / تعديل تطبيق (للمطور) -->
     <div class="modal" id="add-app-modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('add-app-modal')">&times;</span>
-            <div class="modal-title" id="modal-app-title">إضافة لعبة جديدة</div>
+            <div class="modal-title" id="modal-app-title">إضافة تطبيق / لعبة جديدة</div>
             <input type="hidden" id="edit-app-id">
-            <div class="form-group"><label>اسم اللعبة</label><input type="text" id="app-name"></div>
-            <div class="form-group"><label>صورة اللعبة من الجهاز</label><input type="file" id="app-img-file" accept="image/*"></div>
-            <div class="form-group"><label>رابط تحميل اللعبة</label><input type="text" id="app-link" placeholder="https://..."></div>
-            <div class="form-group"><label>الوصف التفصيلي</label><textarea id="app-desc" rows="3"></textarea></div>
+            <div class="form-group">
+                <label>اسم التطبيق أو اللعبة</label>
+                <input type="text" id="app-name">
+            </div>
+            <div class="form-group">
+                <label>تقييم التطبيق (من قبل المطور)</label>
+                <select id="app-rating-value">
+                    <option value="5.0">5.0 ★★★★★ (ممتاز جداً)</option>
+                    <option value="4.8">4.8 ★★★★☆ (ممتاز)</option>
+                    <option value="4.5">4.5 ★★★★☆ (جيد جداً)</option>
+                    <option value="4.0">4.0 ★★★★☆ (جيد)</option>
+                    <option value="3.5">3.5 ★★★☆☆ (متوسط)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>عدد التقييمات الظاهري (مثال: 1200 أو 1k)</label>
+                <input type="text" id="app-rating-count" placeholder="1.2k">
+            </div>
+            <div class="form-group">
+                <label>اختر صورة التطبيق من الجهاز</label>
+                <input type="file" id="app-img-file" accept="image/*">
+            </div>
+            <div class="form-group">
+                <label>رابط التحميل</label>
+                <input type="text" id="app-link" placeholder="https://...">
+            </div>
+            <div class="form-group">
+                <label>الوصف</label>
+                <textarea id="app-desc" rows="3"></textarea>
+            </div>
             <button class="btn" onclick="saveApp()">حفظ ونشر</button>
         </div>
     </div>
 
-    <!-- 4. تفاصيل والتقييم المظبوط -->
+    <!-- 4. نافذة تفاصيل التطبيق والتعليقات -->
     <div class="modal" id="app-detail-modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('app-detail-modal')">&times;</span>
@@ -190,73 +629,123 @@
                     <div id="detail-rating-display" class="rating-stars-display" style="margin-top: 4px;"></div>
                 </div>
             </div>
+            <p id="detail-desc" style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;"></p>
             
-            <p id="detail-desc" style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px; line-height: 1.5;"></p>
+            <button class="btn" onclick="startDownloadProcess()">تحميل الآن</button>
 
-            <div style="text-align: center; border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 10px;">
-                <span id="rating-prompt-text" style="font-size:0.85rem;">اختر تقييمك لهذه اللعبة (مرة واحدة فقط):</span>
-                <div class="interactive-rating" id="stars-picker-box">
-                    <span onclick="rateApp(1)" onmouseover="hoverStars(1)" onmouseout="resetStarsHover()">★</span>
-                    <span onclick="rateApp(2)" onmouseover="hoverStars(2)" onmouseout="resetStarsHover()">★</span>
-                    <span onclick="rateApp(3)" onmouseover="hoverStars(3)" onmouseout="resetStarsHover()">★</span>
-                    <span onclick="rateApp(4)" onmouseover="hoverStars(4)" onmouseout="resetStarsHover()">★</span>
-                    <span onclick="rateApp(5)" onmouseover="hoverStars(5)" onmouseout="resetStarsHover()">★</span>
+            <!-- قسم التعليقات -->
+            <div class="comments-section">
+                <h4 style="font-size: 0.85rem; margin-bottom: 5px;">تعليقات المستخدمين:</h4>
+                <div class="comments-list" id="comments-list"></div>
+                <div style="display: flex; gap: 5px;">
+                    <input type="text" id="comment-input" style="flex:1; padding:6px 10px; background:#0a0a0c; border:1px solid #333; color:#fff; border-radius:6px; font-size:0.85rem;" placeholder="أكتب تعليقك هنا...">
+                    <button class="btn" style="width: auto; padding: 6px 15px; font-size: 0.85rem;" onclick="addComment()">نشر</button>
                 </div>
             </div>
-
-            <button class="btn" onclick="startDownloadProcess()">تحميل اللعبة 📥</button>
         </div>
     </div>
 
-    <!-- 5. العداد 17 ثانية والتحميل المباشر -->
+    <!-- 5. نافذة صفحة التحميل (العداد) -->
     <div class="modal" id="download-page-modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('download-page-modal')">&times;</span>
             <div class="download-timer-container">
-                <h3>جاري تجهيز رابط التحميل...</h3>
+                <h3>جاري تحضير رابط التحميل...</h3>
                 <div class="timer-circle" id="timer">17</div>
-                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">يرجى الانتظار حتى اكتمال العد التنازلي لبدء التحميل المباشر.</p>
-                <a href="#" id="final-download-btn" class="btn" style="display: none;" target="_blank">تحميل الملف الآن 📥</a>
+                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">يرجى الانتظار، سيظهر زر التحميل عند انتهاء الوقت.</p>
+                <button class="btn" id="final-download-btn" style="display: none;" onclick="redirectToFinalLink()">توجيه للتحميل الآن</button>
             </div>
         </div>
     </div>
 
+    <!-- الفوتر -->
     <footer>
         حقوق الطبع والنشر © 2026 - Free download 7. جميع الحقوق محفوظة.
     </footer>
 
     <script>
+        // --- محرك الصوت عبر Web Audio API ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playClickSound() {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.08);
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.08);
+        }
+
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('button') || e.target.closest('.btn') || e.target.closest('.app-card') || e.target.closest('.profile-btn') || e.target.closest('.close-btn') || e.target.closest('.dropdown-item') || e.target.closest('.page-btn')) {
+                playClickSound();
+            }
+        });
+
         let currentUser = null;
         let currentPage = 1;
-        const appsPerPage = 10;
-        let filteredApps = [];
+        const appsPerPage = 12;
 
-        // قائمة الـ 10 ألعاب المحدثة (بدون ساب واي وماين كرافت، مع إضافة بلود استرايك ودلتا فورست)
-        const freeFire10GamesList = [
-            { id: 1, name: "Free Fire MAX", img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300", desc: "لعبة الباتل رويال الشهيرة بجرافيك عالي القوة ومواجهات حماسية.", link: "#" },
-            { id: 2, name: "Free Fire (الإصدار الأصلي)", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300", desc: "اللعبة الأصلية الشهيرة للبقاء على قيد الحياة والمعارك السريعة.", link: "#" },
-            { id: 3, name: "PUBG MOBILE", img: "https://images.unsplash.com/photo-1563089145-599997674d42?w=300", desc: "لعبة القتال والناجي الأخير الرسمية الأولى عالمياً.", link: "#" },
-            { id: 4, name: "Blood Strike", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300", desc: "لعبة باتل رويال سريعة الإيقاع وعالية الأداء لأجهزة الجوال.", link: "#" },
-            { id: 5, name: "eFootball 2026", img: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=300", desc: "تجربة كرة القدم الواقعية من كونامي مع أشهر أندية العالم.", link: "#" },
-            { id: 6, name: "Roblox", img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=300", desc: "عالم افتراضي مليء بالألعاب التي يصنعها اللاعبون.", link: "#" },
-            { id: 7, name: "Delta Force", img: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300", desc: "لعبة الاكشن والتكتيكات العسكرية الحربية الكبرى.", link: "#" },
-            { id: 8, name: "Call of Duty Mobile", img: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300", desc: "أقوى خرائط وأطوار القتال من منظور الشخص الأول.", link: "#" },
-            { id: 9, name: "Dream League Soccer", img: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=300", desc: "ابنِ فريق أحلامك ونافس في درجات الدوري المختلفة.", link: "#" },
-            { id: 10, name: "CarX Drift Racing 2", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=300", desc: "أفضل تجربة تفحيط ودريفت بالسيارات بواقعية.", link: "#" }
+        let apps = JSON.parse(localStorage.getItem('fd7_apps')) || [
+            {
+                id: 1,
+                name: "Free Fire Max",
+                img: "https://via.placeholder.com/300x150/111111/e50914?text=Free+Fire",
+                link: "https://google.com",
+                desc: "لعبة الباتل رويال الشهيرة بأعلى جودة جرافيك.",
+                ratingValue: "4.9",
+                ratingCount: "1.5k",
+                comments: [{user: "أحمد", text: "لعبة ممتازة جداً!"}],
+                timestamp: Date.now()
+            }
         ];
-
-        let apps = JSON.parse(localStorage.getItem('fd7_apps_v5'));
-        if (!apps || apps.length === 0) {
-            apps = freeFire10GamesList.map(a => ({
-                ...a,
-                ratings: [5, 4]
-            }));
-            localStorage.setItem('fd7_apps_v5', JSON.stringify(apps));
-        }
-        filteredApps = [...apps];
-
         let currentAppId = null;
 
+        // --- دالة ضغط الصور لتجنب امتلاء الـ localStorage ---
+        function compressImage(file, callback) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function(event) {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 400;
+                    const MAX_HEIGHT = 200;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // ضغط الجودة لـ 70% لضمان استيعاب 1000+ لعبة
+                    callback(canvas.toDataURL('image/jpeg', 0.7));
+                }
+            }
+        }
+
+        // --- شريط التحميل وحساب المئوية عند الانطلاق ---
         window.addEventListener('DOMContentLoaded', () => {
             const loaderBar = document.getElementById('loader-bar');
             const percentageEl = document.getElementById('splash-percentage');
@@ -264,10 +753,11 @@
             
             let progress = 0;
             const interval = setInterval(() => {
-                progress += Math.floor(Math.random() * 20) + 15;
+                progress += Math.floor(Math.random() * 12) + 5;
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(interval);
+                    
                     setTimeout(() => {
                         splashScreen.style.opacity = '0';
                         splashScreen.style.visibility = 'hidden';
@@ -283,28 +773,29 @@
                 }
                 loaderBar.style.width = progress + '%';
                 percentageEl.textContent = progress + '%';
-            }, 30);
+            }, 80);
 
             renderApps();
         });
 
-        function handleSearch() {
-            const query = document.getElementById('search-input').value.trim().toLowerCase();
-            filteredApps = query ? apps.filter(app => app.name.toLowerCase().includes(query) || app.desc.toLowerCase().includes(query)) : [...apps];
-            currentPage = 1;
-            renderApps();
-        }
-
+        // --- نظام تسجيل الدخول ---
         function login() {
             const nameInput = document.getElementById('login-username').value.trim();
             const passInput = document.getElementById('login-password').value.trim();
 
-            if (!nameInput || !passInput) { alert('ادخل الاسم وكلمة السر!'); return; }
+            if (!nameInput || !passInput) {
+                alert('الرجاء إدخال الاسم وكلمة السر!');
+                return;
+            }
 
-            let isDev = (nameInput === "0mar_S7" && passInput === "14581000omar30305036");
+            let isDev = false;
+            if (nameInput === "0mar_S7" && passInput === "14581000omar30305036") {
+                isDev = true;
+            }
+
             currentUser = {
                 name: nameInput,
-                avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop",
+                avatar: "https://via.placeholder.com/38/e50914/ffffff?text=" + nameInput.charAt(0).toUpperCase(),
                 isDev: isDev
             };
 
@@ -321,6 +812,7 @@
 
         function updateUI() {
             if (!currentUser) return;
+            
             document.getElementById('header-username').textContent = currentUser.name;
             document.getElementById('header-avatar').src = currentUser.avatar;
 
@@ -334,48 +826,44 @@
             renderApps();
         }
 
-        function toggleDropdown() { document.getElementById('dropdown-menu').classList.toggle('active'); }
-
-        function getAppRatingInfo(app) {
-            if (!app.ratings || app.ratings.length === 0) return { text: "بدون تقييم", stars: "☆☆☆☆☆" };
-            const avg = app.ratings.reduce((a, b) => a + b, 0) / app.ratings.length;
-            return {
-                text: `${avg.toFixed(1)} (${app.ratings.length})`,
-                stars: "★".repeat(Math.round(avg)) + "☆".repeat(5 - Math.round(avg))
-            };
+        function toggleDropdown() {
+            document.getElementById('dropdown-menu').classList.toggle('active');
         }
 
+        // --- عرض التطبيقات بنظام الصفحات لاستيعاب 1k+ تطبيق بسهولة ---
         function renderApps() {
             const container = document.getElementById('apps-container');
             container.innerHTML = '';
-            document.getElementById('apps-count').textContent = `${filteredApps.length} ألعاب متوفرة`;
 
-            const totalPages = Math.ceil(filteredApps.length / appsPerPage) || 1;
+            const sortedApps = [...apps].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            
+            const totalPages = Math.ceil(sortedApps.length / appsPerPage) || 1;
             if (currentPage > totalPages) currentPage = totalPages;
 
             const startIndex = (currentPage - 1) * appsPerPage;
-            const paginatedApps = filteredApps.slice(startIndex, startIndex + appsPerPage);
+            const paginatedApps = sortedApps.slice(startIndex, startIndex + appsPerPage);
 
             paginatedApps.forEach(app => {
                 const card = document.createElement('div');
                 card.className = 'app-card';
                 
-                let devBtns = currentUser && currentUser.isDev ? `
-                    <div class="action-btns-dev">
-                        <button class="dev-action-btn btn-edit-dev" onclick="openEditAppModal(event, ${app.id})">✏️</button>
-                        <button class="dev-action-btn btn-delete-dev" onclick="deleteApp(event, ${app.id})">&times;</button>
-                    </div>
-                ` : '';
-
-                const ratingInfo = getAppRatingInfo(app);
+                let devButtonsHTML = '';
+                if (currentUser && currentUser.isDev) {
+                    devButtonsHTML = `
+                        <div class="action-btns-dev">
+                            <button class="dev-action-btn btn-edit-dev" onclick="openEditAppModal(event, ${app.id})" title="تعديل التطبيق">✏️</button>
+                            <button class="dev-action-btn btn-delete-dev" onclick="deleteApp(event, ${app.id})" title="حذف التطبيق">&times;</button>
+                        </div>
+                    `;
+                }
 
                 card.innerHTML = `
-                    ${devBtns}
-                    <img src="${app.img}" class="app-icon" alt="${app.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300'">
+                    ${devButtonsHTML}
+                    <img src="${app.img}" class="app-icon" alt="${app.name}" onerror="this.src='https://via.placeholder.com/300x150/111111/e50914?text=FD7'">
                     <div class="app-title">${app.name}</div>
-                    <div class="rating-stars-display">${ratingInfo.stars} <span>${ratingInfo.text}</span></div>
+                    <div class="rating-stars-display">★ ${app.ratingValue || "5.0"} <span style="color:var(--text-gray); font-size:0.75rem;">(${app.ratingCount || "100"})</span></div>
                     <div class="app-desc">${app.desc}</div>
-                    <button class="btn" onclick="openAppDetail(${app.id})">تحميل اللعبة</button>
+                    <button class="btn" onclick="openAppDetail(${app.id})">تحميل</button>
                 `;
                 container.appendChild(card);
             });
@@ -384,88 +872,121 @@
         }
 
         function renderPagination(totalPages) {
-            const container = document.getElementById('pagination-container');
-            container.innerHTML = '';
+            const paginationContainer = document.getElementById('pagination-container');
+            paginationContainer.innerHTML = '';
             if (totalPages <= 1) return;
 
             for (let i = 1; i <= totalPages; i++) {
                 const btn = document.createElement('button');
                 btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
                 btn.textContent = i;
-                btn.onclick = () => { currentPage = i; renderApps(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-                container.appendChild(btn);
+                btn.onclick = () => {
+                    currentPage = i;
+                    renderApps();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                };
+                paginationContainer.appendChild(btn);
             }
         }
 
+        // --- إدارة التطبيقات بواسطة المطور ---
         function openAddAppModal() {
-            document.getElementById('modal-app-title').textContent = "إضافة لعبة جديدة";
+            document.getElementById('modal-app-title').textContent = "إضافة تطبيق / لعبة جديدة";
             document.getElementById('edit-app-id').value = "";
             document.getElementById('app-name').value = "";
+            document.getElementById('app-rating-value').value = "5.0";
+            document.getElementById('app-rating-count').value = "1k";
             document.getElementById('app-link').value = "";
             document.getElementById('app-desc').value = "";
+            document.getElementById('app-img-file').value = "";
             document.getElementById('add-app-modal').style.display = 'flex';
         }
 
-        function openEditAppModal(e, id) {
-            e.stopPropagation();
+        function openEditAppModal(event, id) {
+            event.stopPropagation();
             const app = apps.find(a => a.id === id);
             if (!app) return;
-            document.getElementById('modal-app-title').textContent = "تعديل اللعبة";
+
+            document.getElementById('modal-app-title').textContent = "تعديل التطبيق المنشور";
             document.getElementById('edit-app-id').value = app.id;
             document.getElementById('app-name').value = app.name;
+            document.getElementById('app-rating-value').value = app.ratingValue || "5.0";
+            document.getElementById('app-rating-count').value = app.ratingCount || "1k";
             document.getElementById('app-link').value = app.link;
             document.getElementById('app-desc').value = app.desc;
+            document.getElementById('app-img-file').value = "";
+            
             document.getElementById('add-app-modal').style.display = 'flex';
         }
 
         function saveApp() {
             const editId = document.getElementById('edit-app-id').value;
             const name = document.getElementById('app-name').value.trim();
+            const ratingValue = document.getElementById('app-rating-value').value;
+            const ratingCount = document.getElementById('app-rating-count').value.trim() || "1k";
             const link = document.getElementById('app-link').value.trim();
             const desc = document.getElementById('app-desc').value.trim();
             const imgFile = document.getElementById('app-img-file').files[0];
 
-            if (!name || !link) { alert('ادخل الاسم ورابط اللعبة!'); return; }
+            if (!name || !link) {
+                alert('الرجاء كتابة اسم التطبيق ورابط التحميل!');
+                return;
+            }
 
             const processSave = (imgUrl) => {
-                if (editId) {
-                    const app = apps.find(a => a.id == editId);
-                    if (app) {
-                        app.name = name; app.link = link; app.desc = desc;
-                        if (imgUrl) app.img = imgUrl;
+                try {
+                    if (editId) {
+                        const appIndex = apps.findIndex(a => a.id == editId);
+                        if (appIndex !== -1) {
+                            apps[appIndex].name = name;
+                            apps[appIndex].ratingValue = ratingValue;
+                            apps[appIndex].ratingCount = ratingCount;
+                            apps[appIndex].link = link;
+                            apps[appIndex].desc = desc || "لا يوجد وصف متاح.";
+                            if (imgUrl) apps[appIndex].img = imgUrl;
+                        }
+                    } else {
+                        const newApp = {
+                            id: Date.now(),
+                            name: name,
+                            img: imgUrl || "https://via.placeholder.com/300x150/111111/e50914?text=FD7",
+                            link: link,
+                            desc: desc || "لا يوجد وصف متاح.",
+                            ratingValue: ratingValue,
+                            ratingCount: ratingCount,
+                            comments: [],
+                            timestamp: Date.now()
+                        };
+                        apps.push(newApp);
                     }
-                } else {
-                    apps.unshift({
-                        id: Date.now(), name: name, link: link, desc: desc,
-                        img: imgUrl || "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300",
-                        ratings: []
-                    });
+
+                    localStorage.setItem('fd7_apps', JSON.stringify(apps));
+                    renderApps();
+                    closeModal('add-app-modal');
+                } catch (e) {
+                    alert('مساحة التخزين ممتلئة! يرجى اختيار صورة أصغر حجماً.');
                 }
-                localStorage.setItem('fd7_apps_v5', JSON.stringify(apps));
-                filteredApps = [...apps];
-                renderApps();
-                closeModal('add-app-modal');
             };
 
             if (imgFile) {
-                const reader = new FileReader();
-                reader.onload = (e) => processSave(e.target.result);
-                reader.readAsDataURL(imgFile);
+                compressImage(imgFile, function(compressedBase64) {
+                    processSave(compressedBase64);
+                });
             } else {
                 processSave(null);
             }
         }
 
-        function deleteApp(e, id) {
-            e.stopPropagation();
-            if (confirm("حذف هذه اللعبة؟")) {
+        function deleteApp(event, id) {
+            event.stopPropagation();
+            if (confirm("هل أنت تأكد من رغبتك في مسح هذا التطبيق نهائياً؟")) {
                 apps = apps.filter(a => a.id !== id);
-                localStorage.setItem('fd7_apps_v5', JSON.stringify(apps));
-                filteredApps = [...apps];
+                localStorage.setItem('fd7_apps', JSON.stringify(apps));
                 renderApps();
             }
         }
 
+        // --- تفاصيل والتعليقات ---
         function openAppDetail(id) {
             currentAppId = id;
             const app = apps.find(a => a.id === id);
@@ -474,88 +995,48 @@
             document.getElementById('detail-title').textContent = app.name;
             document.getElementById('detail-img').src = app.img;
             document.getElementById('detail-desc').textContent = app.desc;
-            const ratingInfo = getAppRatingInfo(app);
-            document.getElementById('detail-rating-display').innerHTML = `${ratingInfo.stars} <span>(${ratingInfo.text})</span>`;
+            document.getElementById('detail-rating-display').innerHTML = `★ ${app.ratingValue || "5.0"} <span style="color:var(--text-gray); font-size:0.75rem;">(${app.ratingCount || "100"} تقييم)</span>`;
 
-            const hasRated = localStorage.getItem(`rated_app_${currentAppId}_${currentUser ? currentUser.name : 'guest'}`);
-            const starsBox = document.getElementById('stars-picker-box');
-            const promptText = document.getElementById('rating-prompt-text');
-
-            if (hasRated) {
-                starsBox.style.pointerEvents = 'none';
-                starsBox.style.opacity = '0.5';
-                promptText.textContent = `لقد قمت بتقييم هذه اللعبة بـ (${hasRated} نجوم) سابقاً!`;
-            } else {
-                starsBox.style.pointerEvents = 'auto';
-                starsBox.style.opacity = '1';
-                promptText.textContent = "اختر تقييمك لهذه اللعبة (مرة واحدة فقط):";
-            }
-
-            resetStarsHover();
+            renderComments(app);
             document.getElementById('app-detail-modal').style.display = 'flex';
         }
 
-        function hoverStars(count) {
-            const stars = document.querySelectorAll('#stars-picker-box span');
-            stars.forEach((star, index) => {
-                if (index < count) star.classList.add('active');
-                else star.classList.remove('active');
+        function renderComments(app) {
+            const list = document.getElementById('comments-list');
+            list.innerHTML = '';
+            if (!app.comments || app.comments.length === 0) {
+                list.innerHTML = '<div style="color:#666; font-size:0.8rem;">لا يوجد تعليقات بعد.</div>';
+                return;
+            }
+            app.comments.forEach(c => {
+                const item = document.createElement('div');
+                item.className = 'comment-item';
+                item.innerHTML = `<span class="comment-user">${c.user}:</span> ${c.text}`;
+                list.appendChild(item);
             });
         }
 
-        function resetStarsHover() {
-            const stars = document.querySelectorAll('#stars-picker-box span');
-            stars.forEach(s => s.classList.remove('active'));
-        }
-
-        function rateApp(starsCount) {
-            const userKey = currentUser ? currentUser.name : 'guest';
-            const rateKey = `rated_app_${currentAppId}_${userKey}`;
-
-            if (localStorage.getItem(rateKey)) {
-                alert("عفواً، لا يمكنك التقييم سوى مرة واحدة فقط لكل لعبة!");
-                return;
-            }
+        function addComment() {
+            const input = document.getElementById('comment-input');
+            const text = input.value.trim();
+            if (!text) return;
 
             const app = apps.find(a => a.id === currentAppId);
             if (app) {
-                app.ratings.push(starsCount);
-                localStorage.setItem('fd7_apps_v5', JSON.stringify(apps));
-                localStorage.setItem(rateKey, starsCount);
+                if (!app.comments) app.comments = [];
+                app.comments.push({ user: currentUser ? currentUser.name : "زائر", text: text });
 
-                openAppDetail(currentAppId);
-                renderApps();
-                alert(`شكراً لك! تم تسجيل تقييمك بـ ${starsCount} نجوم بنجاح.`);
-            }
-        }
-
-        function startDownloadProcess() {
-            closeModal('app-detail-modal');
-            const downloadModal = document.getElementById('download-page-modal');
-            const timerEl = document.getElementById('timer');
-            const finalBtn = document.getElementById('final-download-btn');
-
-            downloadModal.style.display = 'flex';
-            finalBtn.style.display = 'none';
-            let timeLeft = 17; // تم تعيين العد التنازلي إلى 17 ثانية
-            timerEl.textContent = timeLeft;
-
-            const app = apps.find(a => a.id === currentAppId);
-            if (app) {
-                finalBtn.href = app.link;
-            }
-
-            const countdown = setInterval(() => {
-                timeLeft--;
-                timerEl.textContent = timeLeft;
-                if (timeLeft <= 0) {
-                    clearInterval(countdown);
-                    timerEl.textContent = "جاهز!";
-                    finalBtn.style.display = 'block';
+                try {
+                    localStorage.setItem('fd7_apps', JSON.stringify(apps));
+                    renderComments(app);
+                    input.value = '';
+                } catch (e) {
+                    alert('عذراً، مساحة التخزين ممتلئة.');
                 }
-            }, 1000);
+            }
         }
 
+        // --- تعديل البروفايل ---
         function openEditProfileModal() {
             document.getElementById('dropdown-menu').classList.remove('active');
             document.getElementById('edit-username').value = currentUser.name;
@@ -565,21 +1046,52 @@
         function saveProfile() {
             const newName = document.getElementById('edit-username').value.trim();
             const avatarFile = document.getElementById('edit-avatar-file').files[0];
+
             if (newName) currentUser.name = newName;
 
             if (avatarFile) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    currentUser.avatar = e.target.result;
+                compressImage(avatarFile, function(compressedBase64) {
+                    currentUser.avatar = compressedBase64;
                     localStorage.setItem('fd7_logged_user', JSON.stringify(currentUser));
                     updateUI();
                     closeModal('edit-profile-modal');
-                };
-                reader.readAsDataURL(avatarFile);
+                });
             } else {
                 localStorage.setItem('fd7_logged_user', JSON.stringify(currentUser));
                 updateUI();
                 closeModal('edit-profile-modal');
+            }
+        }
+
+        // --- التحميل ---
+        function startDownloadProcess() {
+            closeModal('app-detail-modal');
+            const downloadModal = document.getElementById('download-page-modal');
+            const timerEl = document.getElementById('timer');
+            const finalBtn = document.getElementById('final-download-btn');
+
+            downloadModal.style.display = 'flex';
+            finalBtn.style.display = 'none';
+            
+            let timeLeft = 17;
+            timerEl.textContent = timeLeft;
+
+            const countdown = setInterval(() => {
+                timeLeft--;
+                timerEl.textContent = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    timerEl.textContent = "جاهز!";
+                    finalBtn.style.display = 'block';
+                }
+            }, 1000);
+        }
+
+        function redirectToFinalLink() {
+            const app = apps.find(a => a.id === currentAppId);
+            if (app && app.link) {
+                window.open(app.link, '_blank');
             }
         }
 
