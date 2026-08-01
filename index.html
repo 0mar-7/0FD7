@@ -3,592 +3,420 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free download 7 - FD7</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <title>منصة Social Media - تخصيص صفحتك الشخصية</title>
+    <!-- استيراد خط Cairo بجميع الأوزان -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --bg-color: #0a0a0c;
-            --card-bg: #141419;
-            --primary-red: #e50914;
-            --hover-red: #b20710;
-            --text-color: #ffffff;
-            --text-gray: #a0a0a0;
-            --border-color: #262630;
-            --star-gold: #ffc107;
-            --glow-red: rgba(229, 9, 20, 0.4);
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif !important;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; user-select: none; }
-        body { background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
-
-        /* شريط التحميل */
-        #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #040406; z-index: 9999;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.6s ease, visibility 0.6s;
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .logo-splash { font-size: 5rem; font-weight: 900; color: var(--primary-red); text-shadow: 0 0 30px rgba(229, 9, 20, 0.9); margin-bottom: 20px; }
-        .loader-bar-container { width: 85%; max-width: 600px; height: 24px; background: #121216; border-radius: 50px; overflow: hidden; border: 2px solid rgba(229, 9, 20, 0.5); padding: 3px; }
-        .loader-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #800000, var(--primary-red), #ff4d4d); border-radius: 50px; transition: width 0.1s linear; }
-        .splash-percentage { margin-top: 15px; font-size: 1.3rem; font-weight: 700; }
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            width: 90%;
+        }
 
-        /* الهيدر */
-        header { background-color: rgba(20, 20, 25, 0.95); border-bottom: 2px solid var(--primary-red); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
-        .brand h1 { font-size: 1.8rem; font-weight: 900; cursor: pointer; }
-        .brand span { color: var(--primary-red); }
-        .dev-badge { background: var(--primary-red); color: #fff; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: bold; margin-right: 5px; }
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            font-weight: 700;
+        }
 
-        .profile-btn { display: flex; align-items: center; gap: 10px; background: #1c1c24; padding: 6px 14px; border-radius: 30px; cursor: pointer; border: 1px solid var(--border-color); }
-        .profile-img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-red); }
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-        .dropdown-menu { position: absolute; left: 5%; top: 65px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; width: 180px; display: none; flex-direction: column; overflow: hidden; z-index: 101; }
-        .dropdown-menu.active { display: flex; }
-        .dropdown-item { padding: 12px 15px; cursor: pointer; font-size: 0.9rem; }
-        .dropdown-item:hover { background: var(--primary-red); }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
 
-        /* المحتوى */
-        main { flex: 1; padding: 30px 5%; max-width: 1200px; margin: 0 auto; width: 100%; }
-        .search-container { margin-bottom: 25px; display: flex; justify-content: center; }
-        .search-input { width: 100%; max-width: 600px; padding: 12px 20px; background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 30px; color: #fff; font-size: 1rem; outline: none; }
-        .search-input:focus { border-color: var(--primary-red); box-shadow: 0 0 15px var(--glow-red); }
+        input[type="text"], input[type="url"], input[type="color"], input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Cairo', sans-serif;
+        }
 
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .section-title { font-size: 1.5rem; border-right: 4px solid var(--primary-red); padding-right: 12px; }
-        .apps-count-badge { background: rgba(229, 9, 20, 0.2); color: var(--primary-red); border: 1px solid var(--primary-red); padding: 4px 12px; border-radius: 20px; font-weight: bold; }
+        input[type="color"] {
+            height: 50px;
+            cursor: pointer;
+        }
 
-        .apps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
-        .app-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 15px; display: flex; flex-direction: column; gap: 10px; transition: 0.3s; position: relative; }
-        .app-card:hover { transform: translateY(-5px); border-color: var(--primary-red); box-shadow: 0 8px 25px rgba(229, 9, 20, 0.3); }
+        input[type="file"] {
+            background: #fafafa;
+            cursor: pointer;
+        }
 
-        .action-btns-dev { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; z-index: 5; }
-        .dev-action-btn { width: 32px; height: 32px; border-radius: 50%; border: none; color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; }
-        .btn-edit-dev { background: #ff9800; }
-        .btn-delete-dev { background: var(--primary-red); }
+        /* تنسيق لوحة الألوان الـ 20 الجاهزة */
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
 
-        .app-icon { width: 100%; height: 150px; border-radius: 10px; object-fit: cover; background: #111; }
-        .app-title { font-size: 1.1rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .rating-stars-display { color: var(--star-gold); font-size: 0.9rem; }
-        .app-desc { font-size: 0.85rem; color: var(--text-gray); height: 38px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
+        .color-swatch {
+            width: 100%;
+            height: 35px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s;
+        }
 
-        .btn { background: var(--primary-red); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: center; transition: 0.2s; width: 100%; }
-        .btn:hover { background: var(--hover-red); }
+        .color-swatch:hover {
+            transform: scale(1.1);
+            border-color: #333;
+        }
 
-        .pagination-container { display: flex; justify-content: center; gap: 8px; margin-top: 30px; flex-wrap: wrap; }
-        .page-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: #fff; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .page-btn.active, .page-btn:hover { background: var(--primary-red); border-color: var(--primary-red); }
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
 
-        .add-app-fab { position: fixed; bottom: 30px; left: 30px; width: 60px; height: 60px; background: var(--primary-red); color: #fff; border-radius: 50%; display: none; justify-content: center; align-items: center; font-size: 2rem; box-shadow: 0 4px 20px rgba(229, 9, 20, 0.6); cursor: pointer; z-index: 90; }
+        .platform-input {
+            display: flex;
+            flex-direction: column;
+            background: #fafafa;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
 
-        /* النوافذ */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(8px); padding: 20px; }
-        .modal-content { background: var(--card-bg); border: 1px solid var(--primary-red); border-radius: 14px; width: 100%; max-width: 450px; padding: 25px; position: relative; box-shadow: 0 0 30px rgba(229, 9, 20, 0.3); }
-        .modal-title { font-size: 1.3rem; margin-bottom: 15px; color: var(--primary-red); text-align: center; font-weight: 700; }
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; color: var(--text-gray); }
-        .form-group input, .form-group textarea { width: 100%; padding: 10px; background: #0a0a0c; border: 1px solid var(--border-color); color: #fff; border-radius: 8px; outline: none; }
-        .close-btn { position: absolute; top: 12px; left: 18px; font-size: 1.6rem; color: var(--text-gray); cursor: pointer; }
+        .platform-input label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-        /* التقييم المظبوط */
-        .interactive-rating { display: flex; gap: 8px; font-size: 2rem; color: #444; cursor: pointer; margin: 15px 0; justify-content: center; direction: ltr; }
-        .interactive-rating span { transition: color 0.2s; }
-        .interactive-rating span.active { color: var(--star-gold); }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 700;
+            transition: background 0.3s;
+            font-family: 'Cairo', sans-serif;
+        }
 
-        .download-timer-container { text-align: center; padding: 20px 0; }
-        .timer-circle { font-size: 3.5rem; font-weight: 900; color: var(--primary-red); margin: 10px 0; }
+        .btn:hover {
+            background-color: #2980b9;
+        }
 
-        footer { background: #040406; text-align: center; padding: 20px; border-top: 1px solid var(--border-color); color: var(--text-gray); font-size: 0.85rem; margin-top: auto; }
+        .btn-secondary {
+            background-color: #2ecc71;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #27ae60;
+        }
+
+        /* تنسيق صفحة البروفايل المولدة */
+        #profile-view {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            flex-grow: 1;
+            background-color: #121212; /* خلفية ثابتة سودة داكنة */
+        }
+
+        .profile-header img {
+            width: 130px;
+            height: 130px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 5px solid #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
+        }
+
+        .profile-header h2 {
+            font-size: 28px;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .social-links-list {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .social-link-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .social-link-item:hover {
+            transform: translateY(-3px);
+            opacity: 0.95;
+        }
+
+        .social-link-item i {
+            font-size: 20px;
+        }
+
+        .share-box {
+            margin-top: 25px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 15px;
+            border-radius: 8px;
+            word-break: break-all;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #2c3e50;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: auto;
+        }
     </style>
 </head>
 <body>
 
-    <div id="splash-screen">
-        <div class="logo-splash">FD7</div>
-        <div class="loader-bar-container">
-            <div class="loader-bar" id="loader-bar"></div>
-        </div>
-        <div class="splash-percentage" id="splash-percentage">0%</div>
-    </div>
-
-    <header>
-        <div class="brand" onclick="showHome()">
-            <h1>Free download <span>7</span></h1>
-        </div>
-        <div class="user-section">
-            <div class="profile-btn" onclick="toggleDropdown()">
-                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop" id="header-avatar" class="profile-img" alt="Avatar">
-                <span id="header-username">زائر</span>
-                <span id="dev-tag" class="dev-badge" style="display: none;">مطور</span>
+    <!-- لوحة التحكم / إنشاء الصفحة -->
+    <div class="container" id="generator-container">
+        <h1>منصة Social Media - أنشئ صفحتك</h1>
+        <form id="profileForm">
+            <div class="form-group">
+                <label for="pageName">اسم المستخدم أو اسم الصفحة:</label>
+                <input type="text" id="pageName" required placeholder="مثال: Ahmed Ali">
             </div>
-            <div class="dropdown-menu" id="dropdown-menu">
-                <div class="dropdown-item" onclick="openEditProfileModal()">تعديل البروفايل</div>
-                <div class="dropdown-item" onclick="logout()">تسجيل خروج</div>
-            </div>
-        </div>
-    </header>
 
-    <main>
-        <div class="search-container">
-            <input type="text" id="search-input" class="search-input" placeholder="ابحث عن أي لعبة فري فاير أو لعبة أخرى..." oninput="handleSearch()">
-        </div>
-
-        <div class="section-header">
-            <h2 class="section-title">الألعاب المتاحة (تحميل من المتجر)</h2>
-            <div class="apps-count-badge" id="apps-count">10 ألعاب متوفرة</div>
-        </div>
-
-        <div class="apps-grid" id="apps-container"></div>
-        <div class="pagination-container" id="pagination-container"></div>
-    </main>
-
-    <div class="add-app-fab" id="add-app-btn" onclick="openAddAppModal()">+</div>
-
-    <!-- 1. تسجيل الدخول -->
-    <div class="modal" id="login-modal">
-        <div class="modal-content">
-            <div class="modal-title">تسجيل الدخول</div>
-            <div class="form-group"><label>اسم المستخدم</label><input type="text" id="login-username"></div>
-            <div class="form-group"><label>كلمة السر</label><input type="password" id="login-password"></div>
-            <button class="btn" onclick="login()">دخول</button>
-        </div>
-    </div>
-
-    <!-- 2. تعديل البروفايل -->
-    <div class="modal" id="edit-profile-modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('edit-profile-modal')">&times;</span>
-            <div class="modal-title">تعديل البروفايل</div>
-            <div class="form-group"><label>اسم جديد</label><input type="text" id="edit-username"></div>
-            <div class="form-group"><label>اختر صورة جديدة</label><input type="file" id="edit-avatar-file" accept="image/*"></div>
-            <button class="btn" onclick="saveProfile()">حفظ التعديلات</button>
-        </div>
-    </div>
-
-    <!-- 3. إضافة / تعديل لعبة للمطور -->
-    <div class="modal" id="add-app-modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('add-app-modal')">&times;</span>
-            <div class="modal-title" id="modal-app-title">إضافة لعبة جديدة</div>
-            <input type="hidden" id="edit-app-id">
-            <div class="form-group"><label>اسم اللعبة</label><input type="text" id="app-name"></div>
-            <div class="form-group"><label>صورة اللعبة من الجهاز</label><input type="file" id="app-img-file" accept="image/*"></div>
-            <div class="form-group"><label>رابط اللعبة في المتجر</label><input type="text" id="app-link" placeholder="https://play.google.com/store/apps/details?id=..."></div>
-            <div class="form-group"><label>الوصف التفصيلي</label><textarea id="app-desc" rows="3"></textarea></div>
-            <button class="btn" onclick="saveApp()">حفظ ونشر</button>
-        </div>
-    </div>
-
-    <!-- 4. تفاصيل والتقييم المظبوط -->
-    <div class="modal" id="app-detail-modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('app-detail-modal')">&times;</span>
-            <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 10px;">
-                <img id="detail-img" style="width: 75px; height: 75px; border-radius: 10px; object-fit: cover;" src="" alt="">
-                <div>
-                    <h3 id="detail-title" style="font-size: 1.1rem;"></h3>
-                    <div id="detail-rating-display" class="rating-stars-display" style="margin-top: 4px;"></div>
+            <div class="form-group">
+                <label for="textColorPicker">اختر لون الكتابة والخطوط:</label>
+                <input type="color" id="textColorPicker" value="#3498db">
+                
+                <!-- 20 لون مختلف لاختيار لون الكتابة بسرعة -->
+                <label style="margin-top: 10px; font-size: 13px; color: #777;">أو اختر من الـ 20 لوناً الجاهزة التالية:</label>
+                <div class="color-palette">
+                    <div class="color-swatch" style="background: #3498db;" onclick="setPickerColor('#3498db')"></div>
+                    <div class="color-swatch" style="background: #e74c3c;" onclick="setPickerColor('#e74c3c')"></div>
+                    <div class="color-swatch" style="background: #2ecc71;" onclick="setPickerColor('#2ecc71')"></div>
+                    <div class="color-swatch" style="background: #f1c40f;" onclick="setPickerColor('#f1c40f')"></div>
+                    <div class="color-swatch" style="background: #9b59b6;" onclick="setPickerColor('#9b59b6')"></div>
+                    <div class="color-swatch" style="background: #1abc9c;" onclick="setPickerColor('#1abc9c')"></div>
+                    <div class="color-swatch" style="background: #e67e22;" onclick="setPickerColor('#e67e22')"></div>
+                    <div class="color-swatch" style="background: #e84393;" onclick="setPickerColor('#e84393')"></div>
+                    <div class="color-swatch" style="background: #00cec9;" onclick="setPickerColor('#00cec9')"></div>
+                    <div class="color-swatch" style="background: #fdcb6e;" onclick="setPickerColor('#fdcb6e')"></div>
+                    <div class="color-swatch" style="background: #ff7675;" onclick="setPickerColor('#ff7675')"></div>
+                    <div class="color-swatch" style="background: #74b9ff;" onclick="setPickerColor('#74b9ff')"></div>
+                    <div class="color-swatch" style="background: #55efc4;" onclick="setPickerColor('#55efc4')"></div>
+                    <div class="color-swatch" style="background: #a29bfe;" onclick="setPickerColor('#a29bfe')"></div>
+                    <div class="color-swatch" style="background: #dfe6e9;" onclick="setPickerColor('#dfe6e9')"></div>
+                    <div class="color-swatch" style="background: #ffeaa7;" onclick="setPickerColor('#ffeaa7')"></div>
+                    <div class="color-swatch" style="background: #fab1a0;" onclick="setPickerColor('#fab1a0')"></div>
+                    <div class="color-swatch" style="background: #ff4757;" onclick="setPickerColor('#ff4757')"></div>
+                    <div class="color-swatch" style="background: #2ed573;" onclick="setPickerColor('#2ed573')"></div>
+                    <div class="color-swatch" style="background: #1e90ff;" onclick="setPickerColor('#1e90ff')"></div>
                 </div>
             </div>
+
+            <div class="form-group">
+                <label for="profileImage">اختر الصورة الشخصية من المعرض:</label>
+                <input type="file" id="profileImage" accept="image/*">
+            </div>
+
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
             
-            <p id="detail-desc" style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px; line-height: 1.5;"></p>
-
-            <div style="text-align: center; border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 10px;">
-                <span id="rating-prompt-text" style="font-size:0.85rem;">اختر تقييمك لهذه اللعبة (مرة واحدة فقط):</span>
-                <div class="interactive-rating" id="stars-picker-box">
-                    <span onclick="rateApp(1)" onmouseover="hoverStars(1)" onmouseout="resetStarsHover()">★</span>
-                    <span onclick="rateApp(2)" onmouseover="hoverStars(2)" onmouseout="resetStarsHover()">★</span>
-                    <span onclick="rateApp(3)" onmouseover="hoverStars(3)" onmouseout="resetStarsHover()">★</span>
-                    <span onclick="rateApp(4)" onmouseover="hoverStars(4)" onmouseout="resetStarsHover()">★</span>
-                    <span onclick="rateApp(5)" onmouseover="hoverStars(5)" onmouseout="resetStarsHover()">★</span>
-                </div>
+            <label style="margin-bottom: 15px;">أضف روابط حساباتك:</label>
+            <div class="platforms-grid" id="platformsContainer">
+                <div class="platform-input"><label><i class="fab fa-youtube" style="color:red"></i> YouTube</label><input type="url" data-platform="YouTube" data-color="#ff0000" placeholder="رابط الحساب"></div>
+                <div class="platform-input"><label><i class="fab fa-tiktok"></i> TikTok</label><input type="url" data-platform="TikTok" data-color="#000000" placeholder="رابط الحساب"></div>
+                <div class="platform-input"><label><i class="fab fa-twitch" style="color:purple"></i> Twitch</label><input type="url" data-platform="Twitch" data-color="#9146ff" placeholder="رابط الحساب"></div>
+                <div class="platform-input"><label><i class="fab fa-vimeo" style="color:#1ab7ea"></i> Vimeo</label><input type="url" data-platform="Vimeo" data-color="#1ab7ea" placeholder="رابط الحساب"></div>
+                <div class="platform-input"><label><i class="fab fa-facebook" style="color:#1877f2"></i> Facebook</label><input type="url" data-platform="Facebook" data-color="#1877f2" placeholder="رابط الحساب"></div>
+                <div class="platform-input"><label><i class="fab fa-instagram" style="color:#e4405f"></i> Instagram</label><input type="url" data-platform="Instagram" data-color="#e4405f" placeholder="رابط الحساب"></div>
+                <div class="platform-input"><label><i class="fa-solid fa-x"></i> X (Twitter)</label><input type="url" data-platform="X_Twitter" data-color="#ffffff" placeholder="رابط الحساب"></div>
+                <div class="platform-input"><label><i class="fab fa-threads"></i> Threads</label><input type="url" data-platform="Threads" data-color="#000000" placeholder="رابط الحساب"></div>
+                <div class="platform-input"><label><i class="fab fa-snapchat" style="color:#e6df00"></i> Snapchat</label><input type="url" data-platform="Snapchat" data-color="#fffc00" placeholder="رابط الحساب"></div>
+                <div class="platform-input"><label><i class="fab fa-discord" style="color:#5865f2"></i> Discord</label><input type="url" data-platform="Discord" data-color="#5865f2" placeholder="رابط الحساب"></div>
+                <div class="platform-input"><label><i class="fab fa-facebook-messenger" style="color:#0084ff"></i> Messenger</label><input type="url" data-platform="Facebook Messenger" data-color="#0084ff" placeholder="رابط الحساب"></div>
+                <div class="platform-input"><label><i class="fab fa-telegram" style="color:#229ed9"></i> Telegram</label><input type="url" data-platform="Telegram" data-color="#229ed9" placeholder="رابط الحساب"></div>
+                <div class="platform-input"><label><i class="fab fa-whatsapp" style="color:#25d366"></i> WhatsApp</label><input type="url" data-platform="WhatsApp" data-color="#25d366" placeholder="رابط الحساب"></div>
+                <div class="platform-input"><label><i class="fab fa-pinterest" style="color:#bd081c"></i> Pinterest</label><input type="url" data-platform="Pinterest" data-color="#bd081c" placeholder="رابط الحساب"></div>
+                <div class="platform-input"><label><i class="fab fa-reddit" style="color:#ff4500"></i> Reddit</label><input type="url" data-platform="Reddit" data-color="#ff4500" placeholder="رابط الحساب"></div>
             </div>
 
-            <button class="btn" onclick="startDownloadProcess()">تحميل اللعبة 📥</button>
-        </div>
+            <button type="button" class="btn btn-secondary" onclick="addCustomPlatform()">+ إضافة منصة أخرى</button>
+            <br><br>
+            <button type="submit" class="btn">توليد الصفحة</button>
+        </form>
     </div>
 
-    <!-- 5. العداد 5 ثانية والفتح في المتجر -->
-    <div class="modal" id="download-page-modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('download-page-modal')">&times;</span>
-            <div class="download-timer-container">
-                <h3>جاري التوجيه إلى المتجر...</h3>
-                <div class="timer-circle" id="timer">5</div>
-                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">سيتم فتح متجر جوجل بلاي تلقائياً بعد انتهاء العداد.</p>
-                <button class="btn" id="final-download-btn" style="display: none;" onclick="redirectToFinalLink()">فتح في المتجر الآن 🛒</button>
-            </div>
+    <!-- عرض الصفحة الشخصية بعد التوليد -->
+    <div id="profile-view">
+        <div class="profile-header">
+            <img id="viewImage" src="" alt="صورة الملف الشخصي">
+            <h2 id="viewName">اسم المستخدم</h2>
         </div>
+        <div class="social-links-list" id="viewLinks"></div>
+        <div class="share-box">
+            <p style="font-weight: 600;" id="shareText">تم توليد صفحتك بنجاح! شارك الرابط:</p>
+            <input type="text" id="shareUrl" readonly style="margin-top: 8px; text-align: center; background: #222; color: #fff; border: 1px solid #444;">
+        </div>
+        <br>
+        <button class="btn" style="max-width: 200px; margin: 0 auto; background-color: #333;" onclick="location.reload()">إنشاء صفحة جديدة</button>
     </div>
 
+    <!-- حقوق النشر -->
     <footer>
-        حقوق الطبع والنشر © 2026 - Free download 7. جميع الحقوق محفوظة.
+        جميع الحقوق محفوظة &copy; 2026 Social Media Platform
     </footer>
 
     <script>
-        let currentUser = null;
-        let currentPage = 1;
-        const appsPerPage = 10;
-        let filteredApps = [];
-
-        // قائمة الـ 10 ألعاب المختارة (تركز على فري فاير والألعاب الشهيرة)
-        const freeFire10GamesList = [
-            { id: 1, name: "Free Fire MAX", pkg: "com.dts.freefiremax", img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300", desc: "لعبة الباتل رويال الشهيرة بجرافيك عالي القوة ومواجهات حماسية." },
-            { id: 2, name: "Free Fire (الإصدار الأصلي)", pkg: "com.dts.freefireth", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300", desc: "اللعبة الأصلية الشهيرة للبقاء على قيد الحياة والمعارك السريعة." },
-            { id: 3, name: "PUBG MOBILE", pkg: "com.tencent.ig", img: "https://images.unsplash.com/photo-1563089145-599997674d42?w=300", desc: "لعبة القتال والناجي الأخير الرسمية الأولى عالمياً." },
-            { id: 4, name: "Subway Surfers", pkg: "com.kiloo.subwaysurf", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300", desc: "اقفز واهرب من المفتش والكلب بين قطارات الأنفاق." },
-            { id: 5, name: "eFootball 2026", pkg: "jp.konami.pesam", img: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=300", desc: "تجربة كرة القدم الواقعية من كونامي مع أشهر أندية العالم." },
-            { id: 6, name: "Roblox", pkg: "com.roblox.client", img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=300", desc: "عالم افتراضي مليء بالألعاب التي يصنعها اللاعبون." },
-            { id: 7, name: "Dream League Soccer", pkg: "com.firsttouchgames.dls3", img: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=300", desc: "ابنِ فريق أحلامك ونافس في درجات الدوري المختلفة." },
-            { id: 8, name: "Call of Duty Mobile", pkg: "com.activision.callofduty.shooter", img: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300", desc: "أقوى خرائط وأطوار القتال من منظور الشخص الأول." },
-            { id: 9, name: "Minecraft", pkg: "com.mojang.minecraftpe", img: "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=300", desc: "عالم من المكعبات للبناء والبقاء على قيد الحياة." },
-            { id: 10, name: "CarX Drift Racing 2", pkg: "com.carxtech.carxdr2", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=300", desc: "أفضل تجربة تفحيط ودريفت بالسيارات بواقعية." }
-        ];
-
-        let apps = JSON.parse(localStorage.getItem('fd7_apps_v4'));
-        if (!apps || apps.length === 0) {
-            apps = freeFire10GamesList.map(a => ({
-                ...a,
-                link: `https://play.google.com/store/apps/details?id=${a.pkg}`,
-                ratings: [5, 4]
-            }));
-            localStorage.setItem('fd7_apps_v4', JSON.stringify(apps));
+        // دالة لتغيير لون حقل اختيار الألوان عبر النقر على إحدى الألوان الـ 20
+        function setPickerColor(hex) {
+            document.getElementById("textColorPicker").value = hex;
         }
-        filteredApps = [...apps];
 
-        let currentAppId = null;
+        // دالة لتحديد لون نص متباين (أسود أو أبيض) حسب إضاءة لون الزر الخاص بالمنصة لضمان وضوح القراءة
+        function getContrastYIQ(hexcolor){
+            if (!hexcolor || hexcolor.startsWith('rgb')) return '#ffffff';
+            hexcolor = hexcolor.replace("#", "");
+            if(hexcolor.length === 3) {
+                hexcolor = hexcolor.split('').map(c => c + c).join('');
+            }
+            var r = parseInt(hexcolor.substr(0,2),16);
+            var g = parseInt(hexcolor.substr(2,2),16);
+            var b = parseInt(hexcolor.substr(4,2),16);
+            var yiq = (r * 299 + g * 587 + b * 114) / 1000;
+            return (yiq >= 150) ? '#000000' : '#ffffff';
+        }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const loaderBar = document.getElementById('loader-bar');
-            const percentageEl = document.getElementById('splash-percentage');
-            const splashScreen = document.getElementById('splash-screen');
+        function addCustomPlatform() {
+            const platformName = prompt("أدخل اسم المنصة الجديدة:");
+            if (platformName && platformName.trim() !== "") {
+                const container = document.getElementById("platformsContainer");
+                const div = document.createElement("div");
+                div.className = "platform-input";
+                div.innerHTML = `<label><i class="fas fa-globe"></i> ${platformName.trim()}</label><input type="url" data-platform="${platformName.trim()}" data-color="#3498db" placeholder="رابط الحساب">`;
+                container.appendChild(div);
+            }
+        }
+
+        document.getElementById("profileForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById("pageName").value;
+            const textColor = document.getElementById("textColorPicker").value; // لون الكتابة المختار
+            const imageInput = document.getElementById("profileImage");
             
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.floor(Math.random() * 20) + 15;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        splashScreen.style.opacity = '0';
-                        splashScreen.style.visibility = 'hidden';
-                        
-                        const savedUser = JSON.parse(localStorage.getItem('fd7_logged_user'));
-                        if (savedUser) {
-                            currentUser = savedUser;
-                            updateUI();
-                        } else {
-                            document.getElementById('login-modal').style.display = 'flex';
-                        }
-                    }, 300);
-                }
-                loaderBar.style.width = progress + '%';
-                percentageEl.textContent = progress + '%';
-            }, 30);
+            const processProfile = (imageSrc) => {
+                const inputs = document.querySelectorAll(".platforms-grid input[type='url']");
+                const linksData = [];
 
-            renderApps();
-        });
-
-        function handleSearch() {
-            const query = document.getElementById('search-input').value.trim().toLowerCase();
-            filteredApps = query ? apps.filter(app => app.name.toLowerCase().includes(query) || app.desc.toLowerCase().includes(query)) : [...apps];
-            currentPage = 1;
-            renderApps();
-        }
-
-        function login() {
-            const nameInput = document.getElementById('login-username').value.trim();
-            const passInput = document.getElementById('login-password').value.trim();
-
-            if (!nameInput || !passInput) { alert('ادخل الاسم وكلمة السر!'); return; }
-
-            let isDev = (nameInput === "0mar_S7" && passInput === "14581000omar30305036");
-            currentUser = {
-                name: nameInput,
-                avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop",
-                isDev: isDev
-            };
-
-            localStorage.setItem('fd7_logged_user', JSON.stringify(currentUser));
-            closeModal('login-modal');
-            updateUI();
-        }
-
-        function logout() {
-            localStorage.removeItem('fd7_logged_user');
-            currentUser = null;
-            location.reload();
-        }
-
-        function updateUI() {
-            if (!currentUser) return;
-            document.getElementById('header-username').textContent = currentUser.name;
-            document.getElementById('header-avatar').src = currentUser.avatar;
-
-            if (currentUser.isDev) {
-                document.getElementById('dev-tag').style.display = 'inline-block';
-                document.getElementById('add-app-btn').style.display = 'flex';
-            } else {
-                document.getElementById('dev-tag').style.display = 'none';
-                document.getElementById('add-app-btn').style.display = 'none';
-            }
-            renderApps();
-        }
-
-        function toggleDropdown() { document.getElementById('dropdown-menu').classList.toggle('active'); }
-
-        function getAppRatingInfo(app) {
-            if (!app.ratings || app.ratings.length === 0) return { text: "بدون تقييم", stars: "☆☆☆☆☆" };
-            const avg = app.ratings.reduce((a, b) => a + b, 0) / app.ratings.length;
-            return {
-                text: `${avg.toFixed(1)} (${app.ratings.length})`,
-                stars: "★".repeat(Math.round(avg)) + "☆".repeat(5 - Math.round(avg))
-            };
-        }
-
-        function renderApps() {
-            const container = document.getElementById('apps-container');
-            container.innerHTML = '';
-            document.getElementById('apps-count').textContent = `${filteredApps.length} ألعاب متوفرة`;
-
-            const totalPages = Math.ceil(filteredApps.length / appsPerPage) || 1;
-            if (currentPage > totalPages) currentPage = totalPages;
-
-            const startIndex = (currentPage - 1) * appsPerPage;
-            const paginatedApps = filteredApps.slice(startIndex, startIndex + appsPerPage);
-
-            paginatedApps.forEach(app => {
-                const card = document.createElement('div');
-                card.className = 'app-card';
-                
-                let devBtns = currentUser && currentUser.isDev ? `
-                    <div class="action-btns-dev">
-                        <button class="dev-action-btn btn-edit-dev" onclick="openEditAppModal(event, ${app.id})">✏️</button>
-                        <button class="dev-action-btn btn-delete-dev" onclick="deleteApp(event, ${app.id})">&times;</button>
-                    </div>
-                ` : '';
-
-                const ratingInfo = getAppRatingInfo(app);
-
-                card.innerHTML = `
-                    ${devBtns}
-                    <img src="${app.img}" class="app-icon" alt="${app.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300'">
-                    <div class="app-title">${app.name}</div>
-                    <div class="rating-stars-display">${ratingInfo.stars} <span>${ratingInfo.text}</span></div>
-                    <div class="app-desc">${app.desc}</div>
-                    <button class="btn" onclick="openAppDetail(${app.id})">تحميل اللعبة</button>
-                `;
-                container.appendChild(card);
-            });
-
-            renderPagination(totalPages);
-        }
-
-        function renderPagination(totalPages) {
-            const container = document.getElementById('pagination-container');
-            container.innerHTML = '';
-            if (totalPages <= 1) return;
-
-            for (let i = 1; i <= totalPages; i++) {
-                const btn = document.createElement('button');
-                btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
-                btn.textContent = i;
-                btn.onclick = () => { currentPage = i; renderApps(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-                container.appendChild(btn);
-            }
-        }
-
-        function openAddAppModal() {
-            document.getElementById('modal-app-title').textContent = "إضافة لعبة جديدة";
-            document.getElementById('edit-app-id').value = "";
-            document.getElementById('app-name').value = "";
-            document.getElementById('app-link').value = "";
-            document.getElementById('app-desc').value = "";
-            document.getElementById('add-app-modal').style.display = 'flex';
-        }
-
-        function openEditAppModal(e, id) {
-            e.stopPropagation();
-            const app = apps.find(a => a.id === id);
-            if (!app) return;
-            document.getElementById('modal-app-title').textContent = "تعديل اللعبة";
-            document.getElementById('edit-app-id').value = app.id;
-            document.getElementById('app-name').value = app.name;
-            document.getElementById('app-link').value = app.link;
-            document.getElementById('app-desc').value = app.desc;
-            document.getElementById('add-app-modal').style.display = 'flex';
-        }
-
-        function saveApp() {
-            const editId = document.getElementById('edit-app-id').value;
-            const name = document.getElementById('app-name').value.trim();
-            const link = document.getElementById('app-link').value.trim();
-            const desc = document.getElementById('app-desc').value.trim();
-            const imgFile = document.getElementById('app-img-file').files[0];
-
-            if (!name || !link) { alert('ادخل الاسم ورابط اللعبة!'); return; }
-
-            const processSave = (imgUrl) => {
-                if (editId) {
-                    const app = apps.find(a => a.id == editId);
-                    if (app) {
-                        app.name = name; app.link = link; app.desc = desc;
-                        if (imgUrl) app.img = imgUrl;
+                inputs.forEach(input => {
+                    const url = input.value.trim();
+                    const platform = input.getAttribute("data-platform");
+                    const platformColor = input.getAttribute("data-color") || "#3498db";
+                    if (url) {
+                        linksData.push({ platform, url, color: platformColor });
                     }
+                });
+
+                document.getElementById("generator-container").style.display = "none";
+                const profileView = document.getElementById("profile-view");
+                profileView.style.display = "block";
+
+                // تعيين اسم المستخدم ولونه المختار بالكامل
+                const viewName = document.getElementById("viewName");
+                viewName.innerText = name;
+                viewName.style.color = textColor;
+                
+                // تعيين لون إطار الصورة الشخصية بلون الكتابة المختار
+                const viewImage = document.getElementById("viewImage");
+                viewImage.src = imageSrc;
+                viewImage.style.border = `5px solid ${textColor}`;
+
+                // تلوين نصوص مربع المشاركة بلون الكتابة المختار
+                document.getElementById("shareText").style.color = textColor;
+
+                const linksContainer = document.getElementById("viewLinks");
+                linksContainer.innerHTML = "";
+
+                if(linksData.length === 0) {
+                    linksContainer.innerHTML = `<p style='color: ${textColor}; font-weight: 600;'>لم تقم بإضافة أي روابط تواصل اجتماعي.</p>`;
                 } else {
-                    apps.unshift({
-                        id: Date.now(), name: name, link: link, desc: desc,
-                        img: imgUrl || "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300",
-                        ratings: []
+                    linksData.forEach(item => {
+                        const a = document.createElement("a");
+                        a.href = item.url;
+                        a.target = "_blank";
+                        a.className = "social-link-item";
+                        // جعل خلفية زر كل منصة بلونها الخاص ورسم النص بلون متناسق ومقروء
+                        a.style.backgroundColor = item.color;
+                        const itemTextColor = getContrastYIQ(item.color);
+                        a.style.color = itemTextColor;
+                        a.innerHTML = `<span>${item.platform}</span> <i class="fas fa-external-link-alt" style="color: ${itemTextColor};"></i>`;
+                        linksContainer.appendChild(a);
                     });
                 }
-                localStorage.setItem('fd7_apps_v4', JSON.stringify(apps));
-                filteredApps = [...apps];
-                renderApps();
-                closeModal('add-app-modal');
+
+                const generatedShareUrl = window.location.href.split('?')[0] + "?user=" + encodeURIComponent(name);
+                document.getElementById("shareUrl").value = generatedShareUrl;
             };
 
-            if (imgFile) {
+            if (imageInput.files && imageInput.files[0]) {
                 const reader = new FileReader();
-                reader.onload = (e) => processSave(e.target.result);
-                reader.readAsDataURL(imgFile);
-            } else {
-                processSave(null);
-            }
-        }
-
-        function deleteApp(e, id) {
-            e.stopPropagation();
-            if (confirm("حذف هذه اللعبة؟")) {
-                apps = apps.filter(a => a.id !== id);
-                localStorage.setItem('fd7_apps_v4', JSON.stringify(apps));
-                filteredApps = [...apps];
-                renderApps();
-            }
-        }
-
-        function openAppDetail(id) {
-            currentAppId = id;
-            const app = apps.find(a => a.id === id);
-            if (!app) return;
-
-            document.getElementById('detail-title').textContent = app.name;
-            document.getElementById('detail-img').src = app.img;
-            document.getElementById('detail-desc').textContent = app.desc;
-            const ratingInfo = getAppRatingInfo(app);
-            document.getElementById('detail-rating-display').innerHTML = `${ratingInfo.stars} <span>(${ratingInfo.text})</span>`;
-
-            const hasRated = localStorage.getItem(`rated_app_${currentAppId}_${currentUser ? currentUser.name : 'guest'}`);
-            const starsBox = document.getElementById('stars-picker-box');
-            const promptText = document.getElementById('rating-prompt-text');
-
-            if (hasRated) {
-                starsBox.style.pointerEvents = 'none';
-                starsBox.style.opacity = '0.5';
-                promptText.textContent = `لقد قمت بتقييم هذه اللعبة بـ (${hasRated} نجوم) سابقاً!`;
-            } else {
-                starsBox.style.pointerEvents = 'auto';
-                starsBox.style.opacity = '1';
-                promptText.textContent = "اختر تقييمك لهذه اللعبة (مرة واحدة فقط):";
-            }
-
-            resetStarsHover();
-            document.getElementById('app-detail-modal').style.display = 'flex';
-        }
-
-        function hoverStars(count) {
-            const stars = document.querySelectorAll('#stars-picker-box span');
-            stars.forEach((star, index) => {
-                if (index < count) star.classList.add('active');
-                else star.classList.remove('active');
-            });
-        }
-
-        function resetStarsHover() {
-            const stars = document.querySelectorAll('#stars-picker-box span');
-            stars.forEach(s => s.classList.remove('active'));
-        }
-
-        function rateApp(starsCount) {
-            const userKey = currentUser ? currentUser.name : 'guest';
-            const rateKey = `rated_app_${currentAppId}_${userKey}`;
-
-            if (localStorage.getItem(rateKey)) {
-                alert("عفواً، لا يمكنك التقييم سوى مرة واحدة فقط لكل لعبة!");
-                return;
-            }
-
-            const app = apps.find(a => a.id === currentAppId);
-            if (app) {
-                app.ratings.push(starsCount);
-                localStorage.setItem('fd7_apps_v4', JSON.stringify(apps));
-                localStorage.setItem(rateKey, starsCount);
-
-                openAppDetail(currentAppId);
-                renderApps();
-                alert(`شكراً لك! تم تسجيل تقييمك بـ ${starsCount} نجوم بنجاح.`);
-            }
-        }
-
-        function startDownloadProcess() {
-            closeModal('app-detail-modal');
-            const downloadModal = document.getElementById('download-page-modal');
-            const timerEl = document.getElementById('timer');
-            const finalBtn = document.getElementById('final-download-btn');
-
-            downloadModal.style.display = 'flex';
-            finalBtn.style.display = 'none';
-            let timeLeft = 5; // تم تعديل العداد ليصبح 5 ثواني
-            timerEl.textContent = timeLeft;
-
-            const countdown = setInterval(() => {
-                timeLeft--;
-                timerEl.textContent = timeLeft;
-                if (timeLeft <= 0) {
-                    clearInterval(countdown);
-                    timerEl.textContent = "جاهز!";
-                    finalBtn.style.display = 'block';
-                    redirectToFinalLink();
-                }
-            }, 1000);
-        }
-
-        function redirectToFinalLink() {
-            const app = apps.find(a => a.id === currentAppId);
-            if (app && app.link) {
-                window.location.href = app.link;
-            }
-        }
-
-        function openEditProfileModal() {
-            document.getElementById('dropdown-menu').classList.remove('active');
-            document.getElementById('edit-username').value = currentUser.name;
-            document.getElementById('edit-profile-modal').style.display = 'flex';
-        }
-
-        function saveProfile() {
-            const newName = document.getElementById('edit-username').value.trim();
-            const avatarFile = document.getElementById('edit-avatar-file').files[0];
-            if (newName) currentUser.name = newName;
-
-            if (avatarFile) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    currentUser.avatar = e.target.result;
-                    localStorage.setItem('fd7_logged_user', JSON.stringify(currentUser));
-                    updateUI();
-                    closeModal('edit-profile-modal');
+                reader.onload = function(event) {
+                    processProfile(event.target.result);
                 };
-                reader.readAsDataURL(avatarFile);
+                reader.readAsDataURL(imageInput.files[0]);
             } else {
-                localStorage.setItem('fd7_logged_user', JSON.stringify(currentUser));
-                updateUI();
-                closeModal('edit-profile-modal');
+                const defaultImage = "https://via.placeholder.com/150/2c3e50/ffffff?text=" + name.charAt(0);
+                processProfile(defaultImage);
             }
-        }
-
-        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
-        function showHome() { closeModal('app-detail-modal'); closeModal('download-page-modal'); }
+        });
     </script>
 </body>
 </html>
