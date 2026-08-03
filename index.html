@@ -3,967 +3,699 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free download 7 - FD7</title>
-    <!-- استدعاء خط Cairo الفخم -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <title>تقييم حسابات فري فاير</title>
+    <!-- استيراد خط Cairo من Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-color: #0a0a0c;
-            --card-bg: #141419;
-            --primary-red: #e50914;
-            --hover-red: #b20710;
-            --text-color: #ffffff;
-            --text-gray: #a0a0a0;
-            --border-color: #262630;
-        }
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: 'Cairo', sans-serif;
-            user-select: none;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            overflow-x: hidden;
+            background-color: #ffffff;
+            color: #000000;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
 
-        /* --- شريط التحميل الأسطوري العريض (Splash Screen) --- */
-        #splash-screen {
+        /* شريط التحميل العلوي */
+        #loader-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background-color: #040406;
-            z-index: 9999;
+            height: 100vh;
+            background-color: #ffffff;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.6s ease, visibility 0.6s;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
         }
 
-        .logo-splash {
-            font-size: 5rem;
-            font-weight: 900;
-            color: var(--primary-red);
-            text-shadow: 0 0 30px rgba(229, 9, 20, 0.9), 0 0 60px rgba(229, 9, 20, 0.5);
-            margin-bottom: 25px;
-            letter-spacing: 3px;
-            animation: pulse 1s infinite alternate;
+        .loader-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
         }
 
-        /* شريط تحميل عريض وفخم */
-        .loader-bar-container {
-            width: 80%;
-            max-width: 550px;
-            height: 22px;
-            background: #121216;
-            border-radius: 50px;
+        .progress-bar-wrapper {
+            width: 300px;
+            height: 12px;
+            border: 2px solid #000000;
+            border-radius: 6px;
             overflow: hidden;
-            box-shadow: 0 0 25px rgba(229, 9, 20, 0.3), inset 0 0 10px #000;
-            border: 2px solid rgba(229, 9, 20, 0.5);
-            padding: 3px;
-            position: relative;
+            background: #fff;
         }
 
-        .loader-bar {
+        .progress-bar {
             width: 0%;
             height: 100%;
-            background: linear-gradient(90deg, #800000, var(--primary-red), #ff4d4d);
-            background-size: 200% 100%;
-            box-shadow: 0 0 20px var(--primary-red);
-            border-radius: 50px;
-            transition: width 0.8s cubic-bezier(0.1, 0.7, 0.1, 1);
-            animation: glowMove 1.5s linear infinite;
+            background-color: #000000;
+            transition: width 0.1s linear;
         }
 
-        @keyframes glowMove {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); text-shadow: 0 0 20px rgba(229, 9, 20, 0.8); }
-            100% { transform: scale(1.06); text-shadow: 0 0 40px rgba(229, 9, 20, 1); }
-        }
-
-        /* --- الهيدر و القائمة العلويّة --- */
-        header {
-            background-color: rgba(20, 20, 25, 0.95);
-            border-bottom: 2px solid var(--primary-red);
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-
-        .brand h1 {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: #fff;
-        }
-
-        .brand span {
-            color: var(--primary-red);
-        }
-
-        .dev-badge {
-            background: var(--primary-red);
-            color: #fff;
-            font-size: 0.7rem;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-            margin-right: 5px;
-        }
-
-        /* البروفايل والقائمة */
-        .user-section {
-            position: relative;
-        }
-
-        .profile-btn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #1c1c24;
-            padding: 6px 14px;
-            border-radius: 30px;
-            cursor: pointer;
-            border: 1px solid var(--border-color);
-            transition: 0.3s;
-        }
-
-        .profile-btn:hover {
-            border-color: var(--primary-red);
-        }
-
-        .profile-img {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary-red);
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            left: 0;
-            top: 55px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            width: 190px;
+        /* محتوى الموقع الأساسي */
+        .main-content {
             display: none;
-            flex-direction: column;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
-            overflow: hidden;
-            z-index: 101;
-        }
-
-        .dropdown-menu.active {
-            display: flex;
-        }
-
-        .dropdown-item {
-            padding: 12px 15px;
-            color: #fff;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: 0.2s;
-        }
-
-        .dropdown-item:hover {
-            background: var(--primary-red);
-        }
-
-        /* --- المحتوى الرئيسي والتطبيقات --- */
-        main {
-            flex: 1;
-            padding: 30px 5%;
-            max-width: 1200px;
+            padding: 20px;
+            max-width: 800px;
             margin: 0 auto;
-            width: 100%;
         }
 
-        .header-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        /* النماذج (Forms) */
+        .card {
+            border: 2px solid #000;
+            padding: 20px;
             margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            border-right: 4px solid var(--primary-red);
-            padding-right: 12px;
-        }
-
-        .search-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 8px 15px;
-            border-radius: 30px;
-            color: #fff;
-            outline: none;
-            width: 250px;
-            transition: 0.3s;
-        }
-
-        .search-box:focus {
-            border-color: var(--primary-red);
-            width: 280px;
-        }
-
-        .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 22px;
-        }
-
-        .app-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            transition: transform 0.2s ease, border-color 0.2s ease;
-            position: relative;
-            overflow: hidden;
-            will-change: transform;
-        }
-
-        .app-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--primary-red);
-            box-shadow: 0 8px 20px rgba(229, 9, 20, 0.2);
-        }
-
-        /* زر حذف التطبيق للمطور */
-        .delete-btn {
-            position: absolute;
-            top: 22px;
-            left: 22px;
-            background: rgba(229, 9, 20, 0.85);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: 0.2s;
-            z-index: 5;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-        }
-
-        .delete-btn:hover {
-            background: #ff0000;
-            transform: scale(1.15);
-        }
-
-        .app-icon {
-            width: 100%;
-            height: 160px;
-            border-radius: 10px;
-            object-fit: cover;
-            background: #000;
-        }
-
-        .app-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-
-        .app-desc {
-            font-size: 0.85rem;
-            color: var(--text-gray);
-            height: 40px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-        }
-
-        .btn {
-            background: var(--primary-red);
-            color: #fff;
-            border: none;
-            padding: 10px;
             border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-            transition: 0.2s;
-            width: 100%;
+            background: #fff;
         }
 
-        .btn:hover {
-            background: var(--hover-red);
-        }
-
-        /* زر إضافة تطبيق (للمطور فقط) */
-        .add-app-fab {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            width: 65px;
-            height: 65px;
-            background: var(--primary-red);
-            color: #fff;
-            border-radius: 50%;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            font-size: 2.2rem;
-            box-shadow: 0 4px 25px rgba(229, 9, 20, 0.7);
-            cursor: pointer;
-            z-index: 90;
-            transition: 0.3s;
-        }
-
-        .add-app-fab:hover {
-            transform: scale(1.1) rotate(90deg);
-        }
-
-        /* --- النوافذ المنبثقة (Modals) --- */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.85);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(6px);
-            padding: 20px;
-        }
-
-        .modal-content {
-            background: var(--card-bg);
-            border: 1px solid var(--primary-red);
-            border-radius: 14px;
-            width: 100%;
-            max-width: 450px;
-            padding: 25px;
-            position: relative;
-            box-shadow: 0 0 35px rgba(229, 9, 20, 0.35);
-        }
-
-        .modal-title {
-            font-size: 1.4rem;
-            margin-bottom: 18px;
-            color: var(--primary-red);
-            text-align: center;
-            font-weight: 700;
-        }
-
-        .form-group {
+        .card h2 {
             margin-bottom: 15px;
+            font-size: 20px;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 0.9rem;
-            color: var(--text-gray);
-        }
-
-        .form-group input, .form-group textarea {
+        input, textarea {
             width: 100%;
-            padding: 10px 12px;
-            background: #0a0a0c;
-            border: 1px solid var(--border-color);
-            color: #fff;
-            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #000;
+            border-radius: 5px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
             outline: none;
         }
 
-        .form-group input[type="file"] {
-            padding: 8px;
+        button {
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            transition: 0.2s;
         }
 
-        .form-group input:focus, .form-group textarea:focus {
-            border-color: var(--primary-red);
+        button:hover {
+            background-color: #fff;
+            color: #000;
         }
 
-        .close-btn {
-            position: absolute;
-            top: 12px;
-            left: 18px;
-            font-size: 1.6rem;
-            color: var(--text-gray);
-            cursor: pointer;
+        /* إخفاء وإظهار الأقسام */
+        .hidden {
+            display: none !important;
         }
 
-        /* صفحة تفاصيل التطبيق والتعليقات */
-        .app-detail-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        /* شبكة الحسابات المنشورة */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
         }
 
-        .app-detail-header {
-            display: flex;
-            gap: 15px;
-            align-items: center;
+        .post-card {
+            border: 2px solid #000;
+            padding: 15px;
+            border-radius: 8px;
         }
 
-        .app-detail-img {
-            width: 85px;
-            height: 85px;
-            border-radius: 12px;
+        .post-card img {
+            width: 100%;
+            max-height: 300px;
             object-fit: cover;
-        }
-
-        .comments-section {
-            margin-top: 15px;
-            border-top: 1px solid var(--border-color);
-            padding-top: 12px;
-        }
-
-        .comments-list {
-            max-height: 130px;
-            overflow-y: auto;
+            border: 2px solid #000;
             margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .rating-section {
+            margin-top: 10px;
+            border-top: 1px dashed #000;
+            padding-top: 10px;
+        }
+
+        .stars-select {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
+            gap: 5px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
         }
 
-        .comment-item {
-            background: #0a0a0c;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-        }
-
-        .comment-user {
-            color: var(--primary-red);
+        .star-btn {
+            width: 30px;
+            height: 30px;
+            background: #fff;
+            color: #000;
+            border: 1px solid #000;
             font-weight: bold;
+            cursor: pointer;
+            border-radius: 3px;
         }
 
-        /* صفحة التحميل والأبعاد الزمنية */
-        .download-timer-container {
-            text-align: center;
-            padding: 20px 0;
-        }
-
-        .timer-circle {
-            font-size: 3.5rem;
-            font-weight: 900;
-            color: var(--primary-red);
-            margin: 15px 0;
-            text-shadow: 0 0 20px rgba(229, 9, 20, 0.6);
-        }
-
-        /* الفوتر */
-        footer {
-            background: #040406;
-            text-align: center;
-            padding: 20px;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-gray);
-            font-size: 0.9rem;
-            margin-top: auto;
+        .star-btn.active, .star-btn:hover {
+            background: #000;
+            color: #fff;
         }
     </style>
 </head>
 <body>
 
-    <!-- شريط التحميل الأسطوري العريض (Splash Screen) -->
-    <div id="splash-screen">
-        <div class="logo-splash">FD7</div>
-        <div class="loader-bar-container">
-            <div class="loader-bar" id="loader-bar"></div>
+    <!-- شريط التحميل -->
+    <div id="loader-container">
+        <div class="loader-title">جاري تحميل الموقع...</div>
+        <div class="progress-bar-wrapper">
+            <div class="progress-bar" id="progressBar"></div>
         </div>
     </div>
 
-    <!-- الهيدر -->
-    <header>
-        <div class="brand" onclick="showHome()">
-            <h1>Free download <span>7</span></h1>
-        </div>
-        <div class="user-section">
-            <div class="profile-btn" onclick="toggleDropdown()">
-                <img src="https://via.placeholder.com/38/e50914/ffffff?text=User" id="header-avatar" class="profile-img" alt="Avatar">
-                <span id="header-username">زائر</span>
-                <span id="dev-tag" class="dev-badge" style="display: none;">مطور</span>
-            </div>
-            <div class="dropdown-menu" id="dropdown-menu">
-                <div class="dropdown-item" onclick="openEditProfileModal()">تعديل البروفايل</div>
-                <div class="dropdown-item" onclick="logout()">تسجيل خروج</div>
-            </div>
-        </div>
-    </header>
+    <!-- محتوى الموقع -->
+    <div class="main-content" id="mainContent">
+        <header>
+            <h1>تقييم حسابات فري فاير 🔥</h1>
+        </header>
 
-    <!-- المحتوى الرئيسي -->
-    <main>
-        <div class="header-section">
-            <h2 class="section-title">التطبيقات والألعاب المتاحة</h2>
-            <input type="text" id="search-input" class="search-box" placeholder="ابحث عن لعبة أو تطبيق..." oninput="filterApps()">
+        <!-- 1. صفحة تسجيل الدخول الوهمية -->
+        <div class="card" id="loginCard">
+            <h2>تسجيل الدخول إلى حسابك</h2>
+            <input type="text" id="loginName" placeholder="اسمك في اللعبة">
+            <input type="text" id="loginId" placeholder="الإي دي (ID)">
+            <input type="password" id="loginPass" placeholder="كلمة المرور">
+            <button onclick="handleLogin()">تسجيل الدخول</button>
         </div>
-        <div class="apps-grid" id="apps-container">
-            <!-- التطبيقات تظهر هنا تلقائياً -->
+
+        <!-- 2. صفحة إضافة حساب جديد (تظهر بعد تسجيل الدخول) -->
+        <div class="card hidden" id="postCard">
+            <h2>إضافة حساب جديد للتقييم</h2>
+            <input type="file" id="accImage" accept="image/*">
+            <input type="text" id="accId" placeholder="آي دي الحساب (ID)">
+            <input type="text" id="accSocial" placeholder="روابط حساباتك (تيك توك / انستا...)">
+            <button onclick="publishAccount()">نشر الحساب</button>
         </div>
-    </main>
 
-    <!-- زر إضافة تطبيق (للمطور فقط) -->
-    <div class="add-app-fab" id="add-app-btn" onclick="openAddAppModal()">+</div>
-
-    <!-- 1. نافذة تسجيل الدخول -->
-    <div class="modal" id="login-modal">
-        <div class="modal-content">
-            <div class="modal-title">تسجيل الدخول</div>
-            <div class="form-group">
-                <label>اسم المستخدم</label>
-                <input type="text" id="login-username" placeholder="أدخل اسمك">
-            </div>
-            <div class="form-group">
-                <label>كلمة السر</label>
-                <input type="password" id="login-password" placeholder="أدخل كلمة السر">
-            </div>
-            <button class="btn" onclick="login()">دخول</button>
-        </div>
-    </div>
-
-    <!-- 2. نافذة تعديل البروفايل -->
-    <div class="modal" id="edit-profile-modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('edit-profile-modal')">&times;</span>
-            <div class="modal-title">تعديل البروفايل</div>
-            <div class="form-group">
-                <label>اسم جديد</label>
-                <input type="text" id="edit-username">
-            </div>
-            <div class="form-group">
-                <label>اختر صورة جديدة من الجهاز</label>
-                <input type="file" id="edit-avatar-file" accept="image/*">
-            </div>
-            <button class="btn" onclick="saveProfile()">حفظ التعديلات</button>
-        </div>
-    </div>
-
-    <!-- 3. نافذة إضافة تطبيق (للمطور) -->
-    <div class="modal" id="add-app-modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('add-app-modal')">&times;</span>
-            <div class="modal-title">إضافة تطبيق / لعبة جديدة</div>
-            <div class="form-group">
-                <label>اسم التطبيق أو اللعبة</label>
-                <input type="text" id="app-name">
-            </div>
-            <div class="form-group">
-                <label>اختر صورة التطبيق من الجهاز</label>
-                <input type="file" id="app-img-file" accept="image/*">
-            </div>
-            <div class="form-group">
-                <label>رابط التحميل</label>
-                <input type="text" id="app-link" placeholder="https://...">
-            </div>
-            <div class="form-group">
-                <label>الوصف</label>
-                <textarea id="app-desc" rows="3"></textarea>
-            </div>
-            <button class="btn" onclick="saveApp()">حفظ ونشر</button>
-        </div>
-    </div>
-
-    <!-- 4. نافذة تفاصيل التطبيق -->
-    <div class="modal" id="app-detail-modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('app-detail-modal')">&times;</span>
-            <div class="app-detail-container">
-                <div class="app-detail-header">
-                    <img id="detail-img" class="app-detail-img" src="" alt="">
-                    <div>
-                        <h3 id="detail-title"></h3>
-                    </div>
-                </div>
-                <p id="detail-desc" style="color: var(--text-gray); font-size: 0.9rem;"></p>
-                
-                <button class="btn" onclick="startDownloadProcess()">تحميل الآن</button>
-
-                <!-- قسم التعليقات -->
-                <div class="comments-section">
-                    <h4 style="font-size: 0.9rem; margin-bottom: 8px;">التعليقات:</h4>
-                    <div class="comments-list" id="comments-list">
-                        <!-- التعليقات تظهر هنا -->
-                    </div>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="text" id="comment-input" style="flex:1; padding:6px 10px; background:#0a0a0c; border:1px solid #333; color:#fff; border-radius:6px;" placeholder="أضف تعليقاً...">
-                        <button class="btn" style="width: auto; padding: 6px 15px;" onclick="addComment()">نشر</button>
-                    </div>
-                </div>
+        <!-- 3. معرض الحسابات والتقييمات -->
+        <div class="card">
+            <h2>الحسابات المضافة للتقييم</h2>
+            <div class="posts-grid" id="postsContainer">
+                <!-- سيتم إضافة المنشورات هنا ديناميكياً -->
             </div>
         </div>
     </div>
-
-    <!-- 5. نافذة صفحة التحميل (العداد 17 ثانية) -->
-    <div class="modal" id="download-page-modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('download-page-modal')">&times;</span>
-            <div class="download-timer-container">
-                <h3>جاري تحضير رابط التحميل...</h3>
-                <div class="timer-circle" id="timer">17</div>
-                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">يرجى الانتظار قليلاً، سيظهر زر التحميل عند انتهاء الوقت.</p>
-                <button class="btn" id="final-download-btn" style="display: none;" onclick="redirectToFinalLink()">توجه للتحميل الآن</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- الفوتر -->
-    <footer>
-        حقوق الطبع والنشر © 2026 - Free download 7. جميع الحقوق محفوظة.
-    </footer>
 
     <script>
-        // --- البيانات المخزنة والتأثيرات ---
-        let currentUser = null;
-        let apps = JSON.parse(localStorage.getItem('fd7_apps')) || [
-            {
-                id: 1,
-                name: "Free Fire Max",
-                img: "https://via.placeholder.com/300x150/111111/e50914?text=Free+Fire",
-                link: "https://google.com",
-                desc: "لعبة الباتل رويال الشهيرة بأعلى جودة جرافيك.",
-                comments: [{user: "أحمد", text: "لعبة ممتازة جداً!"}]
-            }
-        ];
-        let currentAppId = null;
+        // محاكاة شريط التحميل (من 0 إلى 100 في ثانية واحدة)
+        let width = 0;
+        const bar = document.getElementById('progressBar');
+        const loader = document.getElementById('loader-container');
+        const mainContent = document.getElementById('mainContent');
 
-        // --- شريط التحميل الأسطوري العريض عند البداية ---
-        window.addEventListener('DOMContentLoaded', () => {
-            const loaderBar = document.getElementById('loader-bar');
-            const splashScreen = document.getElementById('splash-screen');
-            
-            setTimeout(() => { loaderBar.style.width = '100%'; }, 50);
-
-            setTimeout(() => {
-                splashScreen.style.opacity = '0';
-                splashScreen.style.visibility = 'hidden';
-                
-                const savedUser = JSON.parse(localStorage.getItem('fd7_logged_user'));
-                if (savedUser) {
-                    currentUser = savedUser;
-                    updateUI();
-                } else {
-                    document.getElementById('login-modal').style.display = 'flex';
-                }
-            }, 1000);
-
-            renderApps();
-        });
-
-        // --- نظام تسجيل الدخول ---
-        function login() {
-            const nameInput = document.getElementById('login-username').value.trim();
-            const passInput = document.getElementById('login-password').value.trim();
-
-            if (!nameInput || !passInput) {
-                alert('الرجاء إدخال الاسم وكلمة السر!');
-                return;
-            }
-
-            let isDev = false;
-            if (nameInput === "0mar_S7" && passInput === "14581000omar30305036") {
-                isDev = true;
-            }
-
-            currentUser = {
-                name: nameInput,
-                avatar: "https://via.placeholder.com/38/e50914/ffffff?text=" + nameInput.charAt(0).toUpperCase(),
-                isDev: isDev
-            };
-
-            localStorage.setItem('fd7_logged_user', JSON.stringify(currentUser));
-            closeModal('login-modal');
-            updateUI();
-        }
-
-        function logout() {
-            localStorage.removeItem('fd7_logged_user');
-            currentUser = null;
-            location.reload();
-        }
-
-        function updateUI() {
-            if (!currentUser) return;
-            
-            document.getElementById('header-username').textContent = currentUser.name;
-            document.getElementById('header-avatar').src = currentUser.avatar;
-
-            if (currentUser.isDev) {
-                document.getElementById('dev-tag').style.display = 'inline-block';
-                document.getElementById('add-app-btn').style.display = 'flex';
+        const interval = setInterval(() => {
+            if (width >= 100) {
+                clearInterval(interval);
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    mainContent.style.display = 'block';
+                }, 500);
             } else {
-                document.getElementById('dev-tag').style.display = 'none';
-                document.getElementById('add-app-btn').style.display = 'none';
+                width += 2; // يكتمل بسرعة (خلال ثانية تقريباً)
+                bar.style.width = width + '%';
             }
-            renderApps();
-        }
+        }, 15);
 
-        // --- القائمة المنسدلة ---
-        function toggleDropdown() {
-            const menu = document.getElementById('dropdown-menu');
-            menu.classList.toggle('active');
-        }
-
-        document.addEventListener('click', (e) => {
-            const profileBtn = document.querySelector('.profile-btn');
-            const menu = document.getElementById('dropdown-menu');
-            if (!profileBtn.contains(e.target) && !menu.contains(e.target)) {
-                menu.classList.remove('active');
+        // التعامل مع تسجيل الدخول
+        function handleLogin() {
+            const name = document.getElementById('loginName').value;
+            const id = document.getElementById('loginId').value;
+            if(!name || !id) {
+                alert('الرجاء إدخال البيانات الأساسية!');
+                return;
             }
-        });
-
-        // --- تعديل البروفايل ---
-        function openEditProfileModal() {
-            document.getElementById('dropdown-menu').classList.remove('active');
-            document.getElementById('edit-username').value = currentUser.name;
-            document.getElementById('edit-profile-modal').style.display = 'flex';
+            alert('تم تسجيل الدخول بنجاح!');
+            document.getElementById('loginCard').classList.add('hidden');
+            document.getElementById('postCard').classList.remove('hidden');
         }
 
-        function saveProfile() {
-            const newName = document.getElementById('edit-username').value.trim();
-            const avatarFile = document.getElementById('edit-avatar-file').files[0];
+        // نشر الحساب
+        function publishAccount() {
+            const id = document.getElementById('accId').value;
+            const social = document.getElementById('accSocial').value;
+            const imageInput = document.getElementById('accImage');
 
-            if (newName) currentUser.name = newName;
-
-            if (avatarFile) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    currentUser.avatar = e.target.result;
-                    localStorage.setItem('fd7_logged_user', JSON.stringify(currentUser));
-                    updateUI();
-                    closeModal('edit-profile-modal');
-                };
-                reader.readAsDataURL(avatarFile);
-            } else {
-                localStorage.setItem('fd7_logged_user', JSON.stringify(currentUser));
-                updateUI();
-                closeModal('edit-profile-modal');
+            if(!id) {
+                alert('الرجاء إدخال آي دي الحساب على الأقل!');
+                return;
             }
-        }
 
-        // --- إدارة التطبيقات (محسنة لـ 500+ لعبة وبدون تعليق) ---
-        function renderApps(appsToRender = apps) {
-            const container = document.getElementById('apps-container');
+            // قراءة الصورة المرفوعة
+            let imageUrl = "https://via.placeholder.com/400x200?text=Free+Fire+Account"; // صورة افتراضية
+            if (imageInput.files && imageInput.files[0]) {
+                imageUrl = URL.createObjectURL(imageInput.files[0]);
+            }
+
+            const container = document.getElementById('postsContainer');
             
-            // استخدام DocumentFragment لتسريع إعادة الرسم وعدم التأثير على الأداء
-            const fragment = document.createDocumentFragment();
-            container.innerHTML = '';
+            const postHTML = `
+                <div class="post-card">
+                    <img src="${imageUrl}" alt="صورة الحساب">
+                    <p><strong>الآي دي:</strong> ${id}</p>
+                    <p><strong>حسابات التواصل:</strong> ${social || 'لا يوجد'}</p>
+                    
+                    <div class="rating-section">
+                        <p><strong>قيم هذا الحساب (من 1 إلى 10):</strong></p>
+                        <div class="stars-select">
+                            <button class="star-btn" onclick="rate(this, 1)">1</button>
+                            <button class="star-btn" onclick="rate(this, 2)">2</button>
+                            <button class="star-btn" onclick="rate(this, 3)">3</button>
+                            <button class="star-btn" onclick="rate(this, 4)">4</button>
+                            <button class="star-btn" onclick="rate(this, 5)">5</button>
+                            <button class="star-btn" onclick="rate(this, 6)">6</button>
+                            <button class="star-btn" onclick="rate(this, 7)">7</button>
+                            <button class="star-btn" onclick="rate(this, 8)">8</button>
+                            <button class="star-btn" onclick="rate(this, 9)">9</button>
+                            <button class="star-btn" onclick="rate(this, 10)">10</button>
+                        </div>
+                        <p class="avg-rating">التقييم الحالي: <span>لم يتم التقييم بعد</span></p>
+                        <textarea placeholder="اكتب تعليقك هنا..." style="margin-top:5px; height: 60px;"></textarea>
+                        <button onclick="submitComment(this)">إرسال التقييم والتعليق</button>
+                        <div class="comments-list" style="margin-top: 10px; font-size: 13px;"></div>
+                    </div>
+                </div>
+            `;
 
-            appsToRender.forEach(app => {
-                const card = document.createElement('div');
-                card.className = 'app-card';
-                
-                let deleteButtonHTML = '';
-                if (currentUser && currentUser.isDev) {
-                    deleteButtonHTML = `<button class="delete-btn" onclick="deleteApp(event, ${app.id})" title="مسح التطبيق">&times;</button>`;
-                }
-
-                card.innerHTML = `
-                    ${deleteButtonHTML}
-                    <img src="${app.img}" class="app-icon" loading="lazy" alt="${app.name}" onerror="this.src='https://via.placeholder.com/300x150/111111/e50914?text=FD7'">
-                    <div class="app-title">${app.name}</div>
-                    <div class="app-desc">${app.desc}</div>
-                    <button class="btn" onclick="openAppDetail(${app.id})">تحميل</button>
-                `;
-                fragment.appendChild(card);
-            });
-            container.appendChild(fragment);
-        }
-
-        // --- نظام البحث الفوري ---
-        function filterApps() {
-            const query = document.getElementById('search-input').value.trim().toLowerCase();
-            if (!query) {
-                renderApps(apps);
-                return;
-            }
-            const filtered = apps.filter(app => app.name.toLowerCase().includes(query) || app.desc.toLowerCase().includes(query));
-            renderApps(filtered);
-        }
-
-        function deleteApp(event, id) {
-            event.stopPropagation();
-            if (confirm("هل أنت تأكد من رغبتك في مسح هذا التطبيق نهائياً من الموقع؟")) {
-                apps = apps.filter(a => a.id !== id);
-                localStorage.setItem('fd7_apps', JSON.stringify(apps));
-                filterApps(); // تحديث القائمة بناءً على البحث أو العرض الحالي
-            }
-        }
-
-        function openAddAppModal() {
-            document.getElementById('add-app-modal').style.display = 'flex';
-        }
-
-        function saveApp() {
-            const name = document.getElementById('app-name').value.trim();
-            const link = document.getElementById('app-link').value.trim();
-            const desc = document.getElementById('app-desc').value.trim();
-            const imgFile = document.getElementById('app-img-file').files[0];
-
-            if (!name || !link) {
-                alert('الرجاء كتابة اسم التطبيق ورابط التحميل!');
-                return;
-            }
-
-            const processAppSave = (imgUrl) => {
-                const newApp = {
-                    id: Date.now(),
-                    name: name,
-                    img: imgUrl || "https://via.placeholder.com/300x150/111111/e50914?text=FD7",
-                    link: link,
-                    desc: desc || "لا يوجد وصف متاحة.",
-                    comments: []
-                };
-
-                apps.push(newApp);
-                localStorage.setItem('fd7_apps', JSON.stringify(apps));
-                renderApps();
-                closeModal('add-app-modal');
-
-                document.getElementById('app-name').value = '';
-                document.getElementById('app-img-file').value = '';
-                document.getElementById('app-link').value = '';
-                document.getElementById('app-desc').value = '';
-            };
-
-            if (imgFile) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    processAppSave(e.target.result);
-                };
-                reader.readAsDataURL(imgFile);
-            } else {
-                processAppSave(null);
-            }
-        }
-
-        // --- تفاصيل التطبيق والتعليقات ---
-        function openAppDetail(id) {
-            currentAppId = id;
-            const app = apps.find(a => a.id === id);
-            if (!app) return;
-
-            document.getElementById('detail-title').textContent = app.name;
-            document.getElementById('detail-img').src = app.img;
-            document.getElementById('detail-desc').textContent = app.desc;
-
-            renderComments(app);
-            document.getElementById('app-detail-modal').style.display = 'flex';
-        }
-
-        function renderComments(app) {
-            const list = document.getElementById('comments-list');
-            list.innerHTML = '';
-            if (!app.comments || app.comments.length === 0) {
-                list.innerHTML = '<div style="color:#666; font-size:0.8rem;">لا يوجد تعليقات بعد.</div>';
-                return;
-            }
-            app.comments.forEach(c => {
-                const item = document.createElement('div');
-                item.className = 'comment-item';
-                item.innerHTML = `<span class="comment-user">${c.user}:</span> ${c.text}`;
-                list.appendChild(item);
-            });
-        }
-
-        function addComment() {
-            const input = document.getElementById('comment-input');
-            const text = input.value.trim();
-            if (!text) return;
-
-            const app = apps.find(a => a.id === currentAppId);
-            if (app) {
-                if (!app.comments) app.comments = [];
-                app.comments.push({
-                    user: currentUser ? currentUser.name : "زائر",
-                    text: text
-                });
-                localStorage.setItem('fd7_apps', JSON.stringify(apps));
-                renderComments(app);
-                input.value = '';
-            }
-        }
-
-        // --- صفحة التحميل مع العداد 17 ثانية ---
-        function startDownloadProcess() {
-            closeModal('app-detail-modal');
-            const downloadModal = document.getElementById('download-page-modal');
-            const timerEl = document.getElementById('timer');
-            const finalBtn = document.getElementById('final-download-btn');
-
-            downloadModal.style.display = 'flex';
-            finalBtn.style.display = 'none';
+            container.innerHTML += postHTML;
+            alert('تم نشر حسابك بنجاح على الموقع!');
             
-            let timeLeft = 17;
-            timerEl.textContent = timeLeft;
-
-            const countdown = setInterval(() => {
-                timeLeft--;
-                timerEl.textContent = timeLeft;
-
-                if (timeLeft <= 0) {
-                    clearInterval(countdown);
-                    timerEl.textContent = "جاهز!";
-                    finalBtn.style.display = 'block';
-                }
-            }, 1000);
+            // تفريغ الحقول
+            document.getElementById('accId').value = '';
+            document.getElementById('accSocial').value = '';
+            document.getElementById('accImage').value = '';
         }
 
-        function redirectToFinalLink() {
-            const app = apps.find(a => a.id === currentAppId);
-            if (app && app.link) {
-                window.open(app.link, '_blank');
+        // نظام اختيار التقييم بالضغط على الأزرار
+        function rate(btn, score) {
+            const parent = btn.closest('.rating-section');
+            parent.querySelectorAll('.star-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            parent.dataset.selectedScore = score;
+        }
+
+        // إرسال التعليق والتقييم
+        function submitComment(button) {
+            const section = button.closest('.rating-section');
+            const score = section.dataset.selectedScore;
+            const commentText = section.querySelector('textarea').value;
+            const commentsList = section.querySelector('.comments-list');
+            const avgDisplay = section.querySelector('.avg-rating span');
+
+            if(!score) {
+                alert('الرجاء اختيار تقييم من 1 إلى 10 أولاً!');
+                return;
             }
+
+            avgDisplay.textContent = score + " / 10";
+
+            if(commentText.trim() !== "") {
+                const commentItem = document.createElement('div');
+                commentItem.style.borderTop = "1px solid #ddd";
+                commentItem.style.padding = "5px 0";
+                commentItem.innerHTML = `⭐ <b>${score}/10</b>: ${commentText}`;
+                commentsList.appendChild(commentItem);
+                section.querySelector('textarea').value = '';
+            }
+            
+            alert('تم إرسال تقييمك بنجاح!');
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقييم حسابات فري فاير</title>
+    <!-- استيراد خط Cairo من Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
         }
 
-        // --- وظائف عامة ---
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
+        body {
+            background-color: #ffffff;
+            color: #000000;
+            min-height: 100vh;
         }
 
-        function showHome() {
-            closeModal('app-detail-modal');
-            closeModal('download-page-modal');
+        /* شريط التحميل العلوي */
+        #loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .progress-bar-wrapper {
+            width: 300px;
+            height: 12px;
+            border: 2px solid #000000;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #000000;
+            transition: width 0.1s linear;
+        }
+
+        /* محتوى الموقع الأساسي */
+        .main-content {
+            display: none;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        /* النماذج (Forms) */
+        .card {
+            border: 2px solid #000;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        .card h2 {
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #000;
+            border-radius: 5px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            outline: none;
+        }
+
+        button {
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        /* إخفاء وإظهار الأقسام */
+        .hidden {
+            display: none !important;
+        }
+
+        /* شبكة الحسابات المنشورة */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .post-card {
+            border: 2px solid #000;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .post-card img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border: 2px solid #000;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .rating-section {
+            margin-top: 10px;
+            border-top: 1px dashed #000;
+            padding-top: 10px;
+        }
+
+        .stars-select {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .star-btn {
+            width: 30px;
+            height: 30px;
+            background: #fff;
+            color: #000;
+            border: 1px solid #000;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .star-btn.active, .star-btn:hover {
+            background: #000;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- شريط التحميل -->
+    <div id="loader-container">
+        <div class="loader-title">جاري تحميل الموقع...</div>
+        <div class="progress-bar-wrapper">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+
+    <!-- محتوى الموقع -->
+    <div class="main-content" id="mainContent">
+        <header>
+            <h1>تقييم حسابات فري فاير 🔥</h1>
+        </header>
+
+        <!-- 1. صفحة تسجيل الدخول الوهمية -->
+        <div class="card" id="loginCard">
+            <h2>تسجيل الدخول إلى حسابك</h2>
+            <input type="text" id="loginName" placeholder="اسمك في اللعبة">
+            <input type="text" id="loginId" placeholder="الإي دي (ID)">
+            <input type="password" id="loginPass" placeholder="كلمة المرور">
+            <button onclick="handleLogin()">تسجيل الدخول</button>
+        </div>
+
+        <!-- 2. صفحة إضافة حساب جديد (تظهر بعد تسجيل الدخول) -->
+        <div class="card hidden" id="postCard">
+            <h2>إضافة حساب جديد للتقييم</h2>
+            <input type="file" id="accImage" accept="image/*">
+            <input type="text" id="accId" placeholder="آي دي الحساب (ID)">
+            <input type="text" id="accSocial" placeholder="روابط حساباتك (تيك توك / انستا...)">
+            <button onclick="publishAccount()">نشر الحساب</button>
+        </div>
+
+        <!-- 3. معرض الحسابات والتقييمات -->
+        <div class="card">
+            <h2>الحسابات المضافة للتقييم</h2>
+            <div class="posts-grid" id="postsContainer">
+                <!-- سيتم إضافة المنشورات هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // محاكاة شريط التحميل (من 0 إلى 100 في ثانية واحدة)
+        let width = 0;
+        const bar = document.getElementById('progressBar');
+        const loader = document.getElementById('loader-container');
+        const mainContent = document.getElementById('mainContent');
+
+        const interval = setInterval(() => {
+            if (width >= 100) {
+                clearInterval(interval);
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    mainContent.style.display = 'block';
+                }, 500);
+            } else {
+                width += 2; // يكتمل بسرعة (خلال ثانية تقريباً)
+                bar.style.width = width + '%';
+            }
+        }, 15);
+
+        // التعامل مع تسجيل الدخول
+        function handleLogin() {
+            const name = document.getElementById('loginName').value;
+            const id = document.getElementById('loginId').value;
+            if(!name || !id) {
+                alert('الرجاء إدخال البيانات الأساسية!');
+                return;
+            }
+            alert('تم تسجيل الدخول بنجاح!');
+            document.getElementById('loginCard').classList.add('hidden');
+            document.getElementById('postCard').classList.remove('hidden');
+        }
+
+        // نشر الحساب
+        function publishAccount() {
+            const id = document.getElementById('accId').value;
+            const social = document.getElementById('accSocial').value;
+            const imageInput = document.getElementById('accImage');
+
+            if(!id) {
+                alert('الرجاء إدخال آي دي الحساب على الأقل!');
+                return;
+            }
+
+            // قراءة الصورة المرفوعة
+            let imageUrl = "https://via.placeholder.com/400x200?text=Free+Fire+Account"; // صورة افتراضية
+            if (imageInput.files && imageInput.files[0]) {
+                imageUrl = URL.createObjectURL(imageInput.files[0]);
+            }
+
+            const container = document.getElementById('postsContainer');
+            
+            const postHTML = `
+                <div class="post-card">
+                    <img src="${imageUrl}" alt="صورة الحساب">
+                    <p><strong>الآي دي:</strong> ${id}</p>
+                    <p><strong>حسابات التواصل:</strong> ${social || 'لا يوجد'}</p>
+                    
+                    <div class="rating-section">
+                        <p><strong>قيم هذا الحساب (من 1 إلى 10):</strong></p>
+                        <div class="stars-select">
+                            <button class="star-btn" onclick="rate(this, 1)">1</button>
+                            <button class="star-btn" onclick="rate(this, 2)">2</button>
+                            <button class="star-btn" onclick="rate(this, 3)">3</button>
+                            <button class="star-btn" onclick="rate(this, 4)">4</button>
+                            <button class="star-btn" onclick="rate(this, 5)">5</button>
+                            <button class="star-btn" onclick="rate(this, 6)">6</button>
+                            <button class="star-btn" onclick="rate(this, 7)">7</button>
+                            <button class="star-btn" onclick="rate(this, 8)">8</button>
+                            <button class="star-btn" onclick="rate(this, 9)">9</button>
+                            <button class="star-btn" onclick="rate(this, 10)">10</button>
+                        </div>
+                        <p class="avg-rating">التقييم الحالي: <span>لم يتم التقييم بعد</span></p>
+                        <textarea placeholder="اكتب تعليقك هنا..." style="margin-top:5px; height: 60px;"></textarea>
+                        <button onclick="submitComment(this)">إرسال التقييم والتعليق</button>
+                        <div class="comments-list" style="margin-top: 10px; font-size: 13px;"></div>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML += postHTML;
+            alert('تم نشر حسابك بنجاح على الموقع!');
+            
+            // تفريغ الحقول
+            document.getElementById('accId').value = '';
+            document.getElementById('accSocial').value = '';
+            document.getElementById('accImage').value = '';
+        }
+
+        // نظام اختيار التقييم بالضغط على الأزرار
+        function rate(btn, score) {
+            const parent = btn.closest('.rating-section');
+            parent.querySelectorAll('.star-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            parent.dataset.selectedScore = score;
+        }
+
+        // إرسال التعليق والتقييم
+        function submitComment(button) {
+            const section = button.closest('.rating-section');
+            const score = section.dataset.selectedScore;
+            const commentText = section.querySelector('textarea').value;
+            const commentsList = section.querySelector('.comments-list');
+            const avgDisplay = section.querySelector('.avg-rating span');
+
+            if(!score) {
+                alert('الرجاء اختيار تقييم من 1 إلى 10 أولاً!');
+                return;
+            }
+
+            avgDisplay.textContent = score + " / 10";
+
+            if(commentText.trim() !== "") {
+                const commentItem = document.createElement('div');
+                commentItem.style.borderTop = "1px solid #ddd";
+                commentItem.style.padding = "5px 0";
+                commentItem.innerHTML = `⭐ <b>${score}/10</b>: ${commentText}`;
+                commentsList.appendChild(commentItem);
+                section.querySelector('textarea').value = '';
+            }
+            
+            alert('تم إرسال تقييمك بنجاح!');
         }
     </script>
 </body>
