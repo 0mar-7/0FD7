@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محرر الأكواد السريع</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" rel="stylesheet">
+    <title>CODE ONE X7 - محرر الأكواد المتقدم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +13,7 @@
             font-family: 'Cairo', sans-serif;
         }
         body {
-            background-color: #000000;
+            background-color: #0d0d0d;
             color: #ffffff;
             padding: 20px;
             display: flex;
@@ -21,68 +21,125 @@
             align-items: center;
             min-height: 100vh;
         }
-        h2 {
-            margin-bottom: 20px;
+
+        /* الهيدر والشعار */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ff4d4d;
+            width: 100%;
+            max-width: 800px;
+        }
+        .logo-img {
+            width: 65px;
+            height: 65px;
+            border-radius: 12px;
+            border: 2px solid #ff4d4d;
+            object-fit: cover;
+            box-shadow: 0 0 10px rgba(255, 77, 77, 0.4);
+        }
+        .brand-title {
             font-weight: 900;
             font-size: 28px;
             letter-spacing: 1px;
         }
+        .brand-title .red-text {
+            color: #ff4d4d;
+            text-shadow: 0 0 8px rgba(255, 77, 77, 0.6);
+        }
+
         .container {
             width: 100%;
             max-width: 800px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
         }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
         label {
             font-weight: 700;
-            font-size: 18px;
+            font-size: 16px;
+            color: #e0e0e0;
         }
-        textarea {
+
+        input[type="text"], textarea {
             width: 100%;
-            height: 300px;
-            padding: 15px;
-            background-color: #111111;
-            border: 2px solid #333333;
+            padding: 14px;
+            background-color: #161616;
+            border: 2px solid #2a2a2a;
             color: #ffffff;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
-            resize: vertical;
             outline: none;
-            transition: 0.3s;
+            transition: all 0.3s ease;
         }
-        textarea:focus {
-            border-color: #ffffff;
+
+        textarea {
+            height: 280px;
+            resize: vertical;
         }
-        button {
-            padding: 14px;
-            background-color: #ffffff;
-            color: #000000;
+
+        input[type="text"]:focus, textarea:focus {
+            border-color: #ff4d4d;
+            box-shadow: 0 0 8px rgba(255, 77, 77, 0.3);
+        }
+
+        .main-btn {
+            padding: 15px;
+            background: linear-gradient(135deg, #ff4d4d, #b30000);
+            color: #ffffff;
             border: none;
             border-radius: 8px;
             font-size: 18px;
             font-weight: 900;
             cursor: pointer;
             transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3);
         }
-        button:hover {
-            background-color: #cccccc;
+
+        .main-btn:hover {
+            background: linear-gradient(135deg, #ff6666, #cc0000);
+            transform: translateY(-2px);
         }
-        button:disabled {
-            background-color: #555555;
+
+        .main-btn:disabled {
+            background: #444444;
+            color: #888888;
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
+
+        /* نتيجة التوليد */
         .result-box {
-            background-color: #111111;
-            padding: 15px;
+            background-color: #161616;
+            padding: 20px;
             border-radius: 8px;
-            border: 2px solid #333333;
+            border: 2px solid #ff4d4d;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 12px;
+            box-shadow: 0 0 15px rgba(255, 77, 77, 0.2);
         }
+
+        .site-title-display {
+            font-size: 20px;
+            font-weight: 900;
+            color: #ff4d4d;
+            text-align: center;
+        }
+
         .link-display {
             word-break: break-all;
             color: #00ff88;
@@ -90,38 +147,187 @@
             font-weight: 700;
             direction: ltr;
             text-align: center;
+            background: #0d0d0d;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px dashed #333;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btns button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-open {
+            background-color: #222;
+            color: #fff;
+            border: 1px solid #ff4d4d;
+        }
+        .btn-open:hover {
+            background-color: #ff4d4d;
+        }
+
+        .btn-copy {
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #555;
+        }
+        .btn-copy:hover {
+            background-color: #555;
+        }
+
+        /* طريقة الاستخدام */
+        .instructions {
+            margin-top: 15px;
+            background-color: #121212;
+            padding: 20px;
+            border-radius: 8px;
+            border-right: 4px solid #ff4d4d;
+        }
+
+        .instructions h3 {
+            color: #ff4d4d;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .steps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background-color: #1a1a1a;
+            padding: 12px 15px;
+            border-radius: 6px;
+        }
+
+        .step-number {
+            background-color: #ff4d4d;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            font-size: 15px;
+            color: #ddd;
+        }
+
+        /* الفوتر / الحقوق */
+        footer {
+            margin-top: 40px;
+            padding: 15px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            border-top: 1px solid #222;
+            width: 100%;
+            max-width: 800px;
+        }
+        footer span {
+            color: #ff4d4d;
+            font-weight: 700;
         }
     </style>
 </head>
 <body>
 
-    <h2>محرر الأكواد المتقدم</h2>
+    <!-- الهيدر مع الشعار واسم الموقع -->
+    <header>
+        <!-- يمكنك تغيير مسار الصورة حسب الحاجة -->
+        <img src="1000004281.jpg" alt="CODE ONE X7 Logo" class="logo-img">
+        <h1 class="brand-title">CODE <span class="red-text">ONE</span> X7</h1>
+    </header>
 
     <div class="container">
-        <div>
+
+        <!-- أدخل اسم الموقع -->
+        <div class="form-group">
+            <label for="siteName">اسم الموقع أو الصفحة:</label>
+            <input type="text" id="siteName" placeholder="مثال: موقعي الشخصي / تطبيق الألعاب">
+        </div>
+
+        <!-- محرر الأكواد -->
+        <div class="form-group">
             <label for="codeEditor">الكود البرمجي (HTML/CSS/JS):</label>
             <textarea id="codeEditor" placeholder="اكتب أو الصق الكود الخاص بك هنا..."></textarea>
         </div>
 
-        <button id="submitBtn" onclick="generateSite()">توليد الموقع واستضافة الرابط</button>
+        <button class="main-btn" id="submitBtn" onclick="generateSite()">توليد الموقع واستضافة الرابط</button>
 
+        <!-- النتيجة -->
         <div class="result-box" id="resultSection" style="display: none;">
+            <div class="site-title-display" id="displaySiteName"></div>
             <label>رابط موقعك الحقيقي:</label>
             <div class="link-display" id="generatedLink"></div>
-            <button onclick="openLiveSite()" style="background-color: #222; color: #fff; border: 1px solid #fff;">فتح الموقع في صفحة جديدة</button>
-            <button onclick="copyLink()" style="background-color: #333; color: #fff; border: 1px solid #fff;">نسخ الرابط</button>
+            <div class="action-btns">
+                <button class="btn-open" onclick="openLiveSite()">فتح الموقع في صفحة جديدة</button>
+                <button class="btn-copy" onclick="copyLink()">نسخ الرابط</button>
+            </div>
         </div>
+
+        <!-- طريقة الاستخدام -->
+        <div class="instructions">
+            <h3>طريقة الاستخدام (4 خطوات بسيطة):</h3>
+            <div class="steps-list">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-text">اكتب <strong>اسم موقعك</strong> في المربع المخصص بالفي الأعلى لتمييز مشروعك.</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-text">ضع كود الـ <strong>HTML / CSS / JavaScript</strong> الخاص بك داخل محرر الأكواد.</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-text">اضغط على زر <strong>"توليد الموقع واستضافة الرابط"</strong> للرفع السحابي الفوري.</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-text">انسخ الرابط المباشر أو اضغط على <strong>"فتح الموقع"</strong> لمشاهدة موقعك يعمل حقيقياً!</div>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <!-- الفوتر مع الحقوق -->
+    <footer>
+        جميع الحقوق محفوظة &copy; <span>2026</span> - <strong>CODE <span style="color: #ff4d4d;">ONE</span> X7</strong>
+    </footer>
 
     <script>
         let finalUrl = "";
 
         async function generateSite() {
+            const siteNameInput = document.getElementById('siteName').value.trim();
             const codeContent = document.getElementById('codeEditor').value;
             const submitBtn = document.getElementById('submitBtn');
 
             if (!codeContent.trim()) {
-                alert("الرجاء كتابة أو لصق الكود البرمجي!");
+                alert("الرجاء كتابة أو لصق الكود البرمجي أولاً!");
                 return;
             }
 
@@ -148,7 +354,9 @@
                 // توليد الرابط القصير المباشر
                 finalUrl = `https://bytebin.lucko.me/${pasteId}`;
 
-                // عرض النتيجة
+                // عرض الاسم المخصص والنتيجة
+                const nameToDisplay = siteNameInput ? siteNameInput : "موقعك الجديد";
+                document.getElementById('displaySiteName').innerText = `📌 ${nameToDisplay}`;
                 document.getElementById('generatedLink').innerText = finalUrl;
                 document.getElementById('resultSection').style.display = 'flex';
 
@@ -170,7 +378,7 @@
         function copyLink() {
             if (!finalUrl) return;
             navigator.clipboard.writeText(finalUrl).then(() => {
-                alert("تم نسخ الرابط بنجاح! يمكنك إرساله لأي شخص الآن.");
+                alert("تم نسخ الرابط بنجاح! يمكنك مشاركته الآن.");
             });
         }
     </script>
