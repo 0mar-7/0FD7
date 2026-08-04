@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>محرر الأكواد السريع</title>
-    <!-- استدعاء خط Cairo العريض -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" rel="stylesheet">
     <style>
         * {
@@ -39,21 +38,6 @@
             font-weight: 700;
             font-size: 18px;
         }
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            background-color: #111111;
-            border: 2px solid #333333;
-            color: #ffffff;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 700;
-            outline: none;
-            transition: 0.3s;
-        }
-        input[type="text"]:focus {
-            border-color: #ffffff;
-        }
         textarea {
             width: 100%;
             height: 300px;
@@ -85,6 +69,10 @@
         button:hover {
             background-color: #cccccc;
         }
+        button:disabled {
+            background-color: #555555;
+            cursor: not-allowed;
+        }
         .result-box {
             background-color: #111111;
             padding: 15px;
@@ -97,9 +85,11 @@
         }
         .link-display {
             word-break: break-all;
-            color: #aaaaaa;
-            font-size: 14px;
+            color: #00ff88;
+            font-size: 16px;
             font-weight: 700;
+            direction: ltr;
+            text-align: center;
         }
     </style>
 </head>
@@ -109,19 +99,14 @@
 
     <div class="container">
         <div>
-            <label for="siteName">اسم الموقع:</label>
-            <input type="text" id="siteName" placeholder="اكتب اسم الموقع هنا (مثال: my-page)">
-        </div>
-
-        <div>
             <label for="codeEditor">الكود البرمجي (HTML/CSS/JS):</label>
             <textarea id="codeEditor" placeholder="اكتب أو الصق الكود الخاص بك هنا..."></textarea>
         </div>
 
-        <button onclick="generateSite()">توليد الموقع</button>
+        <button id="submitBtn" onclick="generateSite()">توليد الموقع واستضافة الرابط</button>
 
         <div class="result-box" id="resultSection" style="display: none;">
-            <label>رابط موقعك المتولد:</label>
+            <label>رابط موقعك الحقيقي:</label>
             <div class="link-display" id="generatedLink"></div>
             <button onclick="openLiveSite()" style="background-color: #222; color: #fff; border: 1px solid #fff;">فتح الموقع في صفحة جديدة</button>
             <button onclick="copyLink()" style="background-color: #333; color: #fff; border: 1px solid #fff;">نسخ الرابط</button>
@@ -131,51 +116,61 @@
     <script>
         let finalUrl = "";
 
-        function generateSite() {
-            const siteNameInput = document.getElementById('siteName').value.trim();
+        async function generateSite() {
             const codeContent = document.getElementById('codeEditor').value;
+            const submitBtn = document.getElementById('submitBtn');
 
-            if (!siteNameInput) {
-                alert("الرجاء كتابة اسم الموقع أولاً!");
-                return;
-            }
-
-            if (!codeContent) {
+            if (!codeContent.trim()) {
                 alert("الرجاء كتابة أو لصق الكود البرمجي!");
                 return;
             }
 
-            // تجهيز الرابط بالشكل المطلوب
-            finalUrl = `https://0mar-7.github.io/0FD7/${encodeURIComponent(siteNameInput)}`;
+            submitBtn.disabled = true;
+            submitBtn.innerText = "جاري رفع الكود وتوليد الرابط...";
 
-            // حفظ الكود محلياً بحيث لو تم فتح الرابط أو معاينته يظهر المحتوى المكتوب
-            localStorage.setItem(`code_${siteNameInput}`, codeContent);
+            try {
+                // رفع الكود كملف HTML سحابياً عبر Bytebin API
+                const response = await fetch('https://bytebin.lucko.me/post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/html; charset=utf-8'
+                    },
+                    body: codeContent
+                });
 
-            // عرض النتيجة للمستخدم
-            document.getElementById('generatedLink').innerText = finalUrl;
-            document.getElementById('resultSection').style.display = 'flex';
+                if (!response.ok) {
+                    throw new Error('فشل الرفع');
+                }
 
-            // محاكاة فتح المعاينة فوراً بملء الشاشة كما طلبت
-            setTimeout(() => {
-                openLiveSite();
-            }, 500);
+                const data = await response.json();
+                const pasteId = data.key;
+
+                // توليد الرابط القصير المباشر
+                finalUrl = `https://bytebin.lucko.me/${pasteId}`;
+
+                // عرض النتيجة
+                document.getElementById('generatedLink').innerText = finalUrl;
+                document.getElementById('resultSection').style.display = 'flex';
+
+            } catch (error) {
+                alert("حدث خطأ أثناء رفع الكود، يرجى المحاولة مرة أخرى.");
+                console.error(error);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "توليد الموقع واستضافة الرابط";
+            }
         }
 
         function openLiveSite() {
-            if (!finalUrl) return;
-            const siteNameInput = document.getElementById('siteName').value.trim();
-            const savedCode = localStorage.getItem(`code_${siteNameInput}`) || "<h1>لا يوجد محتوى</h1>";
-
-            // فتح صفحة جديدة تعرض الموقع لوحده بدون محرر الأكواد وبملء الشاشة
-            const newWindow = window.open('', '_blank');
-            newWindow.document.write(savedCode);
-            newWindow.document.close();
+            if (finalUrl) {
+                window.open(finalUrl, '_blank');
+            }
         }
 
         function copyLink() {
             if (!finalUrl) return;
             navigator.clipboard.writeText(finalUrl).then(() => {
-                alert("تم نسخ الرابط بنجاح!");
+                alert("تم نسخ الرابط بنجاح! يمكنك إرساله لأي شخص الآن.");
             });
         }
     </script>
